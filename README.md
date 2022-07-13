@@ -15,3 +15,4 @@ https://yartu-ui-kit.github.io
 
 ## LICENSE
 
+> MIT License
