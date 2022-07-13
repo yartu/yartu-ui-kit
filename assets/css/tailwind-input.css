@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  ::-webkit-scrollbar {
+    width: .4em;
+    height: .4em;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    border-radius: 1rem;
+    border: .4em solid #9aa1b4;
+  }
+}
+
+/* This utility class handles the bottom bar on newer iPhones without the “Home” button. 
+Without it, some elements can fall under the bar, making them unreadable and tough to tap. */
+@layer utilities {
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
