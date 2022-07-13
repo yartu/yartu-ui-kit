@@ -1,7 +1,7 @@
 module.exports = {
   plugins: {
     tailwindcss: {
-      config: './yartu.config.js',
+      config: 'node_modules/@yartu/ui-kit/yartu.config.js',
     },
     autoprefixer: {},
   },

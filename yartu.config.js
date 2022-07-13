@@ -1,9 +1,9 @@
 /* eslint-disable */
 const defaultTheme = require('tailwindcss/defaultTheme')
 
-module.exports = {
+const globalConfig = {
   mod: 'jit',
-  content: ['./components/**/*.{vue,js,ts,jsx,tsx}'],
+  content: [],
   darkMode: 'media', // or 'media' or 'class'
   theme: {
     extend: {
@@ -206,7 +206,23 @@ module.exports = {
     },
   },
   plugins: [
-    require('@tailwindcss/line-clamp'),
-    require('tailwind-scrollbar-hide'),
+
   ],
 };
+
+let projectConfig = {};
+
+try {
+  projectConfig = require('../../../yartu.config.js');
+} catch {
+  console.info('You can create yartu.config.js to override theme configs.');
+}
+
+const mergedConfig = {...globalConfig, ...projectConfig};
+
+mergedConfig.content.push('./node_modules/@yartu/ui-kit/components/**/*.{vue,js,ts,jsx,tsx}');
+mergedConfig.plugins.concat([require('@tailwindcss/line-clamp'),
+                              require('tailwind-scrollbar-hide') 
+                            ]);
+
+module.exports = mergedConfig

@@ -34,7 +34,6 @@ export default {
 </script>
 <style>
 .chip {
-  @apply;
 }
 
 .chip-avatar {
