@@ -8,13 +8,11 @@ Install package inside your Vue3 Project.
 
 ```
 npm install @yartu/ui-kit --save
-
 ```
 
 Load Yartu Ui Kit inside main.js and use.
 
 ```
-
 import YartuUIKit from "@yartu/ui-kit";
 
 createApp(App).use(YartuUIKit).mount("#app");
