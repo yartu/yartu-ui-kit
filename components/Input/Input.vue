@@ -37,14 +37,26 @@
       </div>
     </div>
     <div :class="helperClass" v-if="helper">
-      <slot name="helper"></slot>
+      <slot
+        name="helper"
+      >
+      </slot>
+      <div
+        v-if="errors.length > 0"
+      >
+        {{ errors.join(',') }}
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+
+import FormItem from '../FormItem';
+
 export default {
   name: 'y-input',
+  extends: FormItem,
   data() {
     return {
       open: false,
@@ -116,6 +128,11 @@ export default {
     },
   },
   computed: {
+
+    hasError() {
+      return this.error || this.errors.length > 0;
+    },
+
     inputContainerClass() {
       return ['text-BLACK-2', 'min-w-[320px]', 'flex flex-col gap-2'];
     },
@@ -123,7 +140,6 @@ export default {
     inputContentClass() {
       return ['relative', 'flex items-center'];
     },
-
     inputClass() {
       return [
         'h-11',
@@ -139,7 +155,7 @@ export default {
           'pr-11': this.iconRight && this.action && !this.dropdown,
           'pl-11': !this.iconRight && this.action,
           'pr-14': this.dropdown,
-          'border-RED focus:border-RED': this.error,
+          'border-RED focus:border-RED': this.hasError,
           'border-YELLOW focus:border-YELLOW': this.warning,
           'border-BLUE focus:border-BLUE': this.info,
         },
@@ -151,7 +167,7 @@ export default {
         'text-xs',
         'flex gap-1 items-center',
         {
-          'text-RED': this.error,
+          'text-RED': this.hasError,
           'text-BLUE': this.info,
           'text-YELLOW': this.warning,
         },
