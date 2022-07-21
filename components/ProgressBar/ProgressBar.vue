@@ -1,9 +1,30 @@
 <template>
   <div :style="setHeight" :class="containerClass">
-    <div :style="[setHeight, setWidth]" :class="[progressClass, animationType]">
+    <div
+      v-if="!split"
+      :style="[setHeight, setWidth]"
+      :class="[progressClass, animationType]"
+    >
       <slot v-if="indeterminate === ''"></slot>
     </div>
+    <div
+      v-else
+      v-for="i in 4"
+      :key="i"
+      :style="setHeight"
+      class="w-1/2-2 bg-GREY-9 rounded-full"
+    >
+      <div
+        :style="[
+          setHeight,
+          progress >= i * 25 ? 'width:100%' : setSplitWidth(i),
+        ]"
+        :class="setColorClass"
+        class="rounded-full transition-all duration-300"
+      ></div>
+    </div>
   </div>
+  {{ progress }}
 </template>
 
 <script>
@@ -16,7 +37,11 @@ export default {
     },
     progress: {
       type: Number,
-      default: 30,
+      default: 55,
+    },
+    split: {
+      type: Boolean,
+      default: false,
     },
     height: {
       type: Number,
@@ -48,7 +73,10 @@ export default {
         'text-xs',
         'w-full',
         'rounded-full',
-        'bg-GREY-9',
+        {
+          'flex gap-2': this.split,
+          'bg-GREY-9': !this.split,
+        },
       ];
     },
     progressClass() {
@@ -94,6 +122,22 @@ export default {
     },
     setHeight() {
       return 'height:' + this.height + 'px;';
+    },
+    setColorClass() {
+      let progress = this.progress;
+      if (progress <= 25) return 'bg-RED';
+      else if (progress <= 50) return 'bg-ORANGE';
+      else if (progress <= 75) return 'bg-YELLOW';
+      return 'bg-GREEN';
+    },
+  },
+  methods: {
+    setSplitWidth(e) {
+      let progress = this.progress;
+      let width = progress - (e - 1) * 25;
+      if (width >= 100) width = 100;
+      if (progress - (e - 1) * 25 < 0) return 'width: 0%;';
+      else return 'width: ' + width + '%;';
     },
   },
 };
