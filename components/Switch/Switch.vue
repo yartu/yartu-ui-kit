@@ -37,10 +37,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    label: {
-      type: String,
-      default: '',
-    },
     modelValue: {},
     inputValue: {
       type: String,
