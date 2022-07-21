@@ -1,20 +1,42 @@
 <template>
-  <span :class="chipContainerClass">
-    <div class="chip-avatar">
-      <!-- <img src="../assets/shakira.jpg" alt /> -->
-      <p class="chip-avatar-text">öŞ</p>
-    </div>
-    <p class="chip-text">Ömer Aziz ŞAHİN</p>
-    <div class="chip-close-btn">
-      <button>x</button>
-    </div>
+  <span tabindex="0" :class="chipContainerClass">
+    <slot></slot>
+    <button v-if="close" :class="closeBtnClass" @click="$emit('close')">
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M4.66797 4.66602L11.3346 11.3327"
+          stroke="#9AA1B4"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M4.66797 11.3327L11.3346 4.66602"
+          stroke="#9AA1B4"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </button>
   </span>
 </template>
 
 <script>
 export default {
   name: 'y-chip',
-  props: {},
+  props: {
+    close: {
+      type: Boolean,
+      default: false,
+    },
+  },
   computed: {
     chipContainerClass() {
       return [
@@ -29,38 +51,17 @@ export default {
         'bg-LIGHTBLUE-6',
       ];
     },
+    closeBtnClass() {
+      return [
+        'rounded-full',
+        'relative',
+        'cursor-pointer',
+        'h-4 w-4',
+        'inline-flex items-center justify-center',
+        'text-BLACK-2',
+        'bg-LIGHTBLUE-6',
+      ];
+    },
   },
 };
 </script>
-<style>
-.chip {
-}
-
-.chip-avatar {
-  @apply rounded-full
-    w-6 h-6
-    flex items-center justify-center
-    overflow-hidden
-    bg-TEAL;
-}
-.chip-text {
-  @apply text-xs
-    py-1 pr-2 pl-1
-    font-semibold;
-}
-.chip-avatar-text {
-  @apply text-[10px]
-    font-semibold
-    text-center
-    text-WHITE
-    uppercase;
-}
-.chip-close-btn {
-  @apply w-5 h-5
-    flex justify-center items-center
-    rounded-full
-    border-BORDER
-    hover:border
-    active:bg-BORDER;
-}
-</style>
