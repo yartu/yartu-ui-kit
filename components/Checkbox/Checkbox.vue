@@ -1,5 +1,5 @@
 <template>
-  <label :for="inputValue">
+  <label :for="inputValue" :class="checkboxContainer">
     <input
       :class="checkboxClass"
       v-model="model"
@@ -49,7 +49,9 @@ export default {
         this.$emit('update:modelValue', val);
       },
     },
-
+    checkboxContainer() {
+      return ['w-fit', 'inline-flex items-center justify-center flex-wrap'];
+    },
     checkboxClass() {
       return [
         'y-checkbox',
