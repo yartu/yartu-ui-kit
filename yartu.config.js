@@ -85,6 +85,9 @@ const globalConfig = {
         '17': '70px',
         '55': '216px',
       },
+      width: {
+        '1/2-2': 'calc(24.99% - 8px)'
+      },
       fontSize: {
         '3xs': '0.5rem',
         '2xs': '0.625rem',
@@ -218,11 +221,11 @@ try {
   console.info('You can create yartu.config.js to override theme configs.');
 }
 
-const mergedConfig = {...globalConfig, ...projectConfig};
+const mergedConfig = { ...globalConfig, ...projectConfig };
 
 mergedConfig.content.push('./node_modules/@yartu/ui-kit/components/**/*.{vue,js,ts,jsx,tsx}');
 mergedConfig.plugins.concat([require('@tailwindcss/line-clamp'),
-                              require('tailwind-scrollbar-hide') 
-                            ]);
+require('tailwind-scrollbar-hide')
+]);
 
 module.exports = mergedConfig
