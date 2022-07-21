@@ -9,8 +9,8 @@
           v-if="!isLast(index)"
           :class="isSecondLast(index) ? 'text-BLACK-2' : ''"
         >
-          /</span
-        >
+          /
+        </span>
       </li>
       <li></li>
     </ol>
