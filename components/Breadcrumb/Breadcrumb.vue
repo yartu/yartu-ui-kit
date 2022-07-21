@@ -42,15 +42,15 @@ export default {
       return ['w-full min-h-[28px]', 'font-extrabold', 'text-xl'];
     },
     itemClass() {
-      return ['flex', 'gap-1', 'text-GREY-1', 'items'];
+      return ['flex', 'gap-1', 'text-GREY-1', 'bread-crumb-items'];
     },
   },
 };
 </script>
 
 <style>
-.items > li:last-child,
-.items > li:nth-last-child(2) {
+.bread-crumb-items > li:last-child,
+.bread-crumb-items > li:nth-last-child(2) {
   color: #394c66ff;
 }
 </style>
