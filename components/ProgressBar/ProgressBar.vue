@@ -24,7 +24,6 @@
       ></div>
     </div>
   </div>
-  {{ progress }}
 </template>
 
 <script>
