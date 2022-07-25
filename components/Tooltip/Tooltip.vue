@@ -41,6 +41,7 @@ export default {
       return [
         'y-tooltip',
         'opacity-0',
+        'invisible',
         'bg-BLACK-1',
         'absolute z-1000 ',
         'rounded',
@@ -79,6 +80,7 @@ export default {
 
 <style>
 .tooltip-container:hover .y-tooltip {
+  visibility: visible;
   opacity: 1;
 }
 
