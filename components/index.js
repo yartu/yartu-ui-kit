@@ -10,6 +10,7 @@ import Input from './Input';
 import Switch from './Switch';
 import Button from './Button';
 import Avatar from './Avatar';
+import Select from './Select';
 import Tooltip from './Tooltip';
 import Loading from './Loading';
 import Checkbox from './Checkbox';
@@ -50,6 +51,7 @@ export {
   Input,
   Button,
   Switch,
+  Select,
   Avatar,
   Tooltip,
   Loading,
