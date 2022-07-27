@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import SelectInputs from '@/components/SelectInputs/SelectInputs.vue';
+import SelectInputs from '../SelectInputs/SelectInputs.vue';
 
 export default {
   name: 'y-select',
