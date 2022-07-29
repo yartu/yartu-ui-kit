@@ -30,13 +30,13 @@ import AvatarGroup from './AvatarGroup';
 import AppContainer from './AppContainer';
 import ProgressRing from './ProgressRing';
 import DropdownItem from './DropdownItem';
+import ColorPicker from "./ColorPicker";
 import InnerDropdown from './InnerDropdown';
 import DropdownDrawer from './DropdownDrawer';
 import NavigationDrawer from './NavigationDrawer';
 import CollapsiblePanel from './CollapsiblePanel';
 import DropdownDrawerItem from './DropdownDrawerItem';
 import NavigationDrawerItem from './NavigationDrawerItem';
-import Form from './Form';
 
 export {
   Tag,
@@ -68,6 +68,7 @@ export {
   SimpleTable,
   ProgressBar,
   AvatarGroup,
+  ColorPicker,
   AppContainer,
   ProgressRing,
   DropdownItem,
@@ -77,5 +78,4 @@ export {
   CollapsiblePanel,
   DropdownDrawerItem,
   NavigationDrawerItem,
-  Form,
 };

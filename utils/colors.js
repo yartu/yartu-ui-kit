@@ -6,12 +6,24 @@ const red = Object.freeze({
     base: '#eb6363',
 });
 
+const raspberry = Object.freeze({
+    base: '#c33149',
+});
+
 const black = Object.freeze({
     base: '#394c66',
 });
 
 const green = Object.freeze({
     base: '#49ab5e',
+});
+
+const emerald = Object.freeze({
+    base: '#6ED37E',
+});
+
+const keppel = Object.freeze({
+    base: '#44BBA4',
 });
 
 const yellow = Object.freeze({
@@ -50,18 +62,46 @@ const grey = Object.freeze({
     base: '#9aa1b4',
 });
 
+const brown = Object.freeze({
+    base: '#402C26',
+});
+
+const coffee = Object.freeze({
+    base: '#B99488',
+});
+
+const bud = Object.freeze({
+    base: '#b1cf5f',
+});
+
+const tomato = Object.freeze({
+    base: '#ff6542',
+});
+
+const electricBlue = Object.freeze({
+    base: '#546a7b',
+});
+
 export default Object.freeze({
-  red,
-  blue,
-  black,
-  pink,
-  indigo,
-  teal,
-  green,
-  yellow,
-  orange,
-  violet,
-  fuchsia,
-  ocean,
-  grey,
+    red,
+    raspberry,
+    orange,
+    yellow,
+    tomato,
+    green,
+    emerald,
+    bud,
+    teal,
+    ocean,
+    keppel,
+    blue,
+    indigo,
+    violet,
+    pink,
+    fuchsia,
+    coffee,
+    brown,
+    grey,
+    electricBlue,
+    black,
 });
