@@ -1,18 +1,23 @@
 <template>
-  <div v-if="show" :class="containerClass">
-    <div :style="bgStyle" :class="[flexClass, show ? 'flex' : 'hidden']">
+  <div :class="containerClass">
+    <div v-if="dropdownStatus" :style="bgStyle" :class="[flexClass, dropdownStatus ? 'flex' : 'hidden']">
       <div :class="contentClass">
         <ol>
           <slot />
         </ol>
       </div>
     </div>
+    <slot name="activator" :open="openDropdown">
+    </slot>
   </div>
 </template>
 
 <script>
 export default {
   name: 'y-dropdown',
+  data: () => ({
+    open: false,
+  }),
   props: {
     show: {
       type: Boolean,
@@ -28,6 +33,9 @@ export default {
     },
   },
   computed: {
+    dropdownStatus() {
+      return this.show || this.open;
+    },
     bgStyle() {
       return `background-color: ${this.bg};`;
     },
@@ -54,6 +62,11 @@ export default {
       ];
     },
   },
+  methods: {
+    openDropdown() {
+      this.open = !this.open;
+    },
+  }
 };
 </script>
 
