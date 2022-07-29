@@ -3,9 +3,32 @@
     <button
       @click="open = !open"
       :class="open ? 'border-BLUE' : 'border-BORDER '"
-      class="w-full border py-2 px-3 rounded-lg text-BLACK-2 font-semibold flex flex-wrap justify-between gap-2"
+      class="w-full border py-2 px-4 rounded-lg text-BLACK-2 font-semibold flex flex-wrap items-center gap-2"
     >
-      <p class="text-BLACK-2 font-semibold text-sm">{{ label }}</p>
+      <div class="flex-1 flex flex-wrap items-center gap-2">
+        <p v-if="model.length === 0" class="text-BLACK-2 font-semibold text-sm">
+          {{ placeholder }}
+        </p>
+        <div v-if="chip" class="flex flex-wrap items-center gap-2">
+          <y-tag
+            class="text-xs"
+            tertiary
+            outline
+            v-for="(item, index) in getItems"
+            :key="index"
+          >
+            {{ item }}
+          </y-tag>
+        </div>
+        <p
+          v-else
+          v-for="(item, index) in getItems"
+          :key="index"
+          class="text-BLACK-2 font-semibold"
+        >
+          {{ item }},
+        </p>
+      </div>
       <span>
         <svg
           width="24"
@@ -37,6 +60,7 @@
 
 <script>
 import SelectInputs from '../SelectInputs/SelectInputs.vue';
+import Tag from '../Tag/Tag.vue';
 
 export default {
   name: 'y-select',
@@ -47,6 +71,7 @@ export default {
   },
   components: {
     'select-inputs': SelectInputs,
+    'y-tag': Tag,
   },
   props: {
     modelValue: null,
@@ -54,11 +79,15 @@ export default {
       type: Boolean,
       default: false,
     },
+    chip: {
+      type: Boolean,
+      default: false,
+    },
     items: {
       type: Object,
       default: null,
     },
-    label: {
+    placeholder: {
       type: String,
       default: '',
     },
@@ -83,6 +112,15 @@ export default {
           this.open = false;
         }
       },
+    },
+    getItems() {
+      let items = [];
+      if (Array.isArray(this.model)) {
+        items = this.model;
+      } else {
+        items.push(this.model);
+      }
+      return items;
     },
   },
   methods: {
