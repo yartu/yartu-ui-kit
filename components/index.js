@@ -37,6 +37,7 @@ import CollapsiblePanel from './CollapsiblePanel';
 import DropdownDrawerItem from './DropdownDrawerItem';
 import NavigationDrawerItem from './NavigationDrawerItem';
 import Form from './Form';
+import YartuNotify from './YartuNotify';
 
 export {
   Tag,
@@ -78,4 +79,5 @@ export {
   DropdownDrawerItem,
   NavigationDrawerItem,
   Form,
+  YartuNotify,
 };
