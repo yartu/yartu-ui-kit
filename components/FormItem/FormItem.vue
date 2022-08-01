@@ -1,5 +1,4 @@
 <script>
-
 import * as VALIDATIONS from './validations';
 
 export default {
@@ -26,8 +25,10 @@ export default {
     },
   },
   created() {
-    if (!this.ignoreValid) {
+    try {
       this.yartuForm(this);
+    } catch {
+      // This input not have a form parent.
     }
   },
   methods: {
@@ -52,7 +53,10 @@ export default {
             }
           }
         } else {
-          console.error('Yartu Ui Kit, form validation don\'t accept to: ', rule);
+          console.error(
+            "Yartu Ui Kit, form validation don't accept to: ",
+            rule,
+          );
         }
       }
       if (valid !== true) {
@@ -63,7 +67,12 @@ export default {
   },
   watch: {
     modelValue(val) {
-      if (!this.lazyOff && !this.ignoreValid && this.rules && this.rules.length > 0) {
+      if (
+        !this.lazyOff &&
+        !this.ignoreValid &&
+        this.rules &&
+        this.rules.length > 0
+      ) {
         this.validate();
       }
     },
