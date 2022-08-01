@@ -10,6 +10,7 @@ import Input from './Input';
 import Switch from './Switch';
 import Button from './Button';
 import Avatar from './Avatar';
+import Select from './Select';
 import Tooltip from './Tooltip';
 import Loading from './Loading';
 import Checkbox from './Checkbox';
@@ -30,13 +31,13 @@ import AvatarGroup from './AvatarGroup';
 import AppContainer from './AppContainer';
 import ProgressRing from './ProgressRing';
 import DropdownItem from './DropdownItem';
+import ColorPicker from "./ColorPicker";
 import InnerDropdown from './InnerDropdown';
 import DropdownDrawer from './DropdownDrawer';
 import NavigationDrawer from './NavigationDrawer';
 import CollapsiblePanel from './CollapsiblePanel';
 import DropdownDrawerItem from './DropdownDrawerItem';
 import NavigationDrawerItem from './NavigationDrawerItem';
-import Form from './Form';
 
 export {
   Tag,
@@ -50,6 +51,7 @@ export {
   Input,
   Button,
   Switch,
+  Select,
   Avatar,
   Tooltip,
   Loading,
@@ -68,6 +70,7 @@ export {
   SimpleTable,
   ProgressBar,
   AvatarGroup,
+  ColorPicker,
   AppContainer,
   ProgressRing,
   DropdownItem,
@@ -77,5 +80,4 @@ export {
   CollapsiblePanel,
   DropdownDrawerItem,
   NavigationDrawerItem,
-  Form,
 };
