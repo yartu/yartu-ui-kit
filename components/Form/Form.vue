@@ -1,11 +1,6 @@
 <template>
-  <form
-    @submit.prevent="submit"
-  >
-    <slot
-      :errors="errors"
-    >
-    </slot>
+  <form @submit.prevent="submit">
+    <slot :errors="errors"> </slot>
   </form>
 </template>
 

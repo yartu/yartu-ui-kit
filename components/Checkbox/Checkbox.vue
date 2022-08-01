@@ -1,13 +1,13 @@
 <template>
-  <label :for="inputValue" :class="checkboxContainer">
+  <label :for="id" :class="checkboxContainer">
     <input
-      :class="checkboxClass"
+      type="checkbox"
       v-model="model"
-      :id="inputValue"
+      :id="id"
       :value="inputValue"
       :checked="checked"
       :disabled="disabled"
-      type="checkbox"
+      :class="checkboxClass"
     />
     {{ label }}
   </label>
@@ -20,6 +20,10 @@ export default {
     bg: {
       type: Boolean,
       default: false,
+    },
+    id: {
+      type: String,
+      default: '',
     },
     label: {
       type: String,
@@ -36,7 +40,7 @@ export default {
     modelValue: {},
     inputValue: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   computed: {
@@ -50,7 +54,10 @@ export default {
       },
     },
     checkboxContainer() {
-      return ['w-fit', 'inline-flex items-center justify-center flex-wrap'];
+      return [
+        'w-fit',
+        'inline-flex items-center justify-center flex-wrap gap-2',
+      ];
     },
     checkboxClass() {
       return [
