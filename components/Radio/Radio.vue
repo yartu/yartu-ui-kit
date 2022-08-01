@@ -1,14 +1,14 @@
 <template>
-  <label :for="inputValue" :class="radioButtonContainer">
+  <label :for="id" :class="radioButtonContainer">
     <input
       type="radio"
-      :class="radioButtonClass"
+      v-model="model"
+      :id="id"
+      :value="inputValue"
       :checked="checked"
       :disabled="disabled"
+      :class="radioButtonClass"
       :style="setStyle"
-      v-model="model"
-      :value="inputValue"
-      :id="inputValue"
     />
     {{ label }}
   </label>
@@ -19,6 +19,10 @@ export default {
   name: 'y-radio',
   props: {
     label: {
+      type: String,
+      default: '',
+    },
+    id: {
       type: String,
       default: '',
     },
@@ -45,7 +49,7 @@ export default {
     modelValue: {},
     inputValue: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   computed: {
@@ -59,7 +63,10 @@ export default {
       },
     },
     radioButtonContainer() {
-      return ['w-fit', 'inline-flex items-center justify-center flex-wrap'];
+      return [
+        'w-fit',
+        'inline-flex items-center justify-center flex-wrap gap-2',
+      ];
     },
     radioButtonClass() {
       return [
