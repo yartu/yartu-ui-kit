@@ -1,6 +1,8 @@
 <template>
-  <div class="flex bg-white border border-BORDER rounded-lg py-4 px-5">
-    <div class="flex flex-wrap gap-2">
+  <div
+    class="inline-flex bg-white border border-BORDER rounded-lg p-4 max-w-[264px]"
+  >
+    <div class="flex flex-wrap gap-x-2.5 gap-y-2">
       <label
         v-for="(item, index) in colorPalette"
         :key="index"
@@ -23,7 +25,7 @@
 </template>
 
 <script>
-import colors from '@/utils/colors.js';
+import colors from '../../utils/colors';
 
 export default {
   name: 'y-color-picker',
