@@ -1,11 +1,13 @@
 <template>
-  <teleport to="body">
-    <transition name="fade">
-      <div :class="snackbarContainer">
-        <slot></slot>
-      </div>
-    </transition>
-  </teleport>
+  <div :class="snackbarContainer">
+    <slot></slot>
+    <button
+      v-if="closable"
+      @click="$emit('close')"
+    >
+      X
+    </button>
+  </div>
 </template>
 
 <script>
@@ -29,26 +31,40 @@ export default {
       type: Boolean,
       default: false,
     },
+    type: {
+      type: String,
+      default: '',
+    },
+    closable: {
+      type: Boolean,
+      default: false,
+    },
+    duration: {
+      type: Number,
+      default: 3000,
+    },
+  },
+  created() {
+    setTimeout(() => {
+      this.$emit('close', this);
+    }, this.duration);
   },
   computed: {
     snackbarContainer() {
       return [
-        'inline-block',
-        'fixed',
+        'flex',
+        'w-full',
         'px-4 py-3',
         'text-white',
         'rounded-xl',
         'bg-BLACK-1',
-        'z-1000',
-        'overflow-hidden ',
+        'overflow-hidden',
+        'justify-between',
         'transition-all duration-300',
         {
-          'top-9 left-9': this.left && !this.bottom,
-          'bottom-9 left-9': this.left && this.bottom,
-          'top-9 right-9': this.right && !this.bottom,
-          'bottom-9 right-9': this.right && this.bottom,
-          'top-9 -translate-x-1/2 left-1/2': this.center && !this.bottom,
-          'bottom-9 -translate-x-1/2 left-1/2': this.center && this.bottom,
+          '!bg-RED': this.type === 'danger',
+          '!bg-GREEN': this.type === 'success',
+          '!bg-ORANGE': this.type === 'warning',
         },
       ];
     },

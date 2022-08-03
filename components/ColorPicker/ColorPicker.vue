@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import colors from '@/utils/colors.js';
+import colors from '../../utils/colors.js';
 
 export default {
   name: 'y-color-picker',

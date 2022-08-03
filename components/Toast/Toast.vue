@@ -1,11 +1,7 @@
 <template>
-  <teleport to="body">
-    <transition name="fade">
-      <div :class="containerClass" :style="setBg" role="alert">
-        <slot></slot>
-      </div>
-    </transition>
-  </teleport>
+  <div :class="containerClass" :style="setBg" role="alert">
+    <slot></slot>
+  </div>
 </template>
 
 <script>
