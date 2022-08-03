@@ -1,37 +1,43 @@
-import { useEventBus } from '@vueuse/core'
+import { useEventBus } from '@vueuse/core';
 import { inject, ref } from 'vue';
+import YartuNotify from './YartuNotify.vue';
 
 const bus = useEventBus('yartuNotify');
 
 const busFunctions = {
-  add: (message) => {
-    // EventBus.$emit('add', message);
-    bus.emit('add', message);
+  toast: (data) => {
+    bus.emit('toast', data);
+  },
+  snackbar: (data) => {
+    bus.emit('snackbar', data);
+  },
+  dialpog: (data) => {
+    bus.emit('dialpog', data);
   },
   clear: () => {
-    // EventBus.$emit('clear');
     bus.emit('clear');
   },
 };
 
+const YartuNotifySymbol = Symbol();
+
 export const messages = ref([]);
 
-export const YartuNotifySymbol = Symbol();
 
 export function useYartuNotify() {
-    const yartuNotify = inject(YartuNotifySymbol);
-    if (!yartuNotify) {
-        throw new Error('Yartu UI Kit, No Snackbar provided!');
-    }
-    return yartuNotify;
-};
+  const yartuNotify = inject(YartuNotifySymbol);
+  if (!yartuNotify) {
+    throw new Error('No Yartu Notify provided!');
+  }
+  return yartuNotify;
+}
 
 export const YartuNotifyService = {
-  init: (app) => {
-    app.config.globalProperties.$yartuNotify = busFunctions;
+  install: (app) => {
+    app.config.globalProperties.$snackbar = busFunctions;
     if (typeof window !== 'undefined') {
-      window.$yartuNotify = busFunctions;
+      window.$snackbar = busFunctions;
     }
-    app.provide(YartuNotifySymbol, busFunctions); 
+    app.provide(YartuNotifySymbol, busFunctions);
   },
 };
