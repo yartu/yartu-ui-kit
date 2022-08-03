@@ -38,6 +38,7 @@ import NavigationDrawer from './NavigationDrawer';
 import CollapsiblePanel from './CollapsiblePanel';
 import DropdownDrawerItem from './DropdownDrawerItem';
 import NavigationDrawerItem from './NavigationDrawerItem';
+import Form from './Form';
 
 export {
   Tag,
@@ -80,4 +81,5 @@ export {
   CollapsiblePanel,
   DropdownDrawerItem,
   NavigationDrawerItem,
+  Form,
 };
