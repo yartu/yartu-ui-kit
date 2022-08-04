@@ -55,7 +55,10 @@ export default {
               }
             }
           } else {
-            console.error('Yartu Ui Kit, form validation don\'t accept to: ', rule);
+            console.error(
+              "Yartu Ui Kit, form validation don't accept to: ",
+              rule,
+            );
           }
         }
         if (valid !== true) {
