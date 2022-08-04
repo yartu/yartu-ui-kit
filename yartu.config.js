@@ -41,7 +41,6 @@ const globalConfig = {
         'FUCHSIA': '#d946efff',
         'GREEN': '#49ab5eff',
         'GREEN-2': '#6ED37Eff',
-        'GREEN': '#c33149',
         'GREY-1': '#9aa1b4ff',
         'GREY-2': '#d0d3dcff',
         'GREY-3': '#f4f5f6ff',
@@ -90,6 +89,7 @@ const globalConfig = {
         '63': '268px',
         '17': '70px',
         '55': '216px',
+        '22': '88px',
       },
       width: {
         '1/2-2': 'calc(24.99% - 8px)'
