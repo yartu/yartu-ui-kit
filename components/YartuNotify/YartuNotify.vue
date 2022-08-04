@@ -84,7 +84,15 @@ const removeItem = (from, itemId) => {
   queue.value[from] = queue.value[from].filter((f) => f.id !== itemId);
 }
 
-const listener = (notifyType, options) => {
+const listener = (notifyType, options = {}) => {
+  
+  if (notifyType === 'clear') {
+    for (const queueNotify in queue.value) {
+      queue.value[queueNotify] = [];
+    }
+    return true;
+  }
+
   const position = options.position || defaultPosition;
 
   if (notifyType === 'snackbar') {
