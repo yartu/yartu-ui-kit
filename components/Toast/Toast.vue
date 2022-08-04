@@ -5,7 +5,6 @@
 </template>
 
 <script>
-// TODO: https://vue-toastification.maronato.dev/
 
 export default {
   name: 'y-toast',
@@ -26,52 +25,25 @@ export default {
       type: Boolean,
       default: false,
     },
-    maxToasts: {
-      type: [Number, Boolean],
-      default: false,
-    },
     duration: {
-      type: [Number, Boolean],
+      type: Number,
       default: 3000,
     },
-    dismissible: {
-      type: Boolean,
-      default: true,
-    },
-    queue: {
-      type: Boolean,
-      default: false,
-    },
-    pauseOnHover: {
-      type: Boolean,
-      default: true,
-    },
-    onClose: {
-      type: Function,
-      default: () => {},
-    },
-    onClick: {
-      type: Function,
-      default: () => {},
-    },
   },
-  methods: {},
+  created() {
+    setTimeout(() => {
+      this.$emit('close', this);
+    }, this.duration);
+  },
   computed: {
     containerClass() {
       return [
-        'fixed z-50',
         'flex items-center gap-3',
         'max-w-sm w-full',
         'text-white',
         'p-3',
         'rounded-xl',
-        {
-          '!bottom-[8%]': this.bottom,
-          '!left-8 !right-0': this.left,
-          'top-[8%]': !this.bottom,
-          'right-8': !this.left,
-          '': this.succes,
-        },
+        'transition-all duration-300',
       ];
     },
     setBg() {
@@ -80,5 +52,3 @@ export default {
   },
 };
 </script>
-
-<style></style>
