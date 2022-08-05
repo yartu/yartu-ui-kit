@@ -1,9 +1,10 @@
 <template>
   <div class="relative" ref="target">
-    <label for="test">
-      <p :class="labelClass">{{ label }}</p>
+    <label :for="id">
+      <p v-if="label" class="labelClass">{{ label }}</p>
       <button
-        id="test"
+        :id="id"
+        type="button"
         @click="open = !open"
         :disabled="disabled"
         :class="selectClass"
@@ -12,6 +13,12 @@
           class="flex-1 flex flex-wrap items-center"
           :class="chip ? 'gap-2' : ''"
         >
+          <p
+            v-if="placeholder && selected.length === 0"
+            class="text-sm font-normal text-GREY-1"
+          >
+            {{ placeholder }}
+          </p>
           <div v-for="(item, index) in selected" :key="index">
             <slot name="selection" :item="item">
               <p class="w-full">
@@ -111,6 +118,10 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  id: {
+    type: String,
+    default: '',
+  },
   chip: {
     type: Boolean,
     default: false,
@@ -193,7 +204,7 @@ const optionContainerClass = computed(() => {
     'transition-all duration-300',
     'w-full',
     {
-      'max-h-52 py-2 border': open.value,
+      'max-h-56 py-2 border': open.value,
       'max-h-0 py-0 border-none': !open.value,
     },
   ];
