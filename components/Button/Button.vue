@@ -1,5 +1,5 @@
 <template>
-  <button :class="buttonClass" :disabled="disabled">
+  <button :class="buttonClass" :disabled="disabled" type="button">
     <span v-if="loading && !icon" class="mr-2">
       <svg
         class="animate-spin h-5 w-5"
@@ -52,6 +52,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    text: {
+      type: Boolean,
+      default: false,
+    },
     tertiary: {
       type: Boolean,
       default: false,
@@ -92,13 +96,15 @@ export default {
         'rounded-lg',
         'transition-all duration-300',
         'inline-flex items-center justify-center',
+        'disabled:cursor-not-allowed',
         {
-          'bg-BLUE text-white hover:bg-HOVER-BLUE disabled:bg-LIGHTBLUE-3 disabled:cursor-not-allowed':
+          'bg-BLUE text-white hover:bg-HOVER-BLUE disabled:bg-LIGHTBLUE-3':
             this.primary,
-          'border border-BORDER bg-white text-BLUE hover:bg-LIGHTBLUE-5 disabled:bg-GREY-3 disabled:cursor-not-allowed':
+          'border border-BORDER bg-white text-BLUE hover:bg-LIGHTBLUE-5 disabled:bg-GREY-3 ':
             this.secondary,
-          'bg-BLACK-2 text-white hover:bg-BLACK-3 disabled:bg-GREY-3 disabled:border-BORDER disabled:border disabled:cursor-not-allowed':
+          'bg-BLACK-2 text-white hover:bg-BLACK-3 disabled:bg-GREY-3 disabled:border-BORDER disabled:border ':
             this.tertiary,
+          'text-BLUE hover:underline disabled:text-GREY-3 !p-0': this.text,
 
           'h-10 py-2 px-7': this.size == 'lg',
           'h-9 py-2 px-3': this.size == 'md',
