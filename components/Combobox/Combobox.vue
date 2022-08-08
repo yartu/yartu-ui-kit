@@ -266,7 +266,7 @@ const optionContainerClass = computed(() => {
     'transition-all duration-300',
     'w-full',
     {
-      'max-h-52 py-2 border': open.value,
+      'max-h-56 py-2 border': open.value,
       'max-h-0 py-0 border-none': !open.value,
     },
   ];

@@ -60,6 +60,7 @@ const globalConfig = {
         'LIGHTBLUE-6': '#f8fafdff',
         'LIGHTBLUE-7': '#ebeff5ff',
         'LIGHTBLUE-8': '#98aef6ff',
+        'LIGHTBLUE-9': '#EFF4FAff',
         'OCEAN': '#0ea5e9ff',
         'ORANGE': '#f97316ff',
         'PINK': '#ec4899ff',
@@ -92,7 +93,8 @@ const globalConfig = {
         '22': '88px',
       },
       width: {
-        '1/2-2': 'calc(24.99% - 8px)'
+        '1/2-2': 'calc(24.99% - 8px)',
+        '46': '11.25rem',
       },
       fontSize: {
         '3xs': '0.5rem',
@@ -212,10 +214,10 @@ const globalConfig = {
       backgroundColor: ['checked', 'active', 'before'],
       borderColor: ['checked', 'active', 'before'],
       ringColor: ['hover', 'active', 'before'],
+      margin: ['first', 'last'],
     },
   },
   plugins: [
-
   ],
 };
 
