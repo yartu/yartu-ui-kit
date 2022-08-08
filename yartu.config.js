@@ -194,7 +194,9 @@ const globalConfig = {
         '16': '1rem',
         '24': '1.5rem',
         '32': '2rem',
+        '96': '6rem',
         '120': '7.5rem',
+        '156': '9.75rem',
       }
     },
     screens: {
