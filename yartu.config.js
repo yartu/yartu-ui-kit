@@ -197,6 +197,14 @@ const globalConfig = {
         '2': '0.5rem',
         '3': '0.75rem',
         '4': '1rem',
+      },
+      backgroundSize: {
+        '16': '1rem',
+        '24': '1.5rem',
+        '32': '2rem',
+        '96': '6rem',
+        '120': '7.5rem',
+        '156': '9.75rem',
       }
     },
     screens: {

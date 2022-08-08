@@ -2,6 +2,7 @@ import Tag from './Tag';
 import Icon from './Icon';
 import Card from './Card';
 import Chip from './Chip';
+import List from './List';
 import Toast from './Toast';
 import Badge from './Badge';
 import Radio from './Radio';
@@ -46,6 +47,7 @@ export {
   Icon,
   Chip,
   Card,
+  List,
   Badge,
   Toast,
   Radio,
