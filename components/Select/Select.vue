@@ -19,15 +19,25 @@
           >
             {{ placeholder }}
           </p>
-          <div v-for="(item, index) in selected" :key="index">
-            <slot name="selection" :item="item">
-              <p class="w-full">
-                <Tag v-if="chip" tertiary outline>{{ item }}</Tag>
-                <span v-else>{{ item }}</span>
-                <template v-if="selected.length > 1 && !chip">,</template>
+          <template v-if="props.multiple">
+            <div v-for="(item, index) in selected" :key="index">
+              <slot name="selection" :item="item">
+                <p class="w-full">
+                  <Tag v-if="chip" tertiary outline>{{ item }}</Tag>
+                  <span v-else>{{ item }}</span>
+                  <template v-if="selected.length > 1 && !chip">,</template>
+                </p>
+              </slot>
+            </div>
+          </template>
+          <template v-else>
+            <slot name="selection" :item="selected">
+              <p class="w-full text-left">
+                <Tag v-if="chip" tertiary outline>{{ selected }}</Tag>
+                <span v-else>{{ selected }}</span>
               </p>
             </slot>
-          </div>
+          </template>
         </div>
         <span
           :class="open ? 'rotate-180' : ''"
@@ -107,7 +117,7 @@ const emit = defineEmits(['update:modelValue']);
 
 const props = defineProps({
   modelValue: {
-    type: [Object, Array],
+    type: [Object, Array, String, Number],
     required: true,
   },
   multiple: {
@@ -118,10 +128,7 @@ const props = defineProps({
     type: String,
     default: '',
   },
-  id: {
-    type: String,
-    default: '',
-  },
+  id: null,
   chip: {
     type: Boolean,
     default: false,
@@ -158,13 +165,12 @@ function choose(item) {
   if (props.multiple && !selected.value.includes(item)) {
     selected.value.push(item);
   } else if (!props.multiple) {
-    selected.value.pop();
-    selected.value.push(item);
+    selected.value = item;
     open.value = false;
   } else if (props.multiple && selected.value.includes(item)) {
     selected.value = selected.value.filter((data) => data != item);
   }
-  emit('update:modelValue', selected);
+  emit('update:modelValue', selected.value);
 }
 
 const selectClass = computed(() => {
