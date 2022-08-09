@@ -74,10 +74,7 @@ export default {
 import { computed } from '@vue/reactivity';
 
 defineProps({
-  id: {
-    type: [String, Number],
-    required: false,
-  },
+  id: null,
   title: {
     type: String,
     required: true,

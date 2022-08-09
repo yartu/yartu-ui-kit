@@ -22,10 +22,7 @@ export default {
       type: String,
       default: '',
     },
-    id: {
-      type: String,
-      default: '',
-    },
+    id: null,
     color: {
       type: String,
       default: '#ffffff',
@@ -38,19 +35,12 @@ export default {
       type: String,
       default: '#e5ebf5ff',
     },
-    checked: {
-      type: Boolean,
-      default: false,
-    },
     disabled: {
       type: Boolean,
       default: false,
     },
-    modelValue: {},
-    inputValue: {
-      type: String,
-      required: false,
-    },
+    modelValue: null,
+    inputValue: null,
   },
   computed: {
     model: {
@@ -61,6 +51,9 @@ export default {
       set(val) {
         this.$emit('update:modelValue', val);
       },
+    },
+    checked() {
+      return this.inputValue === this.modelValue;
     },
     radioButtonContainer() {
       return [
