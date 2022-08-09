@@ -93,32 +93,23 @@ const globalConfig = {
         '22': '88px',
       },
       width: {
-        '1/2-2': 'calc(24.99% - 8px)',
+        '1/2-2': 'calc(24.99% - 0.5rem)',
         '46': '11.25rem',
       },
       fontSize: {
         '3xs': '0.5rem',
         '2xs': '0.625rem',
         '6.5xl': '4rem',
-        'heading-1': ['32px', '40px'],
+        'heading-1': ['2rem', '2.5rem'],
       },
       boxShadow: {
-        '1': '0px 16px 40px rgba(13, 30, 91, 0.08)',
-        '2': '0px 6px 12px rgba(13, 30, 91, 0.08)',
-        '3': '0px 20px 80px rgba(13, 30, 91, 0.08)',
-        '4': '0px 1px 2px 0px #00000033',
+        '1': '0 16px 40px rgba(13, 30, 91, 0.08)',
+        '2': '0 6px 12px rgba(13, 30, 91, 0.08)',
+        '3': '0 20px 80px rgba(13, 30, 91, 0.08)',
+        '4': '0 1px 2px 0 #00000033',
       },
       borderWidth: {
         '3': '3px',
-      },
-      backgroundSize: {
-        '24': '24px 24px',
-        '32': '32px 32px',
-        '56': '56px 56px',
-        '80': '80px 80px',
-        '96': '96px 96px',
-        '120': '120px 120px',
-        '156': '156px 156px',
       },
       zIndex: {
         '1': '1',
