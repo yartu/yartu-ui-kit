@@ -1,13 +1,13 @@
 <template>
-  <div class="bg-white border border-BORDER divide-y divide-BORDER">
+  <div class="p-4 hover:bg-GREY-3 cursor-pointer">
     <slot></slot>
+    <!-- TODO -->
   </div>
-  <!-- TODO -->
 </template>
 
 <script>
 export default {
-  name: 'y-list',
+  name: 'y-list-item',
   props: {},
   computed: {},
 };
