@@ -21,10 +21,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    id: {
-      type: String,
-      default: '',
-    },
+    id: null,
     label: {
       type: String,
       default: '',
@@ -37,11 +34,8 @@ export default {
       type: Boolean,
       default: false,
     },
-    modelValue: {},
-    inputValue: {
-      type: String,
-      required: false,
-    },
+    modelValue: null,
+    inputValue: null,
   },
   computed: {
     model: {
