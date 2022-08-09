@@ -60,10 +60,7 @@ export default {
     modelValue: {
       type: String,
     },
-    id: {
-      type: String,
-      default: '',
-    },
+    id: null,
     label: {
       type: String,
       default: '',
