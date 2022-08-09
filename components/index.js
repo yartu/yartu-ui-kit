@@ -3,6 +3,8 @@ import Icon from './Icon';
 import Card from './Card';
 import Chip from './Chip';
 import List from './List';
+import ListItem from './ListItem';
+import ListItemGroup from './ListItemGroup';
 import Toast from './Toast';
 import Badge from './Badge';
 import Radio from './Radio';
@@ -60,6 +62,7 @@ export {
   Tooltip,
   Loading,
   Dropdown,
+  ListItem,
   Checkbox,
   NoteCard,
   TextArea,
@@ -79,6 +82,7 @@ export {
   ProgressRing,
   DropdownItem,
   InnerDropdown,
+  ListItemGroup,
   DropdownDrawer,
   NavigationDrawer,
   CollapsiblePanel,
