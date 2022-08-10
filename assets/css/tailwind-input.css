@@ -11,15 +11,72 @@
     width: .4em;
     height: .4em;
   }
-  
+
   ::-webkit-scrollbar-track {
     background: transparent;
   }
-  
+
   ::-webkit-scrollbar-thumb {
     border-radius: 1rem;
     border: .4em solid #9aa1b4;
   }
+
+  .heading-1 {
+    @apply font-extrabold text-3.25xl text-BLACK-2
+  }
+
+  .heading-2 {
+    @apply font-normal text-3.25xl text-BLACK-2
+  }
+
+  .heading-3 {
+    @apply font-extrabold text-2xl text-BLACK-2
+  }
+
+  .heading-4 {
+    @apply font-extrabold text-xl text-BLACK-2
+  }
+
+  .subtitle-1 {
+    @apply font-extrabold text-base text-BLACK-2
+  }
+
+  .subtitle-2 {
+    @apply font-semibold text-base text-BLACK-2
+  }
+
+  .subtitle-3 {
+    @apply font-extrabold text-sm text-BLACK-2
+  }
+
+  .subtitle-4 {
+    @apply font-semibold text-sm text-BLACK-2
+  }
+
+  .subtitle-5 {
+    @apply font-semibold text-xs text-BLACK-2
+  }
+
+  .body-1 {
+    @apply font-normal text-sm text-BLACK-2
+  }
+
+  .body-2 {
+    @apply font-normal text-base text-BLACK-2
+  }
+
+  .caption {
+    @apply font-base text-xs text-BLACK-2
+  }
+
+  .overline-1 {
+    @apply font-extrabold text-xs text-BLACK-2
+  }
+
+  .overline-2 {
+    @apply font-extrabold text-2xs text-BLACK-2
+  }
+
 }
 
 /* This utility class handles the bottom bar on newer iPhones without the “Home” button. 
