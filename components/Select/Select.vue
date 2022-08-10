@@ -70,11 +70,11 @@
         v-for="(item, index) in items"
         :key="index"
         type="button"
-        :class="[optionClass, selected.includes(item) ? 'bg-LIGHTBLUE-4' : '']"
+        :class="[optionClass, selectedItems(item) ? 'bg-LIGHTBLUE-4' : '']"
       >
         <slot name="select-item" :item="item" :selected="selected">
-          <span v-if="!selected.includes(item)" class="w-6 h-6"></span>
-          <span v-if="selected.includes(item)">
+          <span v-if="!selectedItems(item)" class="w-6 h-6"></span>
+          <span v-if="selectedItems(item)">
             <svg
               width="24"
               height="24"
@@ -171,6 +171,20 @@ function choose(item) {
     selected.value = selected.value.filter((data) => data != item);
   }
   emit('update:modelValue', selected.value);
+}
+
+function selectedItems(item) {
+  let isSelected = false;
+  if (
+    props.multiple &&
+    selected.value.includes(item) &&
+    selected.value[selected.value.indexOf(item)] === item
+  ) {
+    isSelected = true;
+  } else if (!props.multiple && selected.value === item) {
+    isSelected = true;
+  }
+  return isSelected;
 }
 
 const selectClass = computed(() => {
