@@ -100,7 +100,7 @@ const globalConfig = {
         '3xs': '0.5rem',
         '2xs': '0.625rem',
         '6.5xl': '4rem',
-        'heading-1': ['2rem', '2.5rem'],
+        '3.25xl': ['2rem', '2.5rem'],
       },
       boxShadow: {
         '1': '0 16px 40px rgba(13, 30, 91, 0.08)',
