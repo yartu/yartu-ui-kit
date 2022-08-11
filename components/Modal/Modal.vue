@@ -1,18 +1,18 @@
 <template>
   <Teleport to="body">
     <Transition name="fade">
-      <div :class="containerClass">
+      <div v-if="modelValue" :class="containerClass">
         <div
-          class="bg-white rounded-xl relative"
+          class="bg-white rounded-xl relative min-h-80 overflow-auto"
           :style="widthStyle"
           role="dialog"
           aria-labelledby="modalTitle"
           aria-describedby="modalDescription"
         >
           <button
-            class="absolute right-4 z-1 top-4 w-8 h-8 rounded-full flex flex-wrap items-center justify-center hover:bg-GREY-8"
+            class="absolute right-4 z-10 top-4 w-8 h-8 rounded-full flex flex-wrap items-center justify-center hover:bg-GREY-8"
             aria-label="closeModal"
-            @click="$emit('close')"
+            @click="$emit('update:modelValue', false); $emit('closed')"
           >
             <svg
               width="32"
@@ -50,24 +50,30 @@
 export default {
   name: 'y-modal',
   props: {
-    width: {
+    maxWidth: {
       type: String,
       default: '404px',
     },
+    minWidth: {
+      type: String,
+      default: '404px',
+    },
+    modelValue: null,
   },
+  emits: ['closed', 'update:modelValue'],
   computed: {
     containerClass() {
       return [
         'overflow-x-hidden overflow-y-auto',
         'fixed',
-        'inset-0 z-51',
+        'inset-0 z-50',
         'outline-none',
         'focus:outline-none',
         'flex justify-center items-center',
       ];
     },
     widthStyle() {
-      return `width: ${this.width};`;
+      return [`min-width: ${this.minWidth};`, `max-width: ${this.maxWidth};`];
     },
   },
 };
