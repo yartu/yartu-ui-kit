@@ -7,6 +7,7 @@
       :value="inputValue"
       :checked="checked"
       :disabled="disabled"
+      :indeterminate="indeterminate"
       :class="checkboxClass"
     />
     {{ label }}
@@ -27,6 +28,10 @@ export default {
       default: '',
     },
     checked: {
+      type: Boolean,
+      default: false,
+    },
+    indeterminate: {
       type: Boolean,
       default: false,
     },
