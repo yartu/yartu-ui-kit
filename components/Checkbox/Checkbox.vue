@@ -4,6 +4,7 @@
       type="checkbox"
       v-model="model"
       :id="id"
+      :indeterminate="indeterminate"
       :value="inputValue"
       :checked="checked"
       :disabled="disabled"
@@ -37,11 +38,12 @@ export default {
       type: Boolean,
       default: false,
     },
-    modelValue: {},
-    inputValue: {
-      type: String,
-      required: false,
+    'indeterminate': {
+      type: Boolean,
+      default: false,
     },
+    modelValue: {},
+    inputValue: null,
   },
   computed: {
     model: {
