@@ -1,8 +1,17 @@
 <template>
-  <div v-if="open && overlay" :class="open ? '' : 'opacity-0'"
-    class="opacity-50 absolute inset-0 z-5 bg-BLACK-2 transition-all duration-300" @click="$emit('collapse', !open)">
-  </div>
-  <div :class="containerClass" :style="[widthStyle, bgStyle, topGapStyle, bottomGapStyle]">
+  <div
+    v-if="open && overlay"
+    :class="[open ? '' : 'opacity-0', overlayClass]"
+    @click="
+      {
+        (open = false), $emit('collapse', open);
+      }
+    "
+  ></div>
+  <div
+    :class="containerClass"
+    :style="[widthStyle, bgStyle, topGapStyle, bottomGapStyle]"
+  >
     <slot />
   </div>
 </template>
@@ -70,14 +79,24 @@ export default {
     bottomGapStyle() {
       return `bottom: ${this.bottomGap};`;
     },
+    overlayClass() {
+      return [
+        'opacity-50',
+        'inset-0 z-5',
+        'bg-BLACK-2 ',
+        'transition-all duration-300',
+        {
+          'fixed ': this.fixed,
+          'absolute ': this.absolute,
+        },
+      ];
+    },
     containerClass() {
       return [
         'text-left',
         'flex flex-col',
         'text-BLACK-2',
         'transition-all duration-300',
-        'overflow-auto',
-        'overscroll-contain',
         'z-10',
         {
           'absolute left-0 bottom-0 top-0 border-r border-BORDER':
@@ -91,7 +110,9 @@ export default {
             this.fixed && this.right,
           'fixed left-0 right-0 bottom-0 border-t border-BORDER':
             this.fixed && this.bottom,
-          '!w-0 border-r-0': !this.open,
+          // '!w-0 border-r-0 overflow-auto overscroll-contain': !this.open,
+          '-translate-x-full': !this.open && !this.right,
+          'translate-x-full': !this.open && this.right,
           'rounded-lg': this.rounded,
         },
       ];
@@ -100,5 +121,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

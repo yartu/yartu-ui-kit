@@ -1,9 +1,10 @@
 <template>
   <div class="relative" ref="target">
-    <label for="test">
-      <p :class="labelClass">{{ label }}</p>
+    <label :for="id">
+      <p v-if="label" class="labelClass">{{ label }}</p>
       <button
-        id="test"
+        :id="id"
+        type="button"
         @click="open = !open"
         :disabled="disabled"
         :class="selectClass"
@@ -12,15 +13,34 @@
           class="flex-1 flex flex-wrap items-center"
           :class="chip ? 'gap-2' : ''"
         >
-          <div v-for="(item, index) in selected" :key="index">
-            <slot name="selection" :item="item">
-              <p class="w-full">
-                <Tag v-if="chip" tertiary outline>{{ item }}</Tag>
-                <span v-else>{{ item }}</span>
-                <template v-if="selected.length > 1 && !chip">,</template>
+          <p
+            v-if="placeholder && selected.length === 0"
+            class="text-sm font-normal text-GREY-1"
+          >
+            {{ placeholder }}
+          </p>
+          <template
+            v-if="props.multiple"
+          >
+            <div v-for="(item, index) in selected" :key="index">
+              <slot name="selection" :item="item">
+                <p class="w-full">
+                  <Tag v-if="chip" tertiary outline>{{ item }}</Tag>
+                  <span v-else>{{ item }}</span>
+                  <template v-if="selected.length > 1 && !chip">,</template>
+                </p>
+              </slot>
+            </div>
+          </template>
+          <template v-else>
+            <slot name="selection" :item="selected">
+              <p class="w-full text-left">
+                <Tag v-if="chip" tertiary outline>{{ selected }}</Tag>
+                <span v-else>{{ selected }}</span>
               </p>
             </slot>
-          </div>
+          </template>
+
         </div>
         <span
           :class="open ? 'rotate-180' : ''"
@@ -100,7 +120,7 @@ const emit = defineEmits(['update:modelValue']);
 
 const props = defineProps({
   modelValue: {
-    type: [Object, Array],
+    type: [Object, Array, String, Number],
     required: true,
   },
   multiple: {
@@ -108,6 +128,10 @@ const props = defineProps({
     default: false,
   },
   label: {
+    type: String,
+    default: '',
+  },
+  id: {
     type: String,
     default: '',
   },
@@ -147,13 +171,12 @@ function choose(item) {
   if (props.multiple && !selected.value.includes(item)) {
     selected.value.push(item);
   } else if (!props.multiple) {
-    selected.value.pop();
-    selected.value.push(item);
+    selected.value = item;
     open.value = false;
   } else if (props.multiple && selected.value.includes(item)) {
     selected.value = selected.value.filter((data) => data != item);
   }
-  emit('update:modelValue', selected);
+  emit('update:modelValue', selected.value);
 }
 
 const selectClass = computed(() => {
@@ -193,7 +216,7 @@ const optionContainerClass = computed(() => {
     'transition-all duration-300',
     'w-full',
     {
-      'max-h-52 py-2 border': open.value,
+      'max-h-56 py-2 border': open.value,
       'max-h-0 py-0 border-none': !open.value,
     },
   ];

@@ -3,6 +3,7 @@ import * as allComponents from './components';
 
 import { setOptions, setVueInstance } from './utils/config';
 import { useYartuNotify } from './components/YartuNotify/service';
+import { useYartuModal } from './components/YartuModal/service';
 
 export default {
   install: (Vue, options = {}) => {
@@ -21,4 +22,4 @@ export default {
 
 // export default YartuUiKit;
 export * from './components';
-export { useYartuNotify };
+export { useYartuNotify, useYartuModal };

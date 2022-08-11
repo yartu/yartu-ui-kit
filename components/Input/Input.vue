@@ -37,13 +37,8 @@
       </div>
     </div>
     <div :class="helperClass" v-if="helper">
-      <slot
-        name="helper"
-      >
-      </slot>
-      <div
-        v-if="errors.length > 0"
-      >
+      <slot name="helper"> </slot>
+      <div v-if="errors.length > 0">
         {{ errors.join(',') }}
       </div>
     </div>
@@ -51,7 +46,6 @@
 </template>
 
 <script>
-
 import FormItem from '../FormItem';
 
 export default {
@@ -128,13 +122,12 @@ export default {
     },
   },
   computed: {
-
     hasError() {
       return this.error || this.errors.length > 0;
     },
 
     inputContainerClass() {
-      return ['text-BLACK-2', 'min-w-[320px]', 'flex flex-col gap-2'];
+      return ['text-BLACK-2', 'flex flex-col gap-2'];
     },
 
     inputContentClass() {
@@ -147,7 +140,7 @@ export default {
         'relative',
         'min-w-[200px]',
         'flex-1',
-        'border border-gray-200 rounded-lg text-sm',
+        'border border-BORDER rounded-lg text-sm',
         'focus:outline-none',
         'w-full',
         'focus:border-BLUE',

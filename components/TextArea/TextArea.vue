@@ -3,11 +3,13 @@
     :for="id"
     class="inline-flex flex-col text-sm gap-2 text-BLACK-2 min-h-[64px] min-w-[200px]"
   >
-    <div class="inline-flex justify-between gap-x-6">
+    <div class="inline-flex justify-between gap-x-6 font-semibold">
       <label :for="id">
         {{ title }}
       </label>
-      <span> {{ model.length }} /{{ maxlength }} </span>
+      <span class="text-GREY-1" v-if="modelValue">
+        {{ modelValue.length }} / {{ maxlength }}
+      </span>
     </div>
     <label
       :for="id"
@@ -38,8 +40,9 @@
         </svg>
       </div>
       <textarea
-        class="yartu-text-area focus:outline-none resize disabled:text-GREY-1 disabled:cursor-not-allowed cursor-auto min-h-[64px] min-w-[200px] h-full bg-LIGHTBLUE-6"
-        v-model="model"
+        :class="yTextAreaClass"
+        :value="modelValue"
+        @input="$emit('update:modelValue', $event.target.value)"
         :id="id"
         :placeholder="placeholder"
         :autofocus="autofocus"
@@ -64,81 +67,87 @@
 <script>
 export default {
   name: 'y-text-area',
-  props: {
-    id: {
-      type: [String, Number],
-      required: true,
-    },
-    title: {
-      type: String,
-      required: true,
-    },
-    name: {
-      type: String,
-      required: false,
-    },
-    wrap: {
-      type: String,
-      required: false,
-    },
-    rows: {
-      type: Number,
-      required: false,
-    },
-    cols: {
-      type: Number,
-      required: false,
-    },
-    maxlength: {
-      type: Number,
-      required: false,
-    },
-    minlength: {
-      type: Number,
-      required: false,
-    },
-    readonly: {
-      type: Boolean,
-      required: false,
-    },
-    spellcheck: {
-      type: Boolean,
-      required: false,
-    },
-    disabled: {
-      type: Boolean,
-      required: false,
-    },
-    autofocus: {
-      type: Boolean,
-      required: false,
-    },
-    required: {
-      type: Number,
-      required: false,
-    },
-    placeholder: {
-      type: String,
-      required: false,
-    },
-    helperMessage: {
-      type: String,
-      required: false,
-    },
-    modelValue: {},
-  },
-  computed: {
-    model: {
-      cache: false,
-      get() {
-        return this.modelValue;
-      },
-      set(val) {
-        this.$emit('update:modelValue', val);
-      },
-    },
-  },
 };
+</script>
+
+<script setup>
+import { computed } from '@vue/reactivity';
+
+defineProps({
+  id: {
+    type: [String, Number],
+    required: false,
+  },
+  title: {
+    type: String,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: false,
+  },
+  wrap: {
+    type: String,
+    required: false,
+  },
+  rows: {
+    type: Number,
+    required: false,
+  },
+  cols: {
+    type: Number,
+    required: false,
+  },
+  maxlength: {
+    type: Number,
+    required: false,
+  },
+  minlength: {
+    type: Number,
+    required: false,
+  },
+  readonly: {
+    type: Boolean,
+    required: false,
+  },
+  spellcheck: {
+    type: Boolean,
+    required: false,
+  },
+  disabled: {
+    type: Boolean,
+    required: false,
+  },
+  autofocus: {
+    type: Boolean,
+    required: false,
+  },
+  required: {
+    type: Number,
+    required: false,
+  },
+  placeholder: {
+    type: String,
+    required: false,
+  },
+  helperMessage: {
+    type: String,
+    required: false,
+  },
+  modelValue: null,
+});
+
+const yTextAreaClass = computed(() => {
+  return [
+    'yartu-text-area',
+    'focus:outline-none',
+    'resize',
+    'disabled:text-GREY-1 disabled:cursor-not-allowed',
+    'cursor-auto ',
+    'min-h-[64px] max-w-full h-full min-w-full',
+    'bg-LIGHTBLUE-6',
+  ];
+});
 </script>
 
 <style>
