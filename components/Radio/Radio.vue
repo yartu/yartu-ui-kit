@@ -43,6 +43,9 @@ export default {
     inputValue: null,
   },
   computed: {
+    checked() {
+      return this.inputValue === this.modelValue;
+    },
     model: {
       cache: false,
       get() {
@@ -51,9 +54,6 @@ export default {
       set(val) {
         this.$emit('update:modelValue', val);
       },
-    },
-    checked() {
-      return this.inputValue === this.modelValue;
     },
     radioButtonContainer() {
       return [

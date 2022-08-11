@@ -31,15 +31,15 @@ export default {
       type: Boolean,
       default: false,
     },
-    indeterminate: {
-      type: Boolean,
-      default: false,
-    },
     disabled: {
       type: Boolean,
       default: false,
     },
-    modelValue: null,
+    'indeterminate': {
+      type: Boolean,
+      default: false,
+    },
+    modelValue: {},
     inputValue: null,
   },
   computed: {

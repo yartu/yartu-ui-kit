@@ -54,6 +54,7 @@ export default {
         'fixed',
         'flex flex-wrap',
         'gap-4',
+        'z-1002',
         {
           'top-22 left-9': this.left && !this.bottom,
           'bottom-9 left-9': this.left && this.bottom,

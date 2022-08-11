@@ -19,7 +19,9 @@
           >
             {{ placeholder }}
           </p>
-          <template v-if="props.multiple">
+          <template
+            v-if="props.multiple"
+          >
             <div v-for="(item, index) in selected" :key="index">
               <slot name="selection" :item="item">
                 <p class="w-full">

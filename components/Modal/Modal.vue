@@ -12,7 +12,7 @@
           <button
             class="absolute right-4 z-10 top-4 w-8 h-8 rounded-full flex flex-wrap items-center justify-center hover:bg-GREY-8"
             aria-label="closeModal"
-            @click="this.$emit('update:modelValue', false)"
+            @click="$emit('update:modelValue', false); $emit('closed')"
           >
             <svg
               width="32"
@@ -60,6 +60,7 @@ export default {
     },
     modelValue: null,
   },
+  emits: ['closed', 'update:modelValue'],
   computed: {
     containerClass() {
       return [
