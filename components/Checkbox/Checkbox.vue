@@ -35,7 +35,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    'indeterminate': {
+    indeterminate: {
       type: Boolean,
       default: false,
     },
