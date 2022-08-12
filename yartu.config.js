@@ -88,6 +88,7 @@ const globalConfig = {
       },
       spacing: {
         '63': '268px',
+        '10.5': '42px',
         '17': '70px',
         '55': '216px',
         '22': '88px',
