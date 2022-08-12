@@ -183,12 +183,18 @@ const globalConfig = {
         '2': '0.5rem',
         '3': '0.75rem',
         '4': '1rem',
+        '60': '15rem',
+        '62': '15.5rem',
+        '64': '16rem',
       },
       maxHeight: {
         '1': '0.25rem',
         '2': '0.5rem',
         '3': '0.75rem',
         '4': '1rem',
+        '60': '15rem',
+        '62': '15.5rem',
+        '64': '16rem',
       },
       backgroundSize: {
         '16': '1rem',
