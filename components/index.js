@@ -21,6 +21,7 @@ import NoteCard from './NoteCard';
 import Snackbar from './Snackbar';
 import TextArea from './TextArea';
 import ListItem from './ListItem';
+import Combobox from './Combobox';
 import ChipGroup from './ChipGroup';
 import Accordion from './Accordion';
 import SmallCard from './SmallCard';
@@ -68,6 +69,7 @@ export {
   ListItem,
   Checkbox,
   NoteCard,
+  Combobox,
   TextArea,
   Snackbar,
   ChipGroup,
