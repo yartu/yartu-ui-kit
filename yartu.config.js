@@ -88,6 +88,7 @@ const globalConfig = {
       },
       spacing: {
         '63': '268px',
+        '10.5': '42px',
         '17': '70px',
         '55': '216px',
         '22': '88px',
@@ -110,6 +111,7 @@ const globalConfig = {
       },
       borderWidth: {
         '3': '3px',
+        '6': '6px',
       },
       zIndex: {
         '1': '1',
@@ -169,6 +171,7 @@ const globalConfig = {
         '3': '0.75rem',
         '4': '1rem',
         '80': '20rem',
+        '96': '24rem',
       },
       maxWidth: {
         '1': '0.25rem',
@@ -176,18 +179,29 @@ const globalConfig = {
         '3': '0.75rem',
         '4': '1rem',
         '80': '20rem',
+        '96': '24rem',
       },
       minHeight: {
         '1': '0.25rem',
         '2': '0.5rem',
         '3': '0.75rem',
         '4': '1rem',
+        '60': '15rem',
+        '62': '15.5rem',
+        '64': '16rem',
+        '80': '20rem',
+        '96': '24rem',
       },
       maxHeight: {
         '1': '0.25rem',
         '2': '0.5rem',
         '3': '0.75rem',
         '4': '1rem',
+        '60': '15rem',
+        '62': '15.5rem',
+        '64': '16rem',
+        '80': '20rem',
+        '96': '24rem',
       },
       backgroundSize: {
         '16': '1rem',
