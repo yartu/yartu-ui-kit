@@ -21,7 +21,6 @@ import NoteCard from './NoteCard';
 import Snackbar from './Snackbar';
 import TextArea from './TextArea';
 import ListItem from './ListItem';
-import Combobox from './Combobox';
 import ChipGroup from './ChipGroup';
 import Accordion from './Accordion';
 import SmallCard from './SmallCard';
@@ -46,6 +45,8 @@ import NavigationDrawerItem from './NavigationDrawerItem';
 import YartuNotify from './YartuNotify';
 import YartuModal from './YartuModal';
 import Form from './Form';
+import DataTable from './DataTable';
+import Dialog from './Dialog';
 
 export {
   Tag,
@@ -69,7 +70,6 @@ export {
   ListItem,
   Checkbox,
   NoteCard,
-  Combobox,
   TextArea,
   Snackbar,
   ChipGroup,
@@ -96,4 +96,6 @@ export {
   Form,
   YartuNotify,
   YartuModal,
+  DataTable,
+  Dialog,
 };
