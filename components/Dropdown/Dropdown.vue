@@ -6,10 +6,10 @@
       :class="[contentClass, dropdownStatus ? 'flex' : 'hidden']"
     >
       <ol>
-        <slot />
+        <slot/>
       </ol>
     </div>
-    <slot name="activator" :on="openDropdown"> </slot>
+    <slot name="activator" :open="openDropdown"> </slot>
   </div>
 </template>
 
