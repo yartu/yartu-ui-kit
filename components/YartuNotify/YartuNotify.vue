@@ -1,4 +1,5 @@
 <template>
+  <!-- :class="queue.middle.length > 0 ? 'fixed inset-0 z-20 bg-BLACKOVERLAY':''" -->
   <teleport to="body">
     <div
       ref="yartuNotifyContainer"
@@ -11,6 +12,7 @@
         :bottom="position.bottom"
         :left="position.left"
         :center="position.center"
+        :middle="position.middle"
       >
         <component
           :is="item.component"
@@ -22,6 +24,21 @@
           {{ item.title }}
         </component>
       </YartuTransitions>
+      <div>
+        <Modal
+          :closable="dialog.closable"
+          v-for="dialog in dialogs"
+          v-model="dialog.open"
+          max-width="32rem"
+          min-width="32rem"
+        >
+          <Dialog
+            v-bind="dialog"
+            @close="removeDialog(dialog.id)"
+          >
+          </Dialog>
+        </Modal>
+      </div>
     </div>
   </teleport>
 </template>
@@ -32,10 +49,13 @@ import { ref, shallowRef, onMounted, onUnmounted } from 'vue';
 import { useEventBus } from '@vueuse/core';
 import { Snackbar } from '../Snackbar';
 import { Toast } from '../Toast';
+import { Dialog } from '../Dialog';
+import { Modal } from '../Modal';
 
 const bus = useEventBus('yartuNotify');
 const snacbarComp = shallowRef(Snackbar);
 const toastComp = shallowRef(Toast);
+const dialogComp = shallowRef(Dialog);
 const defaultPosition = 'top-right';
 
 const positions = ref([
@@ -68,6 +88,10 @@ const positions = ref([
     top: true,
     left: true,
     value: 'top-left',
+  },
+  {
+    middle: true,
+    value: 'middle',
   }
 ]);
 
@@ -78,30 +102,43 @@ const queue = ref({
   'center-bottom': [],
   'bottom-left': [],
   'top-left': [],
+  'center': [],
 });
+
+const dialogs = ref([]);
 
 const removeItem = (from, itemId) => {
   queue.value[from] = queue.value[from].filter((f) => f.id !== itemId);
 }
+
+const removeDialog = (itemId) => {
+  dialogs.value = dialogs.value.filter((f) => f.id !== itemId);
+};
 
 const listener = (notifyType, options = {}) => {
   
   if (notifyType === 'clear') {
     for (const queueNotify in queue.value) {
       queue.value[queueNotify] = [];
+      dialogs.value = [];
     }
     return true;
   }
 
-  const position = options.position || defaultPosition;
+  let position = options.position || defaultPosition;
+  const uniqueID = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+  options.id = uniqueID;
 
-  if (notifyType === 'snackbar') {
+  if (notifyType === 'dialog') {
+    options.component = dialogComp;
+    options.open = true;
+    dialogs.value.push(options)
+    return true;
+  } else if (notifyType === 'snackbar') {
     options.component = snacbarComp;
   } else if (notifyType === 'toast') {
     options.component = toastComp;
   }
-  const uniqueID = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-  options.id = uniqueID;
   queue.value[position].push(options);
 };
 
