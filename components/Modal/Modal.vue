@@ -3,19 +3,17 @@
     <Transition name="fade">
       <div v-if="modelValue" :class="containerClass">
         <div
-          class="bg-white rounded-xl relative min-h-80"
+          class="bg-white rounded-xl relative min-h-80 overflow-auto"
           :style="widthStyle"
           role="dialog"
           aria-labelledby="modalTitle"
           aria-describedby="modalDescription"
         >
           <button
+            v-if="closable"
             class="absolute right-4 z-10 top-4 w-8 h-8 rounded-full flex flex-wrap items-center justify-center hover:bg-GREY-8"
             aria-label="closeModal"
-            @click="
-              $emit('update:modelValue', false);
-              $emit('closed');
-            "
+            @click="$emit('update:modelValue', false); $emit('closed')"
           >
             <svg
               width="32"
@@ -60,6 +58,10 @@ export default {
     minWidth: {
       type: String,
       default: '404px',
+    },
+    closable: {
+      type: Boolean,
+      default: true,
     },
     modelValue: null,
   },
