@@ -45,10 +45,24 @@ export default {
               valid = isValid;
               break;
             }
-          } else if (typeof rule === 'string' && VALIDATIONS.default[rule]) {
-            const functions = VALIDATIONS.default[rule];
+          } else if (typeof rule === 'string') {
+
+            let ruleName = rule;
+            let ruleParams = [];
+
+            if (rule.includes(':')) {
+              const splitName = rule.split(':');
+              ruleName = splitName[0];
+              ruleParams = splitName.splice(1);
+            }
+
+            if (!VALIDATIONS.default[ruleName]) {
+              continue;
+            }
+
+            const functions = VALIDATIONS.default[ruleName];
             for (let ruleFunction of functions) {
-              const isValid = ruleFunction(value);
+              const isValid = ruleFunction(value, ruleParams);
               if (isValid !== true) {
                 valid = isValid;
                 break;
