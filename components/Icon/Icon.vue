@@ -7,7 +7,7 @@ export default {
   name: 'y-icon',
   props: {
     name: {
-      type: String,
+      type: [String, Array],
       default: null,
     },
   },

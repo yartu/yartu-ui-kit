@@ -1,7 +1,7 @@
 <template>
   <div class="relative" ref="target">
     <label :for="id">
-      <p v-if="label" class="labelClass">{{ label }}</p>
+      <p v-if="label" :class="labelClass">{{ label }}</p>
       <button
         :id="id"
         type="button"
@@ -19,14 +19,12 @@
           >
             {{ placeholder }}
           </p>
-          <template
-            v-if="props.multiple"
-          >
+          <template v-if="props.multiple">
             <div v-for="(item, index) in selected" :key="index">
               <slot name="selection" :item="item">
                 <p class="w-full">
                   <Tag v-if="chip" tertiary outline>{{ item }}</Tag>
-                  <span v-else>{{ item }}</span>
+                  <span v-else-if="selected.length > 1">{{ item }}</span>
                   <template v-if="selected.length > 1 && !chip">,</template>
                 </p>
               </slot>
@@ -36,7 +34,7 @@
             <slot name="selection" :item="selected">
               <p class="w-full text-left">
                 <Tag v-if="chip" tertiary outline>{{ selected }}</Tag>
-                <span v-else>{{ selected }}</span>
+                <span v-else-if="selected.length > 1">{{ selected }}</span>
               </p>
             </slot>
           </template>
@@ -224,7 +222,7 @@ const optionContainerClass = computed(() => {
     'mt-2',
     'top-full',
     'transition-all duration-300',
-    'w-full',
+    'w-max',
     {
       'max-h-56 py-2 border': open.value,
       'max-h-0 py-0 border-none': !open.value,

@@ -47,12 +47,16 @@ import YartuModal from './YartuModal';
 import Form from './Form';
 import DataTable from './DataTable';
 import Dialog from './Dialog';
+import Tab from './Tab';
+import Tabs from './Tabs';
 
 export {
   Tag,
   Icon,
   Chip,
   Card,
+  Tab,
+  Tabs,
   List,
   Badge,
   Toast,
