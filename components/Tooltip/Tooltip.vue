@@ -1,89 +1,137 @@
 <template>
-  <div class="tooltip-container relative inline-block">
+  <div
+    ref="target"
+    class="tooltip-container relative inline-block"
+    @mouseover="setTooltipStatus"
+    @mouseleave="setTooltipStatus"
+  >
     <slot></slot>
-    <span :class="tooltipContainer">
-      <slot name="tooltip"></slot>
-    </span>
+    <teleport to="body">
+      <transition name="fade">
+        <div ref="tooltip" :class="tooltipContainer">
+          <span v-show="tooltipStatus" :class="tooltipContent">
+            <slot name="tooltip"></slot>
+          </span>
+        </div>
+      </transition>
+    </teleport>
   </div>
 </template>
 
 <script>
 export default {
   name: 'y-tooltip',
-  props: {
-    mode: {
-      type: String,
-      default: 'hover',
-    },
-    top: {
-      type: Boolean,
-      default: false,
-    },
-    left: {
-      type: Boolean,
-      default: false,
-    },
-    bottom: {
-      type: Boolean,
-      default: false,
-    },
-    right: {
-      type: Boolean,
-      default: false,
-    },
-    center: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  computed: {
-    tooltipContainer() {
-      return [
-        'y-tooltip',
-        'opacity-0',
-        'invisible',
-        'bg-BLACK-1',
-        'absolute z-1000 ',
-        'rounded',
-        'text-white text-center',
-        'py-2 px-3',
-        'w-max h-max',
-        'transition-all duration-500',
-        'after:absolute',
-        'after:w-2 after:h-2',
-        'after:bg-BLACK-1',
-        'after:rotate-45',
-        'after:origin-center',
-        {
-          'tooltip-shape-bottom-center bottom-full left-1/2 -translate-x-1/2 mb-2.5':
-            this.top && this.center,
-          'tooltip-shape-top-center top-full left-1/2 -translate-x-1/2 mt-2.5':
-            this.bottom && this.center,
-          'tooltip-shape-bottom-left bottom-full left-0 mb-2.5':
-            this.top && this.left,
-          'after:-top-1 after:left-2 top-full left-0 mt-2.5':
-            this.bottom && this.left,
-          'after:-bottom-1 after:right-2 bottom-full right-0 mb-2.5':
-            this.top && this.right,
-          'after:-top-1 after:right-2 top-full right-0 mt-2.5':
-            this.bottom && this.right,
-          'tooltip-shape-left-center left-full top-1/2 -translate-y-1/2 ml-2.5':
-            this.right && !this.top && !this.bottom,
-          'tooltip-shape-right-center right-full top-1/2 -translate-y-1/2 mr-2.5':
-            this.left && !this.top && !this.bottom,
-        },
-      ];
-    },
-  },
 };
 </script>
 
-<style>
-.tooltip-container:hover .y-tooltip {
-  visibility: visible;
-  opacity: 1;
-}
+<script setup>
+// TODO:: add programmatically open
+import { ref, computed, onUnmounted, onMounted } from 'vue';
 
+const props = defineProps({
+  mode: {
+    type: String,
+    default: 'hover',
+  },
+  top: {
+    type: Boolean,
+    default: false,
+  },
+  left: {
+    type: Boolean,
+    default: false,
+  },
+  bottom: {
+    type: Boolean,
+    default: false,
+  },
+  right: {
+    type: Boolean,
+    default: false,
+  },
+  center: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const tooltip = ref(null);
+const target = ref(null);
+const tooltipStatus = ref(false);
+
+const setTooltipStatus = () => {
+  tooltipStatus.value = !tooltipStatus.value;
+  calculatePosition();
+};
+
+const calculatePosition = () => {
+  let container = target.value.getBoundingClientRect();
+  let tooltipStyle = tooltip.value.style;
+
+  if (props.bottom) {
+    tooltipStyle.top = container.bottom + 16 + 'px';
+  } else if (props.top) {
+    tooltipStyle.top = container.top - 40 + 'px';
+  }
+  if (props.right) {
+    tooltipStyle.left = container.right + 'px';
+  } else if (props.left) {
+    tooltipStyle.left = container.left + 'px';
+  } else if (props.center) {
+    tooltipStyle.left =
+      (container.right - container.left) / 2 + container.left + 'px';
+  }
+};
+
+onMounted(() => {
+  window.addEventListener('resize', calculatePosition);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', calculatePosition);
+});
+
+const tooltipContainer = computed(() => {
+  return [
+    'fixed z-1001',
+    {
+      '-translate-x-1/2':
+        (props.top && props.center) || (props.bottom && props.center),
+      '-translate-x-full':
+        (props.top && props.right) || (props.bottom && props.right),
+    },
+  ];
+});
+
+const tooltipContent = computed(() => {
+  return [
+    'y-tooltip',
+    'bg-BLACK-1',
+    'rounded',
+    'relative',
+    'text-white text-center',
+    'py-2 px-3',
+    'w-max h-max',
+    'after:absolute',
+    'after:w-2 after:h-2',
+    'after:bg-BLACK-1',
+    'after:rotate-45',
+    'after:origin-center',
+    {
+      'tooltip-shape-bottom-center': props.top && props.center,
+      'tooltip-shape-top-center': props.bottom && props.center,
+      'tooltip-shape-bottom-left': props.top && props.left,
+      'tooltip-shape-left-center': props.right && !props.top && !props.bottom,
+      'tooltip-shape-right-center': props.left && !props.top && !props.bottom,
+      'after:-top-1 after:left-2': props.bottom && props.left,
+      'after:-bottom-1 after:right-2': props.top && props.right,
+      'after:-top-1 after:right-2': props.bottom && props.right,
+    },
+  ];
+});
+</script>
+
+<style>
 .tooltip-shape-top-mid {
   left: 50%;
   transform: translateX(-50%);
