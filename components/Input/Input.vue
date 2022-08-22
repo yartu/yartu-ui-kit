@@ -13,9 +13,9 @@
         :placeholder="placeholder"
         :disabled="disabled"
       />
-      <button :class="iconClass" v-if="action">
+      <div :class="iconClass" v-if="action">
         <slot name="icon"></slot>
-      </button>
+      </div>
       <button
         v-if="dropdown"
         @click="open = !open"
@@ -167,7 +167,6 @@ export default {
     iconClass() {
       return [
         'flex justify-center items-center',
-        'w-6 h-6',
         'text-GREY-1',
         'absolute',
         'rounded-full',
