@@ -3,6 +3,7 @@
     <i
       v-if="prefix != ''"
       :class="[prefix, prefixClass]"
+      :style="'color:' + iconColor + '!important;'"
       aria-hidden="true"
     ></i>
     <slot />
@@ -20,6 +21,10 @@ export default {
     prefix: {
       type: String,
       default: '',
+    },
+    iconColor: {
+      type: String,
+      default: '#394c66',
     },
   },
   computed: {
