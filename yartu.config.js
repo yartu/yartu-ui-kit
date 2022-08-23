@@ -231,6 +231,7 @@ const globalConfig = {
     },
   },
   plugins: [
+    require('@tailwindcss/typography'),
   ],
 };
 
