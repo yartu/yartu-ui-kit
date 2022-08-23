@@ -32,7 +32,7 @@ export default {
 import { provide, useSlots, ref, computed } from 'vue';
 
 const slots = useSlots();
-const tabTitles = ref(slots.default().map((tab) => tab.props.title));
+const tabTitles = ref(slots.default().map((tab) => tab.props?.title));
 const selectedTab = ref(tabTitles.value[0]);
 
 const props = defineProps({
