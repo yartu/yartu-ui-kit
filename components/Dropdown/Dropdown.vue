@@ -25,13 +25,12 @@ export default {
 </script>
 
 <script setup>
-import { computed, useSlots, ref, onUnmounted, onMounted } from 'vue';
+import { computed, ref, onUnmounted, onMounted } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 
 const open = ref(false);
 const target = ref(null);
 const dropdownContent = ref(null);
-const slots = useSlots();
 
 onClickOutside(target, () => (open.value = false));
 
