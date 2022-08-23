@@ -1,9 +1,7 @@
 <template>
   <!-- :class="queue.middle.length > 0 ? 'fixed inset-0 z-20 bg-BLACKOVERLAY':''" -->
   <teleport to="body">
-    <div
-      ref="yartuNotifyContainer"
-    >
+    <div ref="yartuNotifyContainer">
       <YartuTransitions
         v-for="(position, index) in positions"
         :key="index"
@@ -17,7 +15,7 @@
         <component
           :is="item.component"
           :key="item.id"
-          v-for="(item, cIndex) in queue[position.value]"
+          v-for="item in queue[position.value]"
           v-bind="item"
           @close="removeItem(position.value, item.id)"
         >
@@ -27,25 +25,21 @@
       <div>
         <Modal
           :closable="dialog.closable"
-          v-for="dialog in dialogs"
+          v-for="(dialog, index) in dialogs"
+          :key="index"
           v-model="dialog.open"
           max-width="32rem"
           min-width="32rem"
         >
-          <Dialog
-            v-bind="dialog"
-            @close="removeDialog(dialog.id)"
-          >
-          </Dialog>
+          <Dialog v-bind="dialog" @close="removeDialog(dialog.id)"> </Dialog>
         </Modal>
       </div>
     </div>
   </teleport>
 </template>
 <script setup>
-
 import YartuTransitions from './YartuTransitions.vue';
-import { ref, shallowRef, onMounted, onUnmounted } from 'vue';
+import { ref, shallowRef, onMounted } from 'vue';
 import { useEventBus } from '@vueuse/core';
 import { Snackbar } from '../Snackbar';
 import { Toast } from '../Toast';
@@ -62,17 +56,17 @@ const positions = ref([
   {
     top: true,
     center: true,
-    value: 'top-center'
+    value: 'top-center',
   },
   {
     top: true,
     right: true,
-    value: 'top-right'
+    value: 'top-right',
   },
   {
     bottom: true,
     right: true,
-    value: 'bottom-right'
+    value: 'bottom-right',
   },
   {
     center: true,
@@ -92,7 +86,7 @@ const positions = ref([
   {
     middle: true,
     value: 'middle',
-  }
+  },
 ]);
 
 const queue = ref({
@@ -102,21 +96,20 @@ const queue = ref({
   'center-bottom': [],
   'bottom-left': [],
   'top-left': [],
-  'center': [],
+  center: [],
 });
 
 const dialogs = ref([]);
 
 const removeItem = (from, itemId) => {
   queue.value[from] = queue.value[from].filter((f) => f.id !== itemId);
-}
+};
 
 const removeDialog = (itemId) => {
   dialogs.value = dialogs.value.filter((f) => f.id !== itemId);
 };
 
 const listener = (notifyType, options = {}) => {
-  
   if (notifyType === 'clear') {
     for (const queueNotify in queue.value) {
       queue.value[queueNotify] = [];
@@ -126,13 +119,15 @@ const listener = (notifyType, options = {}) => {
   }
 
   let position = options.position || defaultPosition;
-  const uniqueID = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+  const uniqueID = Math.floor((1 + Math.random()) * 0x10000)
+    .toString(16)
+    .substring(1);
   options.id = uniqueID;
 
   if (notifyType === 'dialog') {
     options.component = dialogComp;
     options.open = true;
-    dialogs.value.push(options)
+    dialogs.value.push(options);
     return true;
   } else if (notifyType === 'snackbar') {
     options.component = snacbarComp;
@@ -145,5 +140,4 @@ const listener = (notifyType, options = {}) => {
 onMounted(() => {
   const unsubscribe = bus.on(listener);
 });
-
 </script>
