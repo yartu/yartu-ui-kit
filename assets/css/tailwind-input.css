@@ -66,7 +66,7 @@
   }
 
   .caption {
-    @apply font-base text-xs text-BLACK-2
+    @apply font-normal text-xs text-BLACK-2
   }
 
   .overline-1 {
