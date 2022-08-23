@@ -52,6 +52,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  top: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 function openDropdown() {
@@ -62,8 +66,16 @@ function openDropdown() {
 const calculatePosition = () => {
   // improve this @aziz
   let dropdownContainer = target.value.getBoundingClientRect();
-  dropdownContent.value.style.top = dropdownContainer.bottom + 6 + 'px';
-  dropdownContent.value.style.left = dropdownContainer.right + 'px';
+  if (props.top) {
+    dropdownContent.value.style.top = dropdownContainer.top - 12 + 'px';
+  } else {
+    dropdownContent.value.style.top = dropdownContainer.bottom + 12 + 'px';
+  }
+  if (props.left)
+    dropdownContent.value.style.left = dropdownContainer.right + 'px';
+  else {
+    dropdownContent.value.style.left = dropdownContainer.left + 'px';
+  }
 };
 
 const dropdownStatus = computed(() => {
@@ -96,7 +108,7 @@ const contentClass = computed(() => {
   return [
     'dropdown-content',
     'shadow-1',
-    'fixed z-1001 mt-1.5',
+    'fixed z-1001',
     'py-2',
     'bg-WHITE',
     'text-sm font-semibold text-BLACK-2',
@@ -104,6 +116,7 @@ const contentClass = computed(() => {
     'border-BORDER border rounded-lg',
     {
       '-translate-x-full': props.left,
+      '-translate-y-full': props.top,
     },
   ];
 });
