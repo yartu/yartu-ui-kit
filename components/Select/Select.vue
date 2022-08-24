@@ -73,7 +73,6 @@
         :class="[optionClass, selectedItems(item) ? 'bg-LIGHTBLUE-4' : '']"
       >
         <slot name="select-item" :item="item" :selected="selected">
-          <span v-if="!selectedItems(item)" class="w-6 h-6"></span>
           <span v-if="selectedItems(item)">
             <svg
               width="24"
@@ -91,7 +90,17 @@
               />
             </svg>
           </span>
-          <p>{{ item }}</p>
+          <span v-else class="w-6 h-6"></span>
+          <p
+            v-if="itemText"
+          >
+            {{ item[itemText] }}
+          </p>
+          <p
+            v-else
+          >
+            {{ item }}
+          </p>
         </slot>
       </button>
     </div>
@@ -151,6 +160,14 @@ const props = defineProps({
   disabled: {
     type: Boolean,
     default: false,
+  },
+  itemText: {
+    type: String,
+    required: false,
+  },
+  itemKey: {
+    type: String,
+    required: false,
   },
 });
 
