@@ -29,7 +29,6 @@
         </button>
       </div>
       <button
-        v-if="pages == []"
         @click.prevent="changePage(1)"
         :class="[
           current === 1 ? 'bg-BLUE text-WHITE border-none hover:bg-BLUE' : '',
@@ -134,14 +133,17 @@ export default {
       type: Boolean,
       default: false,
     },
+    page: {
+      type: Number,
+      required: false,
+      default: 1,
+    },
   },
   components: {
     'y-button': Button,
   },
-  data() {
-    return {
-      current: 1,
-    };
+  created() {
+    this.current = this.page;
   },
   methods: {
     hasFirst() {
