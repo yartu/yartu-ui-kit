@@ -29,7 +29,6 @@
         </button>
       </div>
       <button
-        v-if="pages == []"
         @click.prevent="changePage(1)"
         :class="[
           current === 1 ? 'bg-BLUE text-WHITE border-none hover:bg-BLUE' : '',
