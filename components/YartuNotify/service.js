@@ -11,8 +11,8 @@ const busFunctions = {
   snackbar: (data) => {
     bus.emit('snackbar', data);
   },
-  dialpog: (data) => {
-    bus.emit('dialpog', data);
+  dialog: (data) => {
+    bus.emit('dialog', data);
   },
   clear: () => {
     bus.emit('clear');

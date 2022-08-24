@@ -2,7 +2,7 @@
   <nav :class="containerClass">
     <ol :class="itemClass">
       <li v-for="(crumb, index) in crumbs" :key="index">
-        <button type="button" class="font-extrabold" @click="selected(crumb)">
+        <button type="button" class="font-extrabold" @click="selected(crumb, index)">
           {{ crumb }}
         </button>
         <span
@@ -33,8 +33,8 @@ export default {
     isSecondLast(index) {
       return index === this.crumbs.length - 2;
     },
-    selected(crumb) {
-      this.$emit('selected', crumb);
+    selected(crumb, index) {
+      this.$emit('selected', { crumb, index });
     },
   },
   computed: {

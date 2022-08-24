@@ -7,25 +7,28 @@
         @click="openCombobox"
         :disabled="disabled"
         :class="comboboxClass"
+        class="max-h-55 overflow-y-auto relative"
       >
         <div
-          class="flex-1 flex flex-wrap items-center gap-2"
+          class="flex-1 flex flex-wrap items-center"
           :class="chip ? 'gap-2' : ''"
         >
           <div
             v-for="(item, index) in !open ? closedItems : selected"
             :key="index"
-            tabindex="0"
-            @keydown.delete="deleteItem"
-            @keypress="focusInput"
-            class="combobox-selected-items focus:opacity-40 focus:outline-none"
           >
             <slot name="selection" :item="item">
-              <p class="w-full">
+              <p
+                tabindex="0"
+                @keydown.delete="deleteItem"
+                @keypress="focusInput"
+                class="w-full focus:opacity-40 focus:outline-none combobox-selected-items"
+              >
                 <Tag v-if="chip" tertiary outline class="text-xs">
                   {{ item }}
                 </Tag>
                 <span v-else>{{ item }}</span>
+                <template v-if="selected.length > 1 && !chip">,</template>
               </p>
             </slot>
           </div>
@@ -74,12 +77,12 @@
         tabindex="0"
         :class="[
           optionClass,
-          selectedItems(item) ? 'bg-LIGHTBLUE-4' : 'hover:bg-LIGHTBLUE-6',
+          selected.includes(item) ? 'bg-LIGHTBLUE-4' : 'hover:bg-LIGHTBLUE-6',
         ]"
       >
-        <slot name="option" :item="item" :selected="selected">
-          <span v-if="selectedItems(item)" class="w-6 h-6"></span>
-          <span v-if="selectedItems(item)">
+        <slot name="select-item" :item="item" :selected="selected">
+          <span v-if="!selected.includes(item)" class="w-6 h-6"></span>
+          <span v-if="selected.includes(item)">
             <svg
               width="24"
               height="24"
@@ -160,18 +163,6 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  itemText: {
-    type: String,
-    required: false,
-  },
-  itemValue: {
-    type: String,
-    required: false,
-  },
-  filter: {
-    type: Function,
-    default: null,
-  },
 });
 
 onClickOutside(target, () => (open.value = false));
@@ -231,40 +222,17 @@ function focusInput() {
 }
 
 function filter(value) {
-  if (!props.filter) {
-    open.value = true;
-    value = value.toLowerCase();
-    filteredItems.value = props.items.filter((data) => {
-      let lorem = data;
-      if (typeof lorem === 'object') {
-        lorem = lorem[props.itemValue];
-      }
-      return lorem.toLowerCase().match(value);
-    });
-  } else {
-    filteredItems.value = props.filter(props.items, value);
-  }
-}
-
-function selectedItems(item) {
-  let isSelected = false;
-  if (
-    props.multiple &&
-    selected.value.includes(item) &&
-    selected.value[selected.value.indexOf(item)] === item
-  ) {
-    isSelected = true;
-  } else if (!props.multiple && selected.value === item) {
-    isSelected = true;
-  }
-  return isSelected;
+  open.value = true;
+  value = value.toLowerCase();
+  filteredItems.value = props.items.filter((data) =>
+    data.toLowerCase().match(value),
+  );
 }
 
 const comboboxClass = computed(() => {
   return [
-    'w-full max-h-55',
+    'w-full max-h-',
     'py-2 px-4',
-    'overflow-y-auto relative',
     'border rounded-lg',
     'text-BLACK-2 font-semibold text-xs',
     'flex flex-wrap items-center gap-2',

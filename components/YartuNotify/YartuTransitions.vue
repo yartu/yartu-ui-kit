@@ -12,7 +12,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'y-transitions',
   data() {
@@ -37,6 +36,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    middle: {
+      type: Boolean,
+      default: false,
+    },
   },
   methods: {
     beforeLeave(el) {
@@ -56,6 +59,7 @@ export default {
         'gap-4',
         'z-1002',
         {
+          'top-1/2 -translate-x-1/2 left-1/2 -translate-y-1/2': this.middle,
           'top-22 left-9': this.left && !this.bottom,
           'bottom-9 left-9': this.left && this.bottom,
           'top-22 right-9': this.right && !this.bottom,
