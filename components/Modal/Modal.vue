@@ -3,7 +3,7 @@
     <Transition name="fade">
       <div v-if="modelValue" :class="containerClass">
         <div
-          class="bg-white rounded-xl relative min-h-80 overflow-auto"
+          class="bg-white rounded-xl relative overflow-auto"
           :style="widthStyle"
           role="dialog"
           aria-labelledby="modalTitle"
