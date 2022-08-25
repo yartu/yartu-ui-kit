@@ -5,7 +5,7 @@
       <button
         :id="id"
         type="button"
-        @click="open = !open"
+        @click="openOptions"
         :disabled="disabled"
         :class="selectClass"
       >
@@ -64,46 +64,44 @@
         {{ hint }}
       </p>
     </label>
-    <div :class="optionContainerClass">
-      <button
-        @click="choose(item)"
-        v-for="(item, index) in items"
-        :key="index"
-        type="button"
-        :class="[optionClass, selectedItems(item) ? 'bg-LIGHTBLUE-4' : '']"
-      >
-        <slot name="select-item" :item="item" :selected="selected">
-          <span v-if="selectedItems(item)">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M7 11.4844L11.1667 16L18 8"
-                stroke="#3663F2"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </span>
-          <span v-else class="w-6 h-6"></span>
-          <p
-            v-if="itemText"
-          >
-            {{ item[itemText] }}
-          </p>
-          <p
-            v-else
-          >
-            {{ item }}
-          </p>
-        </slot>
-      </button>
-    </div>
+    <teleport to="body">
+      <div ref="optionContainer" :class="optionContainerClass">
+        <button
+          @click="choose(item)"
+          v-for="(item, index) in items"
+          :key="index"
+          type="button"
+          :class="[optionClass, selectedItems(item) ? 'bg-LIGHTBLUE-4' : '']"
+        >
+          <slot name="select-item" :item="item" :selected="selected">
+            <span v-if="selectedItems(item)">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M7 11.4844L11.1667 16L18 8"
+                  stroke="#3663F2"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+            <span v-else class="w-6 h-6"></span>
+            <p v-if="itemText">
+              {{ item[itemText] }}
+            </p>
+            <p v-else>
+              {{ item }}
+            </p>
+          </slot>
+        </button>
+      </div>
+    </teleport>
   </div>
 </template>
 
@@ -114,13 +112,14 @@ export default {
 </script>
 
 <script setup>
-import { ref, computed, watchEffect } from 'vue';
+import { ref, computed, watchEffect, onUnmounted, onMounted } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import Tag from '../Tag/Tag.vue';
 
 const open = ref(false);
 const selected = ref(new Array());
 const target = ref(null);
+const optionContainer = ref(null);
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -178,6 +177,26 @@ watchEffect(() => {
   selected.value = modelValue;
 });
 
+function openOptions() {
+  open.value = !open.value;
+  calculatePosition();
+}
+
+const calculatePosition = () => {
+  // improve this @aziz
+  let dropdownContainer = target.value.getBoundingClientRect();
+  if (props.top) {
+    optionContainer.value.style.top = dropdownContainer.top - 12 + 'px';
+  } else {
+    optionContainer.value.style.top = dropdownContainer.bottom + 12 + 'px';
+  }
+  if (props.left)
+    optionContainer.value.style.left = dropdownContainer.right + 'px';
+  else {
+    optionContainer.value.style.left = dropdownContainer.left + 'px';
+  }
+};
+
 function choose(item) {
   if (props.multiple && !selected.value.includes(item)) {
     selected.value.push(item);
@@ -203,6 +222,14 @@ function selectedItems(item) {
   }
   return isSelected;
 }
+
+onMounted(() => {
+  window.addEventListener('resize', calculatePosition);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', calculatePosition);
+});
 
 const selectClass = computed(() => {
   return [
@@ -232,12 +259,10 @@ const labelClass = computed(() => {
 
 const optionContainerClass = computed(() => {
   return [
-    'absolute z-14',
+    'absolute z-1001',
     'bg-white',
     'border-Border rounded-lg',
     'overflow-y-auto',
-    'mt-2',
-    'top-full',
     'transition-all duration-300',
     'w-max',
     {
@@ -252,7 +277,7 @@ const optionClass = computed(() => {
     'flex flex-wrap items-center gap-2',
     'font-semibold text-BLACK-2 text-sm',
     'text-left rtl:text-right',
-    'py-3 p-2',
+    'py-3 pl-2 pr-6',
     'w-full',
     'hover:bg-LIGHTBLUE-6',
   ];
