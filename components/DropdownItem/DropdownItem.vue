@@ -11,7 +11,7 @@
       <slot />
     </div>
     <i
-      class="w-6 h-6 leading-6"
+      class="w-6 h-6 !leading-6"
       v-if="postfix != ''"
       :class="postfix"
       aria-hidden="true"
