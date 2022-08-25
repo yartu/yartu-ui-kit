@@ -1,5 +1,5 @@
 const REQUIRED = [
-  v => !!v || 'Required',
+  v => !!v.trim() || 'Required',
 ];
 
 const EMAIL = [
@@ -13,15 +13,17 @@ const IPv4 = [
 ];
 
 const MAX_LENGTH = [
-  (v, param) => (!!v && v.length < param) || `This field shoul be max ${param}`,
+  (v, param) => (!!v.trim() && v.trim().length < param) || `This field shoul be max ${param}`,
 ];
 
 const MIN_LENGTH = [
-  (v, param) => (!!v && v.length > param) || `This field shoul be min ${param}`,
+  (v, param) => (!!v.trim() && v.trim().length > param) || `This field shoul be min ${param}`,
 ];
 
 const VALID_NAME = [
-  v =>  !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(v) || 'Name is not valid',
+  v =>  (v && v[0] !== ' ') || 'Not start with space',
+  v =>  !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(v) || 'Name is not valid, don\'t accept special chracrer (.,!?*, etc)',
+  v =>  !/  +/g.test(v) || 'This field don\'t aceept repeated space',
 ];
 
 export default {
@@ -32,3 +34,4 @@ export default {
   MAX_LENGTH,
   MIN_LENGTH,
 };
+
