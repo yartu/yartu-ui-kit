@@ -1,13 +1,12 @@
 <template>
   <div class="relative" ref="target">
-    <div>
+    <div class="bg-white">
       <p :class="labelClass">{{ label }}</p>
       <button
         ref="comboboxBtn"
         @click="openCombobox"
         :disabled="disabled"
         :class="comboboxClass"
-        class="max-h-55 overflow-y-auto relative"
       >
         <div
           class="flex-1 flex flex-wrap items-center"
@@ -68,41 +67,43 @@
         {{ hint }}
       </p>
     </div>
-    <div :class="optionContainerClass">
-      <button
-        @click="choose(item)"
-        v-for="(item, index) in filteredItems"
-        :key="index"
-        type="button"
-        tabindex="0"
-        :class="[
-          optionClass,
-          selected.includes(item) ? 'bg-LIGHTBLUE-4' : 'hover:bg-LIGHTBLUE-6',
-        ]"
-      >
-        <slot name="select-item" :item="item" :selected="selected">
-          <span v-if="!selected.includes(item)" class="w-6 h-6"></span>
-          <span v-if="selected.includes(item)">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M7 11.4844L11.1667 16L18 8"
-                stroke="#3663F2"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </span>
-          <p>{{ item }}</p>
-        </slot>
-      </button>
-    </div>
+    <teleport to="body">
+      <div ref="optionContainer" :class="optionContainerClass">
+        <button
+          @click="choose(item)"
+          v-for="(item, index) in filteredItems"
+          :key="index"
+          type="button"
+          tabindex="0"
+          :class="[
+            optionClass,
+            selected.includes(item) ? 'bg-LIGHTBLUE-4' : 'hover:bg-LIGHTBLUE-6',
+          ]"
+        >
+          <slot name="select-item" :item="item" :selected="selected">
+            <span v-if="!selected.includes(item)" class="w-6 h-6"></span>
+            <span v-if="selected.includes(item)">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M7 11.4844L11.1667 16L18 8"
+                  stroke="#3663F2"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+            <p>{{ item }}</p>
+          </slot>
+        </button>
+      </div>
+    </teleport>
   </div>
 </template>
 
@@ -118,12 +119,13 @@ import { onClickOutside } from '@vueuse/core';
 import Tag from '../Tag/Tag.vue';
 
 const open = ref(false);
-const selected = ref(props.modelValue);
+const selected = ref(props.modelValue || []);
 const target = ref(null);
 const closedItems = ref(null);
 const comboboxInput = ref(null);
 const comboboxBtn = ref(null);
 const filteredItems = ref(props.items);
+const optionContainer = ref(null);
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -163,13 +165,17 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  dense: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 onClickOutside(target, () => (open.value = false));
 
 watchEffect(() => {
-  closedItems.value = selected.value.filter((i, index) => index < 2);
-  if (selected.value.length > 2)
+  closedItems.value = selected.value?.filter((i, index) => index < 2);
+  if (selected.value?.length > 2)
     closedItems.value.push('+ ' + (selected.value.length - 2));
 });
 
@@ -182,7 +188,25 @@ function openCombobox() {
       behavior: 'smooth',
     });
   }, 200);
+  calculatePosition();
 }
+
+const calculatePosition = () => {
+  // improve this @aziz
+  let dropdownContainer = target.value.getBoundingClientRect();
+  if (props.top) {
+    optionContainer.value.style.top = dropdownContainer.top - 12 + 'px';
+  } else {
+    optionContainer.value.style.top = dropdownContainer.bottom + 12 + 'px';
+  }
+  if (props.left)
+    optionContainer.value.style.left = dropdownContainer.right + 'px';
+  else {
+    optionContainer.value.style.left = dropdownContainer.left + 'px';
+  }
+  optionContainer.value.style.minWidth =
+    dropdownContainer.right - dropdownContainer.left + 'px';
+};
 
 function choose(item) {
   if (props.multiple && !selected.value.includes(item)) {
@@ -231,8 +255,9 @@ function filter(value) {
 
 const comboboxClass = computed(() => {
   return [
-    'w-full max-h-',
-    'py-2 px-4',
+    'w-full max-h-55',
+    'overflow-y-auto relative',
+    'px-4',
     'border rounded-lg',
     'text-BLACK-2 font-semibold text-xs',
     'flex flex-wrap items-center gap-2',
@@ -240,6 +265,8 @@ const comboboxClass = computed(() => {
     {
       'border-BLUE': open.value,
       'border-BORDER': !open.value,
+      'py-1': props.dense,
+      'py-2': !props.dense,
     },
   ];
 });
@@ -257,16 +284,16 @@ const labelClass = computed(() => {
 
 const optionContainerClass = computed(() => {
   return [
-    'absolute z-14',
+    'fixed z-14',
     'bg-white',
     'border-Border rounded-lg',
     'overflow-y-auto',
     'mt-2',
     'top-full',
     'transition-all duration-300',
-    'w-full',
+    'w-max',
     {
-      'max-h-56 py-2 border': open.value,
+      'max-h-56 min-h-4 py-2 border': open.value,
       'max-h-0 py-0 border-none': !open.value,
     },
   ];
