@@ -7,28 +7,25 @@
         @click="openCombobox"
         :disabled="disabled"
         :class="comboboxClass"
-        class="max-h-55 overflow-y-auto relative"
       >
         <div
-          class="flex-1 flex flex-wrap items-center"
+          class="flex-1 flex flex-wrap items-center gap-2"
           :class="chip ? 'gap-2' : ''"
         >
           <div
             v-for="(item, index) in !open ? closedItems : selected"
             :key="index"
+            tabindex="0"
+            @keydown.delete="deleteItem"
+            @keypress="focusInput"
+            class="combobox-selected-items focus:opacity-40 focus:outline-none"
           >
             <slot name="selection" :item="item">
-              <p
-                tabindex="0"
-                @keydown.delete="deleteItem"
-                @keypress="focusInput"
-                class="w-full focus:opacity-40 focus:outline-none combobox-selected-items"
-              >
+              <p class="w-full">
                 <Tag v-if="chip" tertiary outline class="text-xs">
                   {{ item }}
                 </Tag>
                 <span v-else>{{ item }}</span>
-                <template v-if="selected.length > 1 && !chip">,</template>
               </p>
             </slot>
           </div>
@@ -37,8 +34,10 @@
             type="text"
             class="h-full py-2 bg-transparent focus:outline-none text-BLACK-2 caret-inherit"
             :class="selected.length < 1 ? 'pl-2' : 'pr-2'"
+            :placeholder="placeholder"
             @input="filter($event.target.value)"
             @keydown.delete="deleteItem"
+            @keyup="enterSuggest"
           />
         </div>
         <span
@@ -68,41 +67,56 @@
         {{ hint }}
       </p>
     </div>
-    <div :class="optionContainerClass">
-      <button
-        @click="choose(item)"
-        v-for="(item, index) in filteredItems"
-        :key="index"
-        type="button"
-        tabindex="0"
-        :class="[
-          optionClass,
-          selected.includes(item) ? 'bg-LIGHTBLUE-4' : 'hover:bg-LIGHTBLUE-6',
-        ]"
-      >
-        <slot name="select-item" :item="item" :selected="selected">
-          <span v-if="!selected.includes(item)" class="w-6 h-6"></span>
-          <span v-if="selected.includes(item)">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M7 11.4844L11.1667 16L18 8"
-                stroke="#3663F2"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </span>
-          <p>{{ item }}</p>
-        </slot>
-      </button>
-    </div>
+    <teleport to="body">
+      <div ref="optionContainer" :class="optionContainerClass">
+        <template v-if="searching">
+          <!-- TODO: @aziz fix me! -->
+          <div class="p-2">
+            <h1 class="body-1">
+              LOADING..
+            </h1>
+          </div>
+        </template>
+        <template v-else>
+          <div v-if="filteredItems.length === 0 && props.suggest" class="border-RED bg-YELLOW">
+            Add: "{{ searchText }}"
+          </div>
+          <button
+            @click="choose(item)"
+            v-for="(item, index) in filteredItems"
+            :key="index"
+            type="button"
+            tabindex="0"
+            :class="[
+              optionClass,
+              isSelected(item) ? 'bg-LIGHTBLUE-4' : 'hover:bg-LIGHTBLUE-6',
+            ]"
+          >
+            <slot name="select-item" :item="item" :selected="selected">
+              <span v-if="isSelected(item)">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7 11.4844L11.1667 16L18 8"
+                    stroke="#3663F2"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              <span v-else class="w-6 h-6"></span>
+              <p>{{ item }}</p>
+            </slot>
+          </button>
+        </template>
+      </div>
+    </teleport>
   </div>
 </template>
 
@@ -113,8 +127,10 @@ export default {
 </script>
 
 <script setup>
-import { ref, computed, watchEffect } from 'vue';
+import { ref, computed, watchEffect, onMounted, onUnmounted } from 'vue';
 import { onClickOutside } from '@vueuse/core';
+import { validate } from '../FormItem/validations';
+
 import Tag from '../Tag/Tag.vue';
 
 const open = ref(false);
@@ -123,10 +139,12 @@ const target = ref(null);
 const closedItems = ref(null);
 const comboboxInput = ref(null);
 const comboboxBtn = ref(null);
+const optionContainer = ref(null);
 const filteredItems = ref(props.items);
+const searchText= ref('');
+const searching = ref(false);
 
-const emit = defineEmits(['update:modelValue']);
-
+const emit = defineEmits(['update:modelValue', 'search']);
 const props = defineProps({
   modelValue: {
     type: [Object, Array],
@@ -145,7 +163,8 @@ const props = defineProps({
     default: false,
   },
   items: {
-    type: [Object, Array],
+    type: Array,
+    required: true,
   },
   placeholder: {
     type: String,
@@ -163,6 +182,38 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  itemText: {
+    type: String,
+    required: false,
+  },
+  itemKey: {
+    type: String,
+    required: false,
+  },
+  filter: {
+    type: Function,
+    default: null,
+  },
+  suggest: {
+    type: Boolean,
+    required: false,
+  },
+  rules: {
+    type: Array,
+    required: false,
+  },
+  cleanUnvalidSuggest: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+onMounted(() => {
+  window.addEventListener('resize', calculatePosition);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', calculatePosition);
 });
 
 onClickOutside(target, () => (open.value = false));
@@ -182,23 +233,47 @@ function openCombobox() {
       behavior: 'smooth',
     });
   }, 200);
+  calculatePosition();
 }
 
 function choose(item) {
-  if (props.multiple && !selected.value.includes(item)) {
-    selected.value.push(item);
-  } else if (!props.multiple) {
-    selected.value.pop();
-    selected.value.push(item);
-    open.value = false;
-  } else if (props.multiple && selected.value.includes(item)) {
-    selected.value = selected.value.filter((data) => data != item);
+  if (props.multiple) {
+    let index = -1;
+    if (props.itemKey) {
+      index = selected.value.findIndex((s) => s[props.itemKey] === item[props.itemKey]);
+    } else {
+      index = selected.value.findIndex((s) => s === item);
+    }
+    if (index === -1) {
+      selected.value.push(item);
+    } else {
+      selected.value.splice(index, 1);
+    }
+  } else {
+    selected.value = item;
   }
   comboboxInput.value.value = '';
   filter('');
   focusInput();
   emit('update:modelValue', selected);
 }
+
+function isSelected(item) {
+  if (props.multiple) {
+    let index = -1;
+    if (props.itemKey) {
+      index = selected.value.findIndex((s) => s[props.itemKey] === item[props.itemKey]);
+    } else {
+      index = selected.value.findIndex((s) => s === item);
+    }
+    return index > -1;
+  } else if (props.itemKey){
+    return selected.value[props.itemKey] === item[props.itemKey];
+  } else {
+    return selected.value === item;
+  }
+}
+
 // TODO:: improve delete item function
 function deleteItem(key) {
   let items = document.getElementsByClassName('combobox-selected-items');
@@ -217,22 +292,86 @@ function deleteItem(key) {
   }
 }
 
+function enterSuggest(lorem) {
+  const acceptCodes = [188, 13];
+  if (props.suggest && lorem.isTrusted && acceptCodes.includes(lorem.keyCode)) {
+    const value = lorem.target.value;
+    if (props.rules) {
+      const valid = validate(props.rules, value);
+      if (props.cleanUnvalidSuggest && valid !== true) {
+        comboboxInput.value.value = '';
+      } else {
+        const item = { isSuggest: true };
+        item[props.itemText || 'value'] = value;
+        item.valid = valid;
+        choose(item);
+      }
+    } else {
+      choose(value);
+    }
+  }
+}
+
 function focusInput() {
   comboboxInput.value.focus();
 }
 
-function filter(value) {
-  open.value = true;
-  value = value.toLowerCase();
-  filteredItems.value = props.items.filter((data) =>
-    data.toLowerCase().match(value),
-  );
+async function filter (value) {
+  searching.value = true;
+  searchText.value = value;
+  if (!props.filter) {
+    open.value = true;
+    value = value.toLowerCase();
+    filteredItems.value = props.items.filter((data) => {
+      let lorem = data;
+      if (typeof lorem === 'object') {
+        lorem = lorem[props.itemKey];
+      }
+      // TODO :: add timeout @akucuk
+      searching.value = false;
+      return lorem.toLowerCase().match(value);
+    });
+  } else {
+    filteredItems.value = await props.filter(props.items, value);
+    searching.value = false;
+  }
+  emit('search', value);
 }
+
+function selectedItems(item) {
+  let isSelected = false;
+  if (
+    props.multiple &&
+    selected.value.includes(item) &&
+    selected.value[selected.value.indexOf(item)] === item
+  ) {
+    isSelected = true;
+  } else if (!props.multiple && selected.value === item) {
+    isSelected = true;
+  }
+  return isSelected;
+}
+
+function calculatePosition () {
+  // improve this @aziz
+  let dropdownContainer = target.value.getBoundingClientRect();
+  if (props.top) {
+    optionContainer.value.style.top = dropdownContainer.top - 12 + 'px';
+  } else {
+    optionContainer.value.style.top = dropdownContainer.bottom + 12 + 'px';
+  }
+  if (props.left)
+    optionContainer.value.style.left = dropdownContainer.right + 'px';
+  else {
+    optionContainer.value.style.left = dropdownContainer.left + 'px';
+  }
+};
 
 const comboboxClass = computed(() => {
   return [
-    'w-full max-h-',
+    'w-full max-h-55',
     'py-2 px-4',
+    'overflow-y-auto relative',
     'border rounded-lg',
     'text-BLACK-2 font-semibold text-xs',
     'flex flex-wrap items-center gap-2',
@@ -257,14 +396,12 @@ const labelClass = computed(() => {
 
 const optionContainerClass = computed(() => {
   return [
-    'absolute z-14',
+    'fixed z-1000',
     'bg-white',
     'border-Border rounded-lg',
     'overflow-y-auto',
     'mt-2',
     'top-full',
-    'transition-all duration-300',
-    'w-full',
     {
       'max-h-56 py-2 border': open.value,
       'max-h-0 py-0 border-none': !open.value,
