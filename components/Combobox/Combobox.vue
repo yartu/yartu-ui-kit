@@ -20,10 +20,17 @@
             @keypress="focusInput"
             class="combobox-selected-items focus:opacity-40 focus:outline-none"
           >
-            <slot name="selection" :item="item">
+            <slot name="selection" :item="item" :index="index" :close="removeItemByIndex">
               <p class="w-full">
                 <Tag v-if="chip" tertiary outline class="text-xs">
                   {{ item }}
+                  <div v-if="closableChip">
+                    <button
+                      @click="removeItemByIndex(index)"
+                    >
+                      X
+                    </button>
+                  </div>
                 </Tag>
                 <span v-else>{{ item }}</span>
               </p>
@@ -127,7 +134,7 @@ export default {
 </script>
 
 <script setup>
-import { ref, computed, watchEffect, onMounted, onUnmounted } from 'vue';
+import { ref, computed, watchEffect, onMounted, onUnmounted, onUpdated, nextTick } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { validate } from '../FormItem/validations';
 
@@ -210,6 +217,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  closableChip: {
+    type: Boolean,
+    required: false,
+  },
 });
 
 onMounted(() => {
@@ -228,16 +239,23 @@ watchEffect(() => {
     closedItems.value.push('+ ' + (selected.value.length - 2));
 });
 
+
+const scrollToEnd = () => {
+  comboboxBtn.value.scroll({
+    top: comboboxBtn.value.scrollHeight,
+    behavior: 'auto',
+  });
+};
+
+onUpdated(async () => {
+  await nextTick();
+  calculatePosition();
+  scrollToEnd();
+});
+
 function openCombobox() {
   open.value = true;
   focusInput();
-  setTimeout(() => {
-    comboboxBtn.value.scroll({
-      top: comboboxBtn.value.scrollHeight,
-      behavior: 'smooth',
-    });
-  }, 200);
-  calculatePosition();
 }
 
 const calculatePosition = () => {
@@ -276,6 +294,7 @@ function choose(item) {
   comboboxInput.value.value = '';
   filter('');
   focusInput();
+  openCombobox();
   emit('update:modelValue', selected);
 }
 
@@ -313,22 +332,28 @@ function deleteItem(key) {
   }
 }
 
-function enterSuggest(lorem) {
+function removeItemByIndex (index) {
+  selected.value.splice(index, 1);
+}
+
+function enterSuggest(suggest) {
   const acceptCodes = [188, 13];
-  if (props.suggest && lorem.isTrusted && acceptCodes.includes(lorem.keyCode)) {
-    const value = lorem.target.value;
-    if (props.rules) {
-      const valid = validate(props.rules, value);
-      if (props.cleanUnvalidSuggest && valid !== true) {
-        comboboxInput.value.value = '';
+  if (props.suggest && suggest.isTrusted && acceptCodes.includes(suggest.keyCode)) {
+    const value = suggest.target.value;
+    if (value.length > 0)  {
+      if (props.rules) {
+        const valid = validate(props.rules, value);
+        if (props.cleanUnvalidSuggest && valid !== true) {
+          comboboxInput.value.value = '';
+        } else {
+          const item = { isSuggest: true };
+          item[props.itemText || 'value'] = value;
+          item.valid = valid;
+          choose(item);
+        }
       } else {
-        const item = { isSuggest: true };
-        item[props.itemText || 'value'] = value;
-        item.valid = valid;
-        choose(item);
+        choose(value);
       }
-    } else {
-      choose(value);
     }
   }
 }
@@ -338,25 +363,27 @@ function focusInput() {
 }
 
 async function filter (value) {
-  searching.value = true;
-  searchText.value = value;
-  if (!props.filter) {
-    open.value = true;
-    value = value.toLowerCase();
-    filteredItems.value = props.items.filter((data) => {
-      let lorem = data;
-      if (typeof lorem === 'object') {
-        lorem = lorem[props.itemKey];
-      }
-      // TODO :: add timeout @akucuk
+  if (value && value.length > 0) {
+    searching.value = true;
+    searchText.value = value;
+    if (!props.filter) {
+      open.value = true;
+      value = value.toLowerCase();
+      filteredItems.value = props.items.filter((data) => {
+        let filterItem = data;
+        if (typeof filterItem === 'object') {
+          filterItem = filterItem[props.itemKey];
+        }
+        // TODO :: add timeout @akucuk
+        searching.value = false;
+        return filterItem.toLowerCase().match(value);
+      });
+    } else {
+      filteredItems.value = await props.filter(props.items, value);
       searching.value = false;
-      return lorem.toLowerCase().match(value);
-    });
-  } else {
-    filteredItems.value = await props.filter(props.items, value);
-    searching.value = false;
+    }
+    emit('search', value);
   }
-  emit('search', value);
 }
 
 const comboboxClass = computed(() => {
@@ -390,7 +417,7 @@ const labelClass = computed(() => {
 
 const optionContainerClass = computed(() => {
   return [
-    'fixed z-14',
+    'fixed z-1001',
     'bg-white',
     'border-Border rounded-lg',
     'overflow-y-auto',
