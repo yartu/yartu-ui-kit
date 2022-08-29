@@ -70,10 +70,10 @@
         v-for="(item, index) in items"
         :key="index"
         type="button"
-        :class="[optionClass, selectedItems(item) ? 'bg-LIGHTBLUE-4' : '']"
+        :class="[optionClass, isSelected(item) ? 'bg-LIGHTBLUE-4' : '']"
       >
-        <slot name="select-item" :item="item" :selected="selected">
-          <span v-if="selectedItems(item)">
+        <slot name="select-item" :item="item" :selected="selected" :isSelected="isSelected">
+          <span v-if="isSelected(item)">
             <svg
               width="24"
               height="24"
@@ -179,29 +179,38 @@ watchEffect(() => {
 });
 
 function choose(item) {
-  if (props.multiple && !selected.value.includes(item)) {
-    selected.value.push(item);
-  } else if (!props.multiple) {
+  if (props.multiple) {
+    let index = -1;
+    if (props.itemKey) {
+      index = selected.value.findIndex((s) => s[props.itemKey] === item[props.itemKey]);
+    } else {
+      index = selected.value.findIndex((s) => s === item);
+    }
+    if (index === -1) {
+      selected.value.push(item);
+    } else {
+      selected.value.splice(index, 1);
+    }
+  } else {
     selected.value = item;
-    open.value = false;
-  } else if (props.multiple && selected.value.includes(item)) {
-    selected.value = selected.value.filter((data) => data != item);
   }
   emit('update:modelValue', selected.value);
 }
 
-function selectedItems(item) {
-  let isSelected = false;
-  if (
-    props.multiple &&
-    selected.value.includes(item) &&
-    selected.value[selected.value.indexOf(item)] === item
-  ) {
-    isSelected = true;
-  } else if (!props.multiple && selected.value === item) {
-    isSelected = true;
+function isSelected(item) {
+  if (props.multiple) {
+    let index = -1;
+    if (props.itemKey) {
+      index = selected.value.findIndex((s) => s[props.itemKey] === item[props.itemKey]);
+    } else {
+      index = selected.value.findIndex((s) => s === item);
+    }
+    return index > -1;
+  } else if (props.itemKey){
+    return selected.value[props.itemKey] === item[props.itemKey];
+  } else {
+    return selected.value === item;
   }
-  return isSelected;
 }
 
 const selectClass = computed(() => {

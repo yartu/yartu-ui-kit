@@ -1,37 +1,76 @@
-const REQUIRED = [
-  v => !!v.trim() || 'Required',
-];
+const VALIDATIONS = {
+  REQUIRED: [
+    v => !!v.trim() || 'Required',
+  ],
+  EMAIL: [
+    v => !!v || 'E-mail is required',
+    v => /.+@.+/.test(v) || 'E-mail must be valid',
+  ],
+  IPv4: [
+    v => !!v || 'Required',
+    v => /^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)(\.(?!$)|$)){4}$/.test(v) || 'IP must be valid',
+  ],
+  MAX_LENGTH: [
+    (v, param) => (!!v.trim() && v.trim().length < param) || `This field shoul be max ${param}`,
+  ],
+  MIN_LENGTH: [
+    (v, param) => (!!v.trim() && v.trim().length > param) || `This field shoul be min ${param}`,
+  ],
+  VALID_NAME: [
+    v =>  (v && v[0] !== ' ') || 'Not start with space',
+    v =>  !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(v) || 'Name is not valid, don\'t accept special chracrer (.,!?*, etc)',
+    v =>  !/  +/g.test(v) || 'This field don\'t aceept repeated space',
+  ],
+};
 
-const EMAIL = [
-  v => !!v || 'E-mail is required',
-  v => /.+@.+/.test(v) || 'E-mail must be valid',
-];
+const validate = (rules, value) => {
+  let valid = true;
+  for (let rule of rules) {
+    if (typeof rule === 'function') {
+      const isValid = rule(value);
+      if (isValid !== true) {
+        valid = isValid;
+        break;
+      }
+    } else if (typeof rule === 'string') {
 
-const IPv4 = [
-  v => !!v || 'Required',
-  v => /^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)(\.(?!$)|$)){4}$/.test(v) || 'IP must be valid',
-];
+      let ruleName = rule;
+      let ruleParams = [];
 
-const MAX_LENGTH = [
-  (v, param) => (!!v.trim() && v.trim().length < param) || `This field shoul be max ${param}`,
-];
+      if (rule.includes(':')) {
+        const splitName = rule.split(':');
+        ruleName = splitName[0];
+        ruleParams = splitName.splice(1);
+      }
 
-const MIN_LENGTH = [
-  (v, param) => (!!v.trim() && v.trim().length > param) || `This field shoul be min ${param}`,
-];
+      if (!VALIDATIONS[ruleName]) {
+        continue;
+      }
 
-const VALID_NAME = [
-  v =>  (v && v[0] !== ' ') || 'Not start with space',
-  v =>  !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(v) || 'Name is not valid, don\'t accept special chracrer (.,!?*, etc)',
-  v =>  !/  +/g.test(v) || 'This field don\'t aceept repeated space',
-];
+      const functions = VALIDATIONS[ruleName];
+      for (let ruleFunction of functions) {
+        const isValid = ruleFunction(value, ruleParams);
+        if (isValid !== true) {
+          valid = isValid;
+          break;
+        }
+      }
+    } else {
+      console.error(
+        "Yartu Ui Kit, form validation don't accept to: ",
+        rule,
+      );
+    }
+  }
+  return valid;
+};
+
+export {
+  validate,
+}
 
 export default {
-  REQUIRED,
-  EMAIL,
-  IPv4,
-  VALID_NAME,
-  MAX_LENGTH,
-  MIN_LENGTH,
+  ...VALIDATIONS,
+  validate,
 };
 

@@ -1,6 +1,6 @@
 <script>
 
-import * as VALIDATIONS from './validations';
+import { validate } from './validations';
 
 export default {
   name: 'formItem',
@@ -37,44 +37,7 @@ export default {
       if (!this.ignoreValid) {
         this.errors = [];
         const value = this.modelValue;
-        let valid = true;
-        for (let rule of this.rules) {
-          if (typeof rule === 'function') {
-            const isValid = rule(value);
-            if (isValid !== true) {
-              valid = isValid;
-              break;
-            }
-          } else if (typeof rule === 'string') {
-
-            let ruleName = rule;
-            let ruleParams = [];
-
-            if (rule.includes(':')) {
-              const splitName = rule.split(':');
-              ruleName = splitName[0];
-              ruleParams = splitName.splice(1);
-            }
-
-            if (!VALIDATIONS.default[ruleName]) {
-              continue;
-            }
-
-            const functions = VALIDATIONS.default[ruleName];
-            for (let ruleFunction of functions) {
-              const isValid = ruleFunction(value, ruleParams);
-              if (isValid !== true) {
-                valid = isValid;
-                break;
-              }
-            }
-          } else {
-            console.error(
-              "Yartu Ui Kit, form validation don't accept to: ",
-              rule,
-            );
-          }
-        }
+        const valid = validate(this.rules, value);
         if (valid !== true) {
           this.errors.push(valid);
         }
