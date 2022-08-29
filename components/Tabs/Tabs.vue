@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <nav :class="tabsClass">
+    <nav :class="[tabsClass, stickyPosition]">
       <slot name="prefix"></slot>
       <button
         v-for="tab in tabTitles"
@@ -40,6 +40,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  stickyPosition: {
+    type: String,
+    default: 'top-0',
+  },
 });
 
 const tabsClass = computed(() => {
@@ -49,7 +53,7 @@ const tabsClass = computed(() => {
     'flex flex-col sm:flex-row',
     'border-b border-BORDER',
     {
-      'sticky top-0 z-1': props.sticky,
+      'sticky z-1': props.sticky,
     },
   ];
 });
