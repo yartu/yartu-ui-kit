@@ -71,10 +71,10 @@
           v-for="(item, index) in items"
           :key="index"
           type="button"
-          :class="[optionClass, selectedItems(item) ? 'bg-LIGHTBLUE-4' : '']"
+          :class="[optionClass, isSelected(item) ? 'bg-LIGHTBLUE-4' : '']"
         >
-          <slot name="select-item" :item="item" :selected="selected">
-            <span v-if="selectedItems(item)">
+          <slot name="select-item" :item="item" :selected="selected" :isSelected="isSelected">
+            <span v-if="isSelected(item)">
               <svg
                 width="24"
                 height="24"
