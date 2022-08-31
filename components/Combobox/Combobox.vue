@@ -1,7 +1,7 @@
 <template>
   <div class="relative" ref="target">
     <div class="bg-white">
-      <p :class="labelClass">{{ label }}</p>
+      <p v-if="label != ''" :class="labelClass">{{ label }}</p>
       <button
         ref="comboboxBtn"
         @click="openCombobox"
@@ -34,8 +34,10 @@
           <input
             ref="comboboxInput"
             type="text"
-            class="h-full py-2 bg-transparent focus:outline-none text-BLACK-2 caret-inherit"
-            :class="selected.length < 1 ? 'pl-2' : 'pr-2'"
+            :class="[
+              selected.length < 1 ? 'pl-2' : 'pr-2',
+              inputContainerClass,
+            ]"
             @input="filter($event.target.value)"
             @keydown.delete="deleteItem"
           />
@@ -44,17 +46,21 @@
           @click.stop="open = !open"
           tabindex="0"
           :class="open ? 'rotate-180' : ''"
-          class="sticky top-0 transition-transform duration-300 self-start"
+          class="sticky top-0 transition-transform duration-300"
         >
           <slot name="icon">
             <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path d="M6 10.5L12 16.5L18 10.5L6 10.5Z" fill="#9AA1B4" />
+              <path
+                d="M4 6.5H2.79289L3.64645 7.35355L7.64645 11.3536L8 11.7071L8.35355 11.3536L12.3536 7.35355L13.2071 6.5H12L4 6.5Z"
+                fill="#9AA1B4"
+                stroke="#9AA1B4"
+              />
             </svg>
           </slot>
         </span>
@@ -282,19 +288,30 @@ const labelClass = computed(() => {
   ];
 });
 
+const inputContainerClass = computed(() => {
+  return [
+    'h-full bg-transparent focus:outline-none text-BLACK-2 caret-inherit',
+    {
+      'py-1': props.dense,
+      'py-2': !props.dense,
+    },
+  ];
+});
+
 const optionContainerClass = computed(() => {
   return [
     'fixed z-14',
     'bg-white',
     'border-Border rounded-lg',
     'overflow-y-auto',
-    'mt-2',
     'top-full',
     'transition-all duration-300',
     'w-max',
     {
       'max-h-56 min-h-4 py-2 border': open.value,
       'max-h-0 py-0 border-none': !open.value,
+      'mt-0': props.dense,
+      'mt-2': !props.dense,
     },
   ];
 });
