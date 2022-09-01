@@ -44,7 +44,7 @@
             :placeholder="placeholder"
             @input="filter($event.target.value)"
             @keydown.delete="deleteItem"
-            @keyup="enterSuggest"
+            @keyup="enterSuggestRequest"
           />
         </div>
         <span
@@ -85,8 +85,12 @@
           </div>
         </template>
         <template v-else>
-          <div v-if="filteredItems.length === 0 && props.suggest" class="border-RED bg-YELLOW">
-            Add: "{{ searchText }}"
+          <div v-if="filteredItems.length === 0 && props.suggest && searchText.length > 0" class="border-RED bg-YELLOW">
+            <button
+              @click="choose('searchText')"
+            >
+              Add: "{{ searchText }}"
+            </button>
           </div>
           <button
             @click="choose(item)"
@@ -154,7 +158,7 @@ const optionContainer = ref(null);
 const emit = defineEmits(['update:modelValue', 'search']);
 const props = defineProps({
   modelValue: {
-    type: [Object, Array],
+    type: Array,
     required: true,
   },
   multiple: {
@@ -221,6 +225,10 @@ const props = defineProps({
     type: Boolean,
     required: false,
   },
+  closeAfterSelect: {
+    type: Boolean,
+    required: false,
+  }
 });
 
 onMounted(() => {
@@ -234,9 +242,12 @@ onUnmounted(() => {
 onClickOutside(target, () => (open.value = false));
 
 watchEffect(() => {
-  closedItems.value = selected.value?.filter((i, index) => index < 2);
-  if (selected.value?.length > 2)
-    closedItems.value.push('+ ' + (selected.value.length - 2));
+  if (props.multiple) {
+    closedItems.value = selected.value?.filter((i, index) => index < 2);
+    if (selected.value?.length > 2) {
+      closedItems.value.push('+ ' + (selected.value.length - 2));
+    }
+  }
 });
 
 
@@ -289,12 +300,18 @@ function choose(item) {
       selected.value.splice(index, 1);
     }
   } else {
-    selected.value = item;
+    selected.value = [item];
   }
   comboboxInput.value.value = '';
   filter('');
   focusInput();
-  openCombobox();
+
+  if (props.closeAfterSelect) {
+    open.value = false;
+  } else {
+    openCombobox();
+  }
+
   emit('update:modelValue', selected);
 }
 
@@ -336,7 +353,7 @@ function removeItemByIndex (index) {
   selected.value.splice(index, 1);
 }
 
-function enterSuggest(suggest) {
+function enterSuggestRequest(suggest) {
   const acceptCodes = [188, 13];
   if (props.suggest && suggest.isTrusted && acceptCodes.includes(suggest.keyCode)) {
     const value = suggest.target.value;
@@ -363,9 +380,10 @@ function focusInput() {
 }
 
 async function filter (value) {
+  searchText.value = value;
+  open.value = true;
   if (value && value.length > 0) {
     searching.value = true;
-    searchText.value = value;
     if (!props.filter) {
       open.value = true;
       value = value.toLowerCase();
@@ -415,18 +433,33 @@ const labelClass = computed(() => {
   ];
 });
 
+const openStatus = computed(() => {
+  if (!open.value) {
+    return false;
+  }
+
+  if (filteredItems.value.length > 0) {
+    return true;
+  }
+
+  if (searchText.value.length === 0) {
+    return false;
+  }
+
+  return true;
+});
+
 const optionContainerClass = computed(() => {
   return [
     'fixed z-1001',
     'bg-white',
     'border-Border rounded-lg',
     'overflow-y-auto',
-    'mt-2',
     'top-full',
     'transition-all duration-300',
     'w-max',
     {
-      'max-h-56 min-h-4 py-2 border': open.value,
+      'max-h-56 min-h-4 py-2 border': openStatus.value,
       'max-h-0 py-0 border-none': !open.value,
     },
   ];
