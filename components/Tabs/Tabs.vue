@@ -12,7 +12,7 @@
             'text-BLUE border-b-2 border-BLUE': selectedTab === tab,
           },
         ]"
-        @click="selectedTab = tab"
+        @click="changeTab(tab)"
       >
         {{ tab }}
       </button>
@@ -33,7 +33,12 @@ import { provide, useSlots, ref, computed } from 'vue';
 
 const slots = useSlots();
 const tabTitles = ref(slots.default().map((tab) => tab.props?.title));
-const selectedTab = ref(tabTitles.value[0]);
+
+const selectedTab = ref(
+  tabTitles.value[props.modelValue] || tabTitles.value[0],
+);
+
+const emit = defineEmits(['update:modelValue']);
 
 const props = defineProps({
   sticky: {
@@ -44,7 +49,13 @@ const props = defineProps({
     type: String,
     default: 'top-0',
   },
+  modelValue: null,
 });
+
+const changeTab = (tab) => {
+  selectedTab.value = tab;
+  emit('update:modelValue', tabTitles.value.indexOf(tab));
+};
 
 const tabsClass = computed(() => {
   return [

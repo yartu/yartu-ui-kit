@@ -85,6 +85,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    dense: {
+      type: Boolean,
+      default: false,
+    },
     dropdownTitle: {
       type: String,
       default: '',
@@ -132,8 +136,6 @@ export default {
     },
     inputClass() {
       return [
-        'h-11',
-        'p-3',
         'relative',
         'min-w-[200px]',
         'flex-1',
@@ -148,6 +150,8 @@ export default {
           'border-RED focus:border-RED': this.hasError,
           'border-YELLOW focus:border-YELLOW': this.warning,
           'border-BLUE focus:border-BLUE': this.info,
+          'p-1.5 px-3': this.dense,
+          'p-3 h-11': !this.dense,
         },
       ];
     },
@@ -210,4 +214,3 @@ export default {
   },
 };
 </script>
-<style></style>
