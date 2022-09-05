@@ -25,5 +25,9 @@ defineProps({
     type: String,
     default: 'Tab',
   },
+  value: {
+    type: String,
+    default: '',
+  },
 });
 </script>
