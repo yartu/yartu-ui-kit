@@ -3,18 +3,18 @@
     <nav :class="[tabsClass, stickyPosition]">
       <slot name="prefix"></slot>
       <button
-        v-for="tab in tabTitles"
-        :key="tab"
+        v-for="(tab, index) in tabs"
+        :key="index"
         :class="[
           tabClass,
           {
-            'text-GREY-1 bg-white': selectedTab !== tab,
-            'text-BLUE border-b-2 border-BLUE': selectedTab === tab,
+            'text-GREY-1 bg-white': selectedTab.title !== tab.title,
+            'text-BLUE border-b-2 border-BLUE': selectedTab.title === tab.title,
           },
         ]"
-        @click="changeTab(tab)"
+        @click="changeTab(tab, index)"
       >
-        {{ tab }}
+        {{ tab.title }}
       </button>
       <slot name="postfix"></slot>
     </nav>
@@ -32,14 +32,20 @@ export default {
 import { provide, useSlots, ref, computed } from 'vue';
 
 const slots = useSlots();
+const tabs = ref(slots.default().map((t) => { return {value: t.props?.value, title: t.props?.title} }));
 const tabTitles = ref(slots.default().map((tab) => tab.props?.title));
 
-const selectedTab = ref(
-  tabTitles.value[props.modelValue] || tabTitles.value[0],
-);
+const selectedTab = computed({
+  get: () => {
+    if (typeof props.modelValue === 'string') {
+      return tabs.value.find((t) => t.value === props.modelValue);
+    }
+    return tabs.value[props.modelValue];
+  },
+  set: (val) => val
+});
 
 const emit = defineEmits(['update:modelValue']);
-
 const props = defineProps({
   sticky: {
     type: Boolean,
@@ -52,9 +58,10 @@ const props = defineProps({
   modelValue: null,
 });
 
-const changeTab = (tab) => {
+const changeTab = (tab, index) => {
   selectedTab.value = tab;
-  emit('update:modelValue', tabTitles.value.indexOf(tab));
+  const value = tab.value || index;
+  emit('update:modelValue', value);  
 };
 
 const tabsClass = computed(() => {
