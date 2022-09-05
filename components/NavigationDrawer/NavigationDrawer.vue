@@ -97,6 +97,8 @@ export default {
         'flex flex-col',
         'text-BLACK-2',
         'transition-all duration-300',
+        'overflow-auto',
+        'overscroll-contain',
         'z-10',
         {
           'absolute left-0 bottom-0 top-0 border-r border-BORDER':
