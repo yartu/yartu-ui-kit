@@ -2,7 +2,7 @@
   <transition name="slide-left">
     <div
       class="relative flex flex-wrap break-words bg-WHITE w-full"
-      v-show="title == selectedTab"
+      v-show="title.toLowerCase() == selectedTab.title.toLowerCase()"
     >
       <slot></slot>
     </div>
