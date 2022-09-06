@@ -12,7 +12,6 @@ export default {
       return [
         'flex flex-col',
         'border border-BORDER rounded-lg',
-        'max-w-[268px]',
         'hover:border-BLUE cursor-pointer',
         'transition-all duration-300',
         'hover:shadow-1',

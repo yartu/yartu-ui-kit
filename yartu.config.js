@@ -99,6 +99,7 @@ const globalConfig = {
         '1/4-gap-3': 'calc(24.99% - 0.75rem)',
         '1/3-gap-3': 'calc(32.99% - 0.75rem)',
         46: '11.25rem',
+        60: '3.75rem',
       },
       fontSize: {
         '3xs': '0.5rem',
@@ -210,6 +211,7 @@ const globalConfig = {
         16: '1rem',
         24: '1.5rem',
         32: '2rem',
+        60: '3.75rem',
         96: '6rem',
         120: '7.5rem',
         156: '9.75rem',
