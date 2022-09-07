@@ -51,6 +51,7 @@ import DataTable from './DataTable';
 import Dialog from './Dialog';
 import Tab from './Tab';
 import Tabs from './Tabs';
+import Tree from './Tree';
 
 export {
   Tag,
@@ -59,6 +60,7 @@ export {
   Card,
   Tab,
   Tabs,
+  Tree,
   List,
   Badge,
   Toast,
