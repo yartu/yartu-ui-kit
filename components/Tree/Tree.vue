@@ -5,7 +5,12 @@
         :item="item"
         @selected="updateModelValue"
         :selected="selected"
-      ></TreeNode>
+        :simple="simple"
+      >
+        <template #prefix>
+          <slot name="prefix"></slot>
+        </template>
+      </TreeNode>
     </div>
   </div>
 </template>
@@ -25,6 +30,9 @@ defineProps({
     type: Array,
     required: true,
   },
+  simple: {
+    type: Boolean,
+  },
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -36,5 +44,3 @@ const updateModelValue = (e) => {
   emit('update:modelValue', e.id);
 };
 </script>
-
-<style></style>
