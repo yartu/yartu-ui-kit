@@ -16,7 +16,10 @@
         <path d="M4 7L8 11L12 7L4 7Z" fill="#9AA1B4" />
       </svg>
     </span>
-    {{ item.name }}
+    <slot name="prefix"></slot>
+    <h1 class="truncate">
+      {{ item.name }}
+    </h1>
   </div>
   <div v-show="isOpen" v-if="isFolder" class="ml-8">
     <TreeNode
@@ -24,7 +27,12 @@
       @selected="selectNode($event)"
       :item="node"
       :selected="selected"
-    ></TreeNode>
+      :simple="simple"
+    >
+      <template #prefix>
+        <slot name="prefix"></slot>
+      </template>
+    </TreeNode>
   </div>
 </template>
 
@@ -34,6 +42,7 @@ import { ref, computed, watch } from 'vue';
 const props = defineProps({
   item: Object,
   selected: Object,
+  simple: Boolean,
 });
 
 const emit = defineEmits(['selected']);
@@ -64,11 +73,12 @@ const containerClass = computed(() => {
     'p-2 mb-2',
     'subtitle-4',
     'border rounded-lg',
-    'flex flex-wrap gap-2',
+    'flex gap-2',
     'cursor-pointer',
     {
       'border-BLUE bg-LIGHTBLUE-4': isSelected.value,
-      'border-BORDER bg-LIGHTBLUE-6': !isSelected.value,
+      'border-BORDER bg-LIGHTBLUE-6': !isSelected.value && !props.simple,
+      '!border-0 hover:bg-GREY-3': !isSelected.value && props.simple,
     },
   ];
 });
