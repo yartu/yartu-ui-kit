@@ -1,5 +1,5 @@
 <template>
-  <li :class="containerClass" role="button">
+  <li :class="containerClass" role="button" :disabled="disabled">
     <i
       class="w-6 h-6 text-2xl leading-6"
       v-if="prefix != ''"
@@ -36,6 +36,10 @@ export default {
       type: String,
       default: '',
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     containerClass() {
@@ -48,6 +52,8 @@ export default {
         'hover:bg-GREY-3',
         {
           'bg-GREY-3': this.active,
+          'select-none cursor-not-allowed opacity-20 hover:!bg-white pointer-events-none':
+            this.disabled,
         },
       ];
     },

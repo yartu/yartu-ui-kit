@@ -14,7 +14,8 @@
         </div>
       </transition>
     </teleport>
-    <slot name="activator" :open="openDropdown"> </slot>
+    <slot name="activator" :open="openDropdown" :context-menu="openContextMenu">
+    </slot>
   </div>
 </template>
 
@@ -62,9 +63,30 @@ function openDropdown() {
   calculatePosition();
 }
 
-const calculatePosition = () => {
+function openContextMenu(pos = undefined) {
+  open.value = false;
+  if (pos !== undefined) {
+    calculatePosition(pos);
+  } else {
+    calculatePosition();
+  }
+  open.value = true;
+}
+
+defineExpose({
+  openContextMenu,
+});
+
+const calculatePosition = (dropdownContainer = undefined) => {
   // improve this @aziz
-  let dropdownContainer = target.value.getBoundingClientRect();
+  if (dropdownContainer === undefined) {
+    dropdownContainer = target.value.getBoundingClientRect();
+  } else {
+    dropdownContainer.top = dropdownContainer.y;
+    dropdownContainer.bottom = dropdownContainer.y;
+    dropdownContainer.left = dropdownContainer.x;
+    dropdownContainer.right = dropdownContainer.x;
+  }
   if (props.top) {
     dropdownContent.value.style.top = dropdownContainer.top - 12 + 'px';
   } else {
