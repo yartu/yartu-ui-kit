@@ -65,7 +65,7 @@ export default {
       default: false,
     },
     icon: {
-      type: String,
+      type: [String, Array],
       default: '',
     },
     size: {
