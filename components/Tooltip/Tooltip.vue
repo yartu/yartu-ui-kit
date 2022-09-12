@@ -2,16 +2,16 @@
   <div
     ref="target"
     class="tooltip-container relative inline-block"
-    @mouseover="setTooltipStatus"
-    @mouseleave="setTooltipStatus"
+    @mouseover.native="tooltipOpen"
+    @mouseleave.native="tooltipClose"
   >
     <slot></slot>
     <teleport to="body">
       <transition name="fade">
         <div ref="tooltip" :class="tooltipContainer">
-          <span v-show="tooltipStatus" :class="tooltipContent">
+          <div v-show="tooltipStatus" :class="tooltipContent">
             <slot name="tooltip"></slot>
-          </span>
+          </div>
         </div>
       </transition>
     </teleport>
@@ -59,9 +59,12 @@ const tooltip = ref(null);
 const target = ref(null);
 const tooltipStatus = ref(false);
 
-const setTooltipStatus = () => {
-  tooltipStatus.value = !tooltipStatus.value;
+const tooltipOpen = () => {
+  tooltipStatus.value = true;
   calculatePosition();
+};
+const tooltipClose = () => {
+  tooltipStatus.value = false;
 };
 
 const calculatePosition = () => {
@@ -71,7 +74,7 @@ const calculatePosition = () => {
   if (props.bottom) {
     tooltipStyle.top = container.bottom + 16 + 'px';
   } else if (props.top) {
-    tooltipStyle.top = container.top - 40 + 'px';
+    tooltipStyle.top = container.top - 16 + 'px';
   }
   if (props.right) {
     tooltipStyle.left = container.right + 'px';
@@ -95,6 +98,7 @@ const tooltipContainer = computed(() => {
   return [
     'fixed z-1001',
     {
+      '-translate-y-full': props.top,
       '-translate-x-1/2':
         (props.top && props.center) || (props.bottom && props.center),
       '-translate-x-full':
