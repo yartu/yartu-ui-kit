@@ -79,7 +79,7 @@ defineExpose({
 
 const calculatePosition = (dropdownContainer = undefined) => {
   // improve this @aziz
-  if (dropdownContainer === undefined) {
+  if (dropdownContainer === undefined || dropdownContainer.type === 'resize') {
     dropdownContainer = target.value.getBoundingClientRect();
   } else {
     dropdownContainer.top = dropdownContainer.y;
