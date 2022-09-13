@@ -44,5 +44,6 @@ const selected = ref({});
 const updateModelValue = (e) => {
   selected.value = e;
   emit('update:modelValue', e.id);
+  emit('onSelect', e.id);
 };
 </script>
