@@ -20,15 +20,39 @@
             @keypress="focusInput"
             class="combobox-selected-items focus:opacity-40 focus:outline-none"
           >
-            <slot name="selection" :item="item" :index="index" :close="removeItemByIndex">
+            <slot
+              name="selection"
+              :item="item"
+              :index="index"
+              :close="removeItemByIndex"
+            >
               <p class="w-full">
                 <Tag v-if="chip" tertiary outline class="text-xs">
                   {{ item }}
                   <div v-if="closableChip">
-                    <button
-                      @click="removeItemByIndex(index)"
-                    >
-                      X
+                    <button @click="removeItemByIndex(index)">
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 18 18"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M5.25 5.25L12.75 12.75"
+                          stroke="#9AA1B4"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M5.25 12.75L12.75 5.25"
+                          stroke="#9AA1B4"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
                     </button>
                   </div>
                 </Tag>
@@ -85,19 +109,48 @@
         <template v-if="searching">
           <!-- TODO: @aziz fix me! -->
           <div class="p-2">
-            <h1 class="body-1">
-              LOADING..
-            </h1>
+            <svg
+              class="animate-spin -ml-1 mr-3 h-5 w-5 text-BLUE"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
           </div>
         </template>
         <template v-else>
-          <div v-if="filteredItems.length === 0 && props.suggest && searchText.length > 0" class="border-RED bg-YELLOW">
-            <button
-              @click="choose('searchText')"
+          <slot
+            name="no-data"
+            v-if="
+              filteredItems.length === 0 &&
+              props.suggest &&
+              searchText.length > 0
+            "
+            :search="searchText"
+            :select="enterSuggestRequest"
+          >
+            <Tag
+              tertiary
+              outline
+              class="text-xs mx-1"
+              @click="enterSuggestRequest(searchText)"
             >
-              Add: "{{ searchText }}"
-            </button>
-          </div>
+              {{ searchText }}
+            </Tag>
+          </slot>
           <button
             @click="choose(item)"
             v-for="(item, index) in filteredItems"
@@ -144,7 +197,15 @@ export default {
 </script>
 
 <script setup>
-import { ref, computed, watchEffect, onMounted, onUnmounted, onUpdated, nextTick } from 'vue';
+import {
+  ref,
+  computed,
+  watchEffect,
+  onMounted,
+  onUnmounted,
+  onUpdated,
+  nextTick,
+} from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { validate } from '../FormItem/validations';
 
@@ -157,7 +218,7 @@ const closedItems = ref(null);
 const comboboxInput = ref(null);
 const comboboxBtn = ref(null);
 const filteredItems = ref(props.items);
-const searchText= ref('');
+const searchText = ref('');
 const searching = ref(false);
 const optionContainer = ref(null);
 
@@ -234,7 +295,7 @@ const props = defineProps({
   closeAfterSelect: {
     type: Boolean,
     required: false,
-  }
+  },
 });
 
 onMounted(() => {
@@ -255,7 +316,6 @@ watchEffect(() => {
     }
   }
 });
-
 
 const scrollToEnd = () => {
   comboboxBtn.value.scroll({
@@ -296,7 +356,9 @@ function choose(item) {
   if (props.multiple) {
     let index = -1;
     if (props.itemKey) {
-      index = selected.value.findIndex((s) => s[props.itemKey] === item[props.itemKey]);
+      index = selected.value.findIndex(
+        (s) => s[props.itemKey] === item[props.itemKey],
+      );
     } else {
       index = selected.value.findIndex((s) => s === item);
     }
@@ -325,12 +387,14 @@ function isSelected(item) {
   if (props.multiple) {
     let index = -1;
     if (props.itemKey) {
-      index = selected.value.findIndex((s) => s[props.itemKey] === item[props.itemKey]);
+      index = selected.value.findIndex(
+        (s) => s[props.itemKey] === item[props.itemKey],
+      );
     } else {
       index = selected.value.findIndex((s) => s === item);
     }
     return index > -1;
-  } else if (props.itemKey){
+  } else if (props.itemKey) {
     return selected.value[props.itemKey] === item[props.itemKey];
   } else {
     return selected.value === item;
@@ -355,15 +419,19 @@ function deleteItem(key) {
   }
 }
 
-function removeItemByIndex (index) {
+function removeItemByIndex(index) {
   selected.value.splice(index, 1);
 }
 
 function enterSuggestRequest(suggest) {
   const acceptCodes = [188, 13];
-  if (props.suggest && suggest.isTrusted && acceptCodes.includes(suggest.keyCode)) {
+  if (
+    props.suggest &&
+    suggest.isTrusted &&
+    acceptCodes.includes(suggest.keyCode)
+  ) {
     const value = suggest.target.value;
-    if (value.length > 0)  {
+    if (value.length > 0) {
       if (props.rules) {
         const valid = validate(props.rules, value);
         if (props.cleanUnvalidSuggest && valid !== true) {
@@ -378,6 +446,19 @@ function enterSuggestRequest(suggest) {
         choose(value);
       }
     }
+  } else if (props.rules) {
+    const value = suggest;
+    if (value.length > 0) {
+      const valid = validate(props.rules, suggest);
+      if (props.cleanUnvalidSuggest && valid !== true) {
+        comboboxInput.value.value = '';
+      } else {
+        const item = { isSuggest: true };
+        item[props.itemText || 'value'] = value;
+        item.valid = valid;
+        choose(item);
+      }
+    }
   }
 }
 
@@ -385,7 +466,7 @@ function focusInput() {
   comboboxInput.value.focus();
 }
 
-async function filter (value) {
+async function filter(value) {
   searchText.value = value;
   open.value = true;
   if (value && value.length > 0) {
@@ -464,7 +545,6 @@ const inputContainerClass = computed(() => {
     },
   ];
 });
-
 
 const optionContainerClass = computed(() => {
   return [
