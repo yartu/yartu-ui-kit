@@ -6,6 +6,7 @@
         @selected="updateModelValue"
         :selected="selected"
         :simple="simple"
+        :expanded="expanded"
       >
         <template #prefix>
           <slot name="prefix"></slot>
@@ -33,6 +34,7 @@ defineProps({
   simple: {
     type: Boolean,
   },
+  expanded: Boolean,
 });
 
 const emit = defineEmits(['update:modelValue']);

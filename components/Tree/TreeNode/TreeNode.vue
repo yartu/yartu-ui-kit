@@ -1,7 +1,7 @@
 <template>
   <div @click.stop="selectNode(item)" :class="containerClass">
     <span
-      v-if="isFolder"
+      v-if="isFolder && !expanded"
       @click.stop="toggle"
       class="w-5 h-5 rounded-full hover:bg-GREY-8 flex items-center justify-center"
       :class="{ '-rotate-90': !isOpen }"
@@ -21,13 +21,14 @@
       {{ item.name }}
     </h1>
   </div>
-  <div v-show="isOpen" v-if="isFolder" class="ml-8">
+  <div v-show="isOpen || expanded" v-if="isFolder" class="ml-8">
     <TreeNode
       v-for="node in item.children"
       @selected="selectNode($event)"
       :item="node"
       :selected="selected"
       :simple="simple"
+      :expanded="expanded"
     >
       <template #prefix>
         <slot name="prefix"></slot>
@@ -43,6 +44,7 @@ const props = defineProps({
   item: Object,
   selected: Object,
   simple: Boolean,
+  expanded: Boolean,
 });
 
 const emit = defineEmits(['selected']);
@@ -73,7 +75,7 @@ const containerClass = computed(() => {
     'p-2 mb-2',
     'subtitle-4',
     'border rounded-lg',
-    'flex gap-2',
+    'flex gap-2 items-center',
     'cursor-pointer',
     {
       'border-BLUE bg-LIGHTBLUE-4': isSelected.value,
