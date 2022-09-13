@@ -37,7 +37,7 @@ defineProps({
   expanded: Boolean,
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['onSelect', 'update:modelValue']);
 
 const selected = ref({});
 
