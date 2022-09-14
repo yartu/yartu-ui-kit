@@ -2,8 +2,15 @@
   <SimpleTable>
     <template #thead>
       <tr class="text-BLACK-2">
-        <th v-if="props.selectable" class="p-2.5 text-xs whitespace-nowrap font-semibold">
-          <Checkbox @click="selectAll" :checked="allChecked" :indeterminate="indeterminate"></Checkbox>
+        <th
+          v-if="props.selectable"
+          class="p-2.5 text-xs whitespace-nowrap font-semibold"
+        >
+          <Checkbox
+            @click="selectAll"
+            :checked="allChecked"
+            :indeterminate="indeterminate"
+          ></Checkbox>
         </th>
         <th
           v-for="header in props.headers"
@@ -17,15 +24,22 @@
     <template #tbody>
       <tr
         @click.stop="openDetail(item)"
-        class="border-y border-BORDER text-BLACK-2 relative hover:bg-LIGHTBLUE-4 cursor-pointer"
+        class="border-y border-BORDER text-BLACK-2 hover:bg-LIGHTBLUE-4 cursor-pointer"
         :class="{
-          'bg-LIGHTBLUE-4 before:w-0.5 before:bg-BLUE before:absolute before:inset-y-0 before:left-0': isActive(item),
+          'bg-LIGHTBLUE-4': isActive(item),
         }"
         v-for="(item, index) in props.items"
         :key="index"
       >
-        <td v-if="props.selectable" class="p-2.5 text-xs w-6 whitespace-nowrap font-semibold">
-          <y-checkbox @click.native.stop='' v-model="selectedList" :input-value="item[inputValue]"></y-checkbox>
+        <td
+          v-if="props.selectable"
+          class="p-2.5 text-xs w-6 whitespace-nowrap font-semibold"
+        >
+          <y-checkbox
+            @click.native.stop=""
+            v-model="selectedList"
+            :input-value="item[inputValue]"
+          ></y-checkbox>
         </td>
         <td
           v-for="header in props.headers"
@@ -33,7 +47,11 @@
           class="p-2.5 text-xs whitespace-nowrap font-semibold max-w-[10rem] truncate"
           :class="{ 'text-right': header === 'actions' }"
         >
-          <slot :name="`y-table-${header.value}`" :item="item" :isActive="isActive">
+          <slot
+            :name="`y-table-${header.value}`"
+            :item="item"
+            :isActive="isActive"
+          >
             {{ item[header.value] || '-' }}
           </slot>
         </td>
@@ -42,15 +60,13 @@
   </SimpleTable>
 </template>
 
-
 <script>
-  export default {
-    name: 'y-data-table',
-  };
+export default {
+  name: 'y-data-table',
+};
 </script>
 
 <script setup>
-
 import { ref, computed } from 'vue';
 import { SimpleTable } from '../SimpleTable';
 import { Checkbox } from '../Checkbox';

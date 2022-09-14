@@ -280,7 +280,7 @@ const props = defineProps({
     type: Array,
     required: false,
   },
-  cleanUnvalidSuggest: {
+  cleanInvalidSuggest: {
     type: Boolean,
     default: false,
   },
@@ -434,8 +434,8 @@ function enterSuggestRequest(suggest) {
     if (value.length > 0) {
       if (props.rules) {
         const valid = validate(props.rules, value);
-        if (props.cleanUnvalidSuggest && valid !== true) {
-          comboboxInput.value.value = '';
+        if (props.cleanInvalidSuggest && valid !== true) {
+          // comboboxInput.value.value = '';
         } else {
           const item = { isSuggest: true };
           item[props.itemText || 'value'] = value;
@@ -450,8 +450,8 @@ function enterSuggestRequest(suggest) {
     const value = suggest;
     if (value.length > 0) {
       const valid = validate(props.rules, suggest);
-      if (props.cleanUnvalidSuggest && valid !== true) {
-        comboboxInput.value.value = '';
+      if (props.cleanInvalidSuggest && valid !== true) {
+        // comboboxInput.value.value = '';
       } else {
         const item = { isSuggest: true };
         item[props.itemText || 'value'] = value;
