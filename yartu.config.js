@@ -212,6 +212,7 @@ const globalConfig = {
         24: '1.5rem',
         32: '2rem',
         60: '3.75rem',
+        84: '5.25rem',
         96: '6rem',
         120: '7.5rem',
         156: '9.75rem',
