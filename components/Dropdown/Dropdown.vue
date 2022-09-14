@@ -6,7 +6,7 @@
           ref="dropdownContent"
           v-show="dropdownStatus"
           :style="bgStyle"
-          :class="[contentClass, dropdownStatus ? 'flex' : 'hidden']"
+          :class="[classes, contentClass, dropdownStatus ? 'flex' : 'hidden']"
         >
           <ol>
             <slot />
@@ -55,6 +55,9 @@ const props = defineProps({
   top: {
     type: Boolean,
     default: false,
+  },
+  classes: {
+    type: Array,
   },
 });
 

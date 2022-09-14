@@ -8,8 +8,9 @@
         :class="[
           tabClass,
           {
-            'text-GREY-1 bg-white': selectedTab.title !== tab.title,
-            'text-BLUE border-b-2 border-BLUE': selectedTab.title === tab.title,
+            'text-GREY-1 bg-white': selectedTab?.title !== tab?.title,
+            'text-BLUE border-b-2 border-BLUE':
+              selectedTab?.title === tab?.title,
           },
         ]"
         @click="changeTab(tab, index)"
@@ -32,7 +33,11 @@ export default {
 import { provide, useSlots, ref, computed } from 'vue';
 
 const slots = useSlots();
-const tabs = ref(slots.default().map((t) => { return {value: t.props?.value, title: t.props?.title} }));
+const tabs = ref(
+  slots.default().map((t) => {
+    return { value: t.props?.value, title: t.props?.title };
+  }),
+);
 const tabTitles = ref(slots.default().map((tab) => tab.props?.title));
 
 const selectedTab = computed({
@@ -42,7 +47,7 @@ const selectedTab = computed({
     }
     return tabs.value[props.modelValue];
   },
-  set: (val) => val
+  set: (val) => val,
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -61,7 +66,7 @@ const props = defineProps({
 const changeTab = (tab, index) => {
   selectedTab.value = tab;
   const value = tab.value || index;
-  emit('update:modelValue', value);  
+  emit('update:modelValue', value);
 };
 
 const tabsClass = computed(() => {
