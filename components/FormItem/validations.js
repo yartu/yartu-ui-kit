@@ -1,25 +1,31 @@
 const VALIDATIONS = {
-  REQUIRED: [
-    v => !!v.trim() || 'Required',
-  ],
+  REQUIRED: [(v) => !!v.trim() || 'Required'],
   EMAIL: [
-    v => !!v || 'E-mail is required',
-    v => /.+@.+/.test(v) || 'E-mail must be valid',
+    (v) => !!v || 'E-mail is required',
+    (v) => /.+@.+/.test(v) || 'E-mail must be valid',
   ],
   IPv4: [
-    v => !!v || 'Required',
-    v => /^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)(\.(?!$)|$)){4}$/.test(v) || 'IP must be valid',
+    (v) => !!v || 'Required',
+    (v) =>
+      /^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)(\.(?!$)|$)){4}$/.test(v) ||
+      'IP must be valid',
   ],
   MAX_LENGTH: [
-    (v, param) => (!!v.trim() && v.trim().length < param) || `This field shoul be max ${param}`,
+    (v, param) =>
+      (!!v.trim() && v.trim().length < param) ||
+      `This field should be max ${param}`,
   ],
   MIN_LENGTH: [
-    (v, param) => (!!v.trim() && v.trim().length > param) || `This field shoul be min ${param}`,
+    (v, param) =>
+      (!!v.trim() && v.trim().length >= param) ||
+      `This field should be min ${param}`,
   ],
   VALID_NAME: [
-    v =>  (v && v[0] !== ' ') || 'Not start with space',
-    v =>  !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(v) || 'Name is not valid, don\'t accept special chracrer (.,!?*, etc)',
-    v =>  !/  +/g.test(v) || 'This field don\'t aceept repeated space',
+    (v) => (v && v[0] !== ' ') || 'Not start with space',
+    (v) =>
+      !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(v) ||
+      "Name is not valid, don't accept special chracrer (.,!?*, etc)",
+    (v) => !/  +/g.test(v) || "This field don't aceept repeated space",
   ],
 };
 
@@ -33,7 +39,6 @@ const validate = (rules, value) => {
         break;
       }
     } else if (typeof rule === 'string') {
-
       let ruleName = rule;
       let ruleParams = [];
 
@@ -56,21 +61,15 @@ const validate = (rules, value) => {
         }
       }
     } else {
-      console.error(
-        "Yartu Ui Kit, form validation don't accept to: ",
-        rule,
-      );
+      console.error("Yartu Ui Kit, form validation don't accept to: ", rule);
     }
   }
   return valid;
 };
 
-export {
-  validate,
-}
+export { validate };
 
 export default {
   ...VALIDATIONS,
   validate,
 };
-
