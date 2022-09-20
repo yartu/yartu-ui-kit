@@ -17,18 +17,17 @@
       </svg>
     </span>
     <slot name="prefix"></slot>
-    <h1 class="truncate">
-      {{ item.name }}
-    </h1>
+    <h1 class="truncate">{{ item.name }}</h1>
   </div>
   <div v-show="isOpen || expanded" v-if="isFolder" class="ml-8">
     <TreeNode
-      v-for="node in item.children"
+      v-for="node in childFolders"
       @selected="selectNode($event)"
       :item="node"
       :selected="selected"
       :simple="simple"
       :expanded="expanded"
+      :folderKey="folderKey"
     >
       <template #prefix>
         <slot name="prefix"></slot>
@@ -45,6 +44,7 @@ const props = defineProps({
   selected: Object,
   simple: Boolean,
   expanded: Boolean,
+  folderKey: undefined,
 });
 
 const emit = defineEmits(['selected']);
@@ -62,12 +62,27 @@ const selectNode = (e) => {
 watch(
   () => props.selected,
   (newVal) => {
-    isSelected.value = props.item.id === newVal.id ? true : false;
+    if (props.folderKey) {
+      isSelected.value =
+        props.item[props.folderKey] === newVal[props.folderKey] ? true : false;
+    } else {
+      isSelected.value = props.item.id === newVal.id ? true : false;
+    }
   },
 );
 
+const childFolders = computed(() => {
+  return props.folderKey ? props.item[props.folderKey] : props.item.children;
+});
+
 const isFolder = computed(() => {
-  return props.item.children && props.item.children.length;
+  let folder = false;
+  if (props.folderKey) {
+    folder = props.item[props.folderKey] && props.item[props.folderKey].length;
+  } else {
+    folder = props.item.children && props.item.children.length;
+  }
+  return folder;
 });
 
 const containerClass = computed(() => {

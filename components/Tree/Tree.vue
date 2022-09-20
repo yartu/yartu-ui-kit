@@ -7,6 +7,7 @@
         :selected="selected"
         :simple="simple"
         :expanded="expanded"
+        :folderKey="folderKey"
       >
         <template #prefix>
           <slot name="prefix"></slot>
@@ -26,7 +27,7 @@ import { ref } from 'vue';
 
 import TreeNode from './TreeNode/TreeNode.vue';
 
-defineProps({
+const props = defineProps({
   items: {
     type: Array,
     required: true,
@@ -34,6 +35,8 @@ defineProps({
   simple: {
     type: Boolean,
   },
+  itemKey: undefined,
+  folderKey: undefined,
   expanded: Boolean,
 });
 
@@ -42,8 +45,14 @@ const emit = defineEmits(['onSelect', 'update:modelValue']);
 const selected = ref({});
 
 const updateModelValue = (e) => {
+  const key = props.itemKey;
+  if (key) {
+    emit('update:modelValue', e[key]);
+    emit('onSelect', e[key]);
+  } else {
+    emit('update:modelValue', e.id);
+    emit('onSelect', e.id);
+  }
   selected.value = e;
-  emit('update:modelValue', e.id);
-  emit('onSelect', e.id);
 };
 </script>
