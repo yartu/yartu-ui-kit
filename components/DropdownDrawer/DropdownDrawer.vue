@@ -102,7 +102,7 @@ export default {
     titleClass() {
       return [
         'ml-2',
-        'text-sm font-semibold text-BLACK-2',
+        'text-sm font-semibold text-BLACK-2 capitalize',
         {
           'text-BLUE': this.active,
         },
