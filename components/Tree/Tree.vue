@@ -48,7 +48,7 @@ const updateModelValue = (e) => {
   const key = props.itemKey;
   if (key) {
     emit('update:modelValue', e[key]);
-    emit('onSelect', e[key]);
+    emit('onSelect', { [key]: e[key], name: e.name });
   } else {
     emit('update:modelValue', e.id);
     emit('onSelect', e.id);
