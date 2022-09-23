@@ -7,7 +7,7 @@
       <div class="mr-4">
         <button
           :class="paginationItemClass"
-          @click.prevent="changePage(prevPage)"
+          @click.prevent="changePage(current - 1)"
         >
           <svg
             width="16"
@@ -66,7 +66,7 @@
       <div class="ml-4">
         <button
           :class="paginationItemClass"
-          @click.prevent="changePage(nextPage)"
+          @click.prevent="changePage(current + 1)"
         >
           <svg
             width="16"
@@ -86,7 +86,7 @@
       </div>
     </div>
     <div v-else class="flex flex-wrap">
-      <y-button circle size="xs" @click.prevent="changePage(prevPage)">
+      <y-button circle size="xs" @click.prevent="changePage(current - 1)">
         <svg
           width="16"
           height="16"
@@ -97,7 +97,7 @@
           <path d="M9 12L5 8L9 4L9 12Z" fill="#9AA1B4" />
         </svg>
       </y-button>
-      <y-button circle size="xs" @click.prevent="changePage(nextPage)">
+      <y-button circle size="xs" @click.prevent="changePage(current + 1)">
         <svg
           width="16"
           height="16"
@@ -116,6 +116,11 @@
 import Button from '../Button/Button.vue';
 export default {
   name: 'y-pagination',
+  data() {
+    return {
+      current: this.page,
+    };
+  },
   props: {
     total: {
       type: Number,
@@ -136,14 +141,10 @@ export default {
     page: {
       type: Number,
       required: false,
-      default: 1,
     },
   },
   components: {
     'y-button': Button,
-  },
-  created() {
-    this.current = this.page;
   },
   methods: {
     hasFirst() {
@@ -163,6 +164,11 @@ export default {
         this.current = page;
         this.$emit('page-changed', page);
       }
+    },
+  },
+  watch: {
+    page(newVal) {
+      this.current = newVal;
     },
   },
   computed: {
@@ -185,12 +191,6 @@ export default {
     },
     totalPages() {
       return Math.ceil(this.total / this.perPage);
-    },
-    nextPage() {
-      return this.current + 1;
-    },
-    prevPage() {
-      return this.current - 1;
     },
     paginationClass() {
       return ['flex', 'gap-1', 'items-center'];
