@@ -57,7 +57,7 @@ const props = defineProps({
     default: false,
   },
   classes: {
-    type: Array || String,
+    type: [Array, String],
   },
 });
 
