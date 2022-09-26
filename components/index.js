@@ -52,6 +52,7 @@ import Dialog from './Dialog';
 import Tab from './Tab';
 import Tabs from './Tabs';
 import Tree from './Tree';
+import NavigationTree from './NavigationTree';
 
 export {
   Tag,
@@ -98,6 +99,7 @@ export {
   DropdownItem,
   InnerDropdown,
   ListItemGroup,
+  NavigationTree,
   DropdownDrawer,
   NavigationDrawer,
   CollapsiblePanel,
