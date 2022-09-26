@@ -52,6 +52,7 @@ import Dialog from './Dialog';
 import Tab from './Tab';
 import Tabs from './Tabs';
 import Tree from './Tree';
+import Skeleton from './Skeleton';
 
 export {
   Tag,
@@ -108,4 +109,5 @@ export {
   YartuModal,
   DataTable,
   Dialog,
+  Skeleton,
 };
