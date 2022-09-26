@@ -2,12 +2,13 @@
   <div>
     <div v-for="(item, index) of items" :key="index">
       <TreeNode
-        :item="item"
         @selected="updateModelValue"
+        :item="item"
         :selected="selected"
         :simple="simple"
         :expanded="expanded"
         :folderKey="folderKey"
+        :itemKey="itemKey"
       >
         <template #prefix>
           <slot name="prefix"></slot>
@@ -37,12 +38,11 @@ const props = defineProps({
   },
   itemKey: undefined,
   folderKey: undefined,
+  selected: Object,
   expanded: Boolean,
 });
 
 const emit = defineEmits(['onSelect', 'update:modelValue']);
-
-const selected = ref({});
 
 const updateModelValue = (e) => {
   const key = props.itemKey;
@@ -53,6 +53,6 @@ const updateModelValue = (e) => {
     emit('update:modelValue', e.id);
     emit('onSelect', e.id);
   }
-  selected.value = e;
+  // selected.value = e;
 };
 </script>
