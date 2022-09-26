@@ -53,6 +53,7 @@ import Tab from './Tab';
 import Tabs from './Tabs';
 import Tree from './Tree';
 import Skeleton from './Skeleton';
+import NavigationTree from './NavigationTree';
 
 export {
   Tag,
@@ -99,6 +100,7 @@ export {
   DropdownItem,
   InnerDropdown,
   ListItemGroup,
+  NavigationTree,
   DropdownDrawer,
   NavigationDrawer,
   CollapsiblePanel,
