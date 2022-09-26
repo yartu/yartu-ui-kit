@@ -4,7 +4,7 @@
       v-if="prefix != ''"
       :class="[prefix, prefixClass]"
       aria-hidden="true"
-    >a</i>
+    ></i>
     <slot />
   </button>
 </template>
