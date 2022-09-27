@@ -8,8 +8,8 @@
   }
 
   ::-webkit-scrollbar {
-    width: .4em;
-    height: .4em;
+    width: .25em;
+    height: .25em;
   }
 
   ::-webkit-scrollbar-track {
@@ -17,8 +17,7 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    border-radius: 1rem;
-    border: .4em solid #9aa1b4;
+    border: .25em solid #9aa1b4;
   }
 
   .heading-1 {
