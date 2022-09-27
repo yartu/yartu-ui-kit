@@ -2,11 +2,13 @@
   <div>
     <div v-for="(item, index) of items" :key="index">
       <TreeNode
-        :item="item"
         @selected="updateModelValue"
+        @onDrop="emit('onDrop', $event)"
+        :item="item"
         :selected="selected"
         :expanded="expanded"
         :folderKey="folderKey"
+        :itemKey="itemKey"
       >
         <template #prefix>
           <slot name="prefix"></slot>
@@ -22,8 +24,6 @@ export default {
 </script>
 
 <script setup>
-import { ref } from 'vue';
-
 import TreeNode from './TreeNode/TreeNode.vue';
 
 const props = defineProps({
@@ -33,12 +33,11 @@ const props = defineProps({
   },
   itemKey: undefined,
   folderKey: undefined,
+  selected: Object,
   expanded: Boolean,
 });
 
-const emit = defineEmits(['onSelect', 'update:modelValue']);
-
-const selected = ref({});
+const emit = defineEmits(['onSelect', 'update:modelValue', 'onDrop']);
 
 const updateModelValue = (e) => {
   const key = props.itemKey;
@@ -49,6 +48,6 @@ const updateModelValue = (e) => {
     emit('update:modelValue', e.id);
     emit('onSelect', e.id);
   }
-  selected.value = e;
+  // selected.value = e;
 };
 </script>
