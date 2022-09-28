@@ -2,13 +2,26 @@
   <div v-if="type.includes('title')" role="status" class="animate-pulse">
       <div v-for="i in skeletonCount" :key="i" class="h-4 bg-gray-300 rounded-full dark:bg-gray-700 w-[240px] mt-0"></div>
   </div>
-  <div v-if="type.includes('email-list')" role="status" class="p-4 space-y-4 w-full h-full rounded divide-y divide-gray-200 shadow animate-pulse dark:divide-gray-700 dark:border-gray-700">
-    <div class="flex justify-between items-center mt-2" v-for="i in skeletonCount" :key="i">
-        <div>
-            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+  <div
+    v-else-if="type.includes('email-list')"
+    role="status"
+    class="w-full h-full rounded"
+  >
+    <div
+      class="flex gap-2 py-2.5 px-3 justify-between items-center border-b border-BORDER animate-pulse"
+      v-for="i in skeletonCount"
+      :key="i"
+    >
+      <div class="w-4 h-4 bg-BORDER rounded"></div>
+      <div class="w-9 h-9 bg-BORDER rounded-full"></div>
+      <div class="flex flex-1 flex-col gap-1">
+        <div class="w-full flex justify-between mb-1">
+          <div class="w-1/2 h-4 bg-BORDER rounded-full"></div>
+          <div class="w-1/3 h-4 bg-BORDER rounded-full"></div>
         </div>
-        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+        <div class="w-1/3 h-3 bg-BORDER rounded-full"></div>
+        <div class="w-2/3 h-3 bg-BORDER rounded-full"></div>
+      </div>
     </div>
   </div>
   <div v-else-if="type === 'email-content'" role="status" class="p-8 w-full rounded animate-pulse dark:border-gray-700">
@@ -31,13 +44,12 @@
 </template>
 
 <script>
-  export default {
-    name: 'y-skeleton',
-  };
+export default {
+  name: 'y-skeleton',
+};
 </script>
 
 <script setup>
-
 import { computed } from 'vue';
 
 // TODO : Add more template @aziz
@@ -45,7 +57,7 @@ const porps = defineProps({
   type: {
     type: String,
     required: true,
-  }
+  },
 });
 
 const skeletonCount = computed(() => {
@@ -55,5 +67,4 @@ const skeletonCount = computed(() => {
   }
   return 1;
 });
-
 </script>
