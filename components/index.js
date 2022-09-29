@@ -29,6 +29,7 @@ import SmallCard from './SmallCard';
 import ShapedCard from './ShapedCard';
 import Pagination from './Pagination';
 import Breadcrumb from './Breadcrumb';
+import Calendar from './Calendar';
 import CurtainMenu from './CurtainMenu';
 import SimpleTable from './SimpleTable';
 import ProgressBar from './ProgressBar';
@@ -77,6 +78,7 @@ export {
   Loading,
   ListBox,
   Dropdown,
+  Calendar,
   ListItem,
   Checkbox,
   Combobox,
