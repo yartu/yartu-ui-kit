@@ -4,6 +4,7 @@
       <TreeNode
         @selected="updateModelValue"
         @onDrop="emit('onDrop', $event)"
+        @onTreeContext="emit('onTreeContext', $event)"
         :item="item"
         :selected="selected"
         :expanded="expanded"
@@ -37,7 +38,7 @@ const props = defineProps({
   expanded: Boolean,
 });
 
-const emit = defineEmits(['onSelect', 'update:modelValue', 'onDrop']);
+const emit = defineEmits(['onSelect', 'update:modelValue', 'onTreeContext', 'onDrop']);
 
 const updateModelValue = (e) => {
   const key = props.itemKey;
