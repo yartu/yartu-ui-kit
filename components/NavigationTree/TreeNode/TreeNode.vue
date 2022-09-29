@@ -5,6 +5,7 @@
     @drop.stop="emit('onDrop', {item, $event})"
     @dragover.stop="onDragOver"
     @dragleave.stop="onDragLeave"
+    @contextmenu.prevent.stop="emit('onTreeContext', { $event, item })"
   >
     <span
       v-if="isFolder && !expanded"
@@ -34,6 +35,7 @@
       v-for="node in childFolders"
       @selected="selectNode($event)"
       @onDrop="emit('onDrop', $event)"
+      @onTreeContext="emit('onTreeContext', $event)"
       :item="node"
       :itemKey="itemKey"
       :selected="selected"
@@ -63,7 +65,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['selected', 'onDrop']);
+const emit = defineEmits(['selected', 'onTreeContext', 'onDrop']);
 
 const isOpenCheck = (item) => {
   if (props.selected) {
