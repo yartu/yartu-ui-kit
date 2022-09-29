@@ -22,7 +22,7 @@
           <tr v-for="x in 5">
             <td v-for="y in 7">
               <button
-                class="w-7 h-7 p-0"
+                class="w-7 h-7 p-0 relative"
                 :class="
                   x * y == 14 ? 'yartu-date-picker-table-current-date' : ''
                 "
