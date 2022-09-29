@@ -17,7 +17,9 @@
       </svg>
     </span>
     <slot name="prefix"></slot>
-    <h1 class="truncate" :title="item.name + ' ' + isSelected">{{ item.name }}</h1>
+    <h1 class="truncate" :title="item.name">
+      {{ item.name }}
+    </h1>
   </div>
   <div v-show="isOpen || expanded" v-if="isFolder" class="ml-4">
     <TreeNode
@@ -39,7 +41,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 
 const props = defineProps({
   item: Object,

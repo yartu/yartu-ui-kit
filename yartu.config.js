@@ -108,9 +108,9 @@ const globalConfig = {
         '3.25xl': ['2rem', '2.5rem'],
       },
       boxShadow: {
-        1: '0 16px 40px rgba(13, 30, 91, 0.08)',
-        2: '0 6px 12px rgba(13, 30, 91, 0.08)',
-        3: '0 20px 80px rgba(13, 30, 91, 0.08)',
+        1: '0 16px 40px 0 rgba(13, 30, 91, 0.08)',
+        2: '0 6px 12px 0 rgba(13, 30, 91, 0.08)',
+        3: '0 20px 80px 0 rgba(13, 30, 91, 0.08)',
         4: '0 1px 2px 0 #00000033',
       },
       borderWidth: {

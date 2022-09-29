@@ -306,7 +306,12 @@ onUnmounted(() => {
   window.removeEventListener('resize', calculatePosition);
 });
 
-onClickOutside(target, () => (open.value = false));
+onClickOutside(target, () => {
+  open.value = false;
+  if (props.suggest) {
+    enterSuggestRequest(comboboxInput.value.value);
+  }
+});
 
 watchEffect(() => {
   if (props.multiple) {
@@ -423,6 +428,10 @@ function removeItemByIndex(index) {
   selected.value.splice(index, 1);
 }
 
+function outs() {
+
+}
+
 function enterSuggestRequest(suggest) {
   const acceptCodes = [188, 13];
   if (
@@ -430,7 +439,7 @@ function enterSuggestRequest(suggest) {
     suggest.isTrusted &&
     acceptCodes.includes(suggest.keyCode)
   ) {
-    const value = suggest.target.value;
+    const value = suggest.target.value.replace(',', '');
     if (value.length > 0) {
       if (props.rules) {
         const valid = validate(props.rules, value);

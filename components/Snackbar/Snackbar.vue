@@ -54,12 +54,16 @@ export default {
     },
     duration: {
       type: Number,
-      default: 3000,
+      default: 4000,
     },
     iconColor: {
       type: String,
       required: false,
       default: '#FFF',
+    },
+    finish: {
+      type: Function,
+      required: false,
     },
     action: {
       type: Object,
@@ -68,6 +72,9 @@ export default {
   },
   created() {
     setTimeout(() => {
+      if (this.finish) {
+        this.finish();
+      }
       this.$emit('close', this);
     }, this.duration);
   },
