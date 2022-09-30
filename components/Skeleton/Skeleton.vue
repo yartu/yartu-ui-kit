@@ -21,7 +21,7 @@
       <div class="flex flex-1 flex-col gap-1">
         <div class="w-full flex justify-between mb-1">
           <div class="w-1/2 h-4 bg-BORDER rounded-full"></div>
-          <div class="w-1/3 h-4 bg-BORDER rounded-full"></div>
+          <div class="w-20 h-4 bg-BORDER rounded-full"></div>
         </div>
         <div class="w-1/3 h-3 bg-BORDER rounded-full"></div>
         <div class="w-2/3 h-3 bg-BORDER rounded-full"></div>
@@ -38,11 +38,11 @@
       <div class="flex-1 flex justify-between">
         <div class="w-1/2 rounded-lg flex flex-col gap-2">
           <div class="w-full h-4 rounded-lg bg-BORDER"></div>
-          <div class="w-1/3 h-4 rounded-lg bg-BORDER"></div>
+          <div class="w-1/4 h-4 rounded-lg bg-BORDER"></div>
         </div>
         <div class="w-1/5 rounded-lg flex flex-col gap-2">
           <div class="w-full h-3 rounded-lg bg-BORDER"></div>
-          <div class="w-1/2 h-3 rounded-lg bg-BORDER"></div>
+          <div class="w-1/4 h-3 rounded-lg bg-BORDER"></div>
         </div>
       </div>
     </div>
