@@ -335,10 +335,10 @@ onUpdated(async () => {
   scrollToEnd();
 });
 
-function openCombobox() {
+const openCombobox = () => {
   open.value = true;
   focusInput();
-}
+};
 
 const calculatePosition = () => {
   // improve this @aziz
@@ -357,7 +357,7 @@ const calculatePosition = () => {
     dropdownContainer.right - dropdownContainer.left + 'px';
 };
 
-function choose(item) {
+const choose = (item) => {
   if (props.multiple) {
     let index = -1;
     if (props.itemKey) {
@@ -386,9 +386,9 @@ function choose(item) {
   }
 
   emit('update:modelValue', selected);
-}
+};
 
-function isSelected(item) {
+const isSelected = (item) => {
   if (props.multiple) {
     let index = -1;
     if (props.itemKey) {
@@ -404,10 +404,10 @@ function isSelected(item) {
   } else {
     return selected.value === item;
   }
-}
+};
 
 // TODO:: improve delete item function
-function deleteItem(key) {
+const deleteItem = (key) => {
   let items = document.getElementsByClassName('combobox-selected-items');
   if (document.activeElement === items[items.length - 1]) {
     selected.value.pop();
@@ -422,17 +422,13 @@ function deleteItem(key) {
   ) {
     items[items.length - 1].focus();
   }
-}
+};
 
-function removeItemByIndex(index) {
+const removeItemByIndex = (index) => {
   selected.value.splice(index, 1);
-}
+};
 
-function outs() {
-
-}
-
-function enterSuggestRequest(suggest) {
+const enterSuggestRequest = (suggest) => {
   const acceptCodes = [188, 13];
   if (
     props.suggest &&
@@ -469,13 +465,13 @@ function enterSuggestRequest(suggest) {
       }
     }
   }
-}
+};
 
-function focusInput() {
+const focusInput = () => {
   comboboxInput.value.focus();
-}
+};
 
-async function filter(value) {
+const filter = async (value) => {
   searchText.value = value;
   open.value = true;
   if (value && value.length > 0) {
@@ -498,13 +494,12 @@ async function filter(value) {
     }
     emit('search', value);
   }
-}
+};
 
 const comboboxClass = computed(() => {
   return [
     'w-full max-h-55',
     'overflow-y-auto relative',
-    'px-4',
     'border rounded-lg',
     'text-BLACK-2 font-semibold text-xs',
     'flex flex-wrap items-center gap-2',
@@ -512,8 +507,9 @@ const comboboxClass = computed(() => {
     {
       'border-BLUE': open.value,
       'border-BORDER': !open.value,
-      'py-1': props.dense,
-      'py-2': !props.dense,
+      'py-1 pl-2 pr-4': props.dense,
+      'py-2 px-4': !props.dense,
+      'opacity-50': props.disabled,
     },
   ];
 });
@@ -525,6 +521,7 @@ const labelClass = computed(() => {
     {
       'text-GREY-1': props.disabled,
       'text-BLACK-2': !props.disabled,
+      'opacity-50': props.disabled,
     },
   ];
 });
