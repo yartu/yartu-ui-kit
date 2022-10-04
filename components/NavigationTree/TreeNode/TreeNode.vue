@@ -2,7 +2,7 @@
   <div
     @click.stop="selectNode(item)"
     :class="containerClass"
-    @drop.stop="emit('onDrop', {item, $event})"
+    @drop.stop="emit('onDrop', { item, $event })"
     @dragover.stop="onDragOver"
     @dragleave.stop="onDragLeave"
     @contextmenu.prevent.stop="emit('onTreeContext', { $event, item })"
@@ -23,7 +23,10 @@
         <path d="M4 7L8 11L12 7L4 7Z" fill="#9AA1B4" />
       </svg>
     </span>
-    <span class="relative z-2 flex flex-wrap items-center justify-center">
+    <span
+      :class="!isFolder ? 'pl-6' : ''"
+      class="relative z-2 flex flex-wrap items-center justify-center"
+    >
       <slot name="prefix"></slot>
     </span>
     <h1 class="truncate relative z-2" :title="item.name">
