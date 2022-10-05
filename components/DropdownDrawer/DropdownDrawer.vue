@@ -24,6 +24,9 @@
           {{ title }}
         </p>
       </span>
+      <div class="ml-auto pr-6">
+        <slot name="postfix"></slot>
+      </div>
     </button>
     <div
       :class="[
