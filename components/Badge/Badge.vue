@@ -18,7 +18,6 @@ export default {
       default: 'base',
     },
     value: {
-      type: String,
       default: '',
     },
     border: {
