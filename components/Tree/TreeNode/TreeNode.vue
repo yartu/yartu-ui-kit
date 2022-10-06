@@ -17,7 +17,10 @@
       </svg>
     </span>
     <slot name="prefix"></slot>
-    <h1 class="truncate" :title="item.name">
+    <h1 v-if="label && item[label]" class="truncate" :title="item[label]">
+      {{ item[label] }}
+    </h1>
+    <h1 v-else class="truncate" :title="item.name">
       {{ item.name }}
     </h1>
   </div>
@@ -30,6 +33,7 @@
       :selected="selected"
       :simple="simple"
       :expanded="expanded"
+      :label="label"
       :folderKey="folderKey"
       :depth="depth + 1"
     >
@@ -50,6 +54,7 @@ const props = defineProps({
   simple: Boolean,
   expanded: Boolean,
   folderKey: undefined,
+  label: undefined,
   depth: {
     type: Number,
     default: 0,
@@ -66,7 +71,10 @@ const isOpenCheck = (item) => {
       for (const child of item[props.folderKey]) {
         if (child[props.itemKey] === props.selected[props.itemKey]) {
           return true;
-        } else if (child[props.folderKey] && child[props.folderKey].length > 0) {
+        } else if (
+          child[props.folderKey] &&
+          child[props.folderKey].length > 0
+        ) {
           return isOpenCheck(child);
         }
       }

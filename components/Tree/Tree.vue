@@ -9,6 +9,7 @@
         :expanded="expanded"
         :folderKey="folderKey"
         :itemKey="itemKey"
+        :label="label"
       >
         <template #prefix>
           <slot name="prefix"></slot>
@@ -38,6 +39,7 @@ const props = defineProps({
   },
   itemKey: undefined,
   folderKey: undefined,
+  label: undefined,
   selected: Object,
   expanded: Boolean,
 });
