@@ -38,7 +38,12 @@ const props = defineProps({
   expanded: Boolean,
 });
 
-const emit = defineEmits(['onSelect', 'update:modelValue', 'onTreeContext', 'onDrop']);
+const emit = defineEmits([
+  'onSelect',
+  'update:modelValue',
+  'onTreeContext',
+  'onDrop',
+]);
 
 const updateModelValue = (e) => {
   const key = props.itemKey;

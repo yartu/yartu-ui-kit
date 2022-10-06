@@ -32,6 +32,14 @@
     <h1 class="truncate relative z-2" :title="item.name">
       {{ item.name }}
     </h1>
+    <div class="ml-auto relative z-2 pr-4">
+      <h1
+        v-if="item.unreadcount && item.unreadcount > 0"
+        class="text-BLACK-2 text-2xs font-semibold"
+      >
+        {{ item.unreadcount }}
+      </h1>
+    </div>
   </div>
   <div v-show="isOpen || expanded" v-if="isFolder" class="ml-6">
     <TreeNode
