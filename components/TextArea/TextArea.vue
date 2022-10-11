@@ -7,8 +7,8 @@
       <label :for="id">
         {{ title }}
       </label>
-      <span class="text-GREY-1" v-if="modelValue">
-        {{ modelValue.length }} / {{ maxlength }}
+      <span class="text-GREY-1">
+        {{ modelValue?.length || 0 }} / {{ maxLength }}
       </span>
     </div>
     <label
@@ -50,8 +50,8 @@
         :rows="rows"
         :wrap="wrap"
         :disabled="disabled"
-        :maxlength="maxlength"
-        :minlength="minlength"
+        :maxlength="maxLength"
+        :minlength="minLength"
         :name="name"
         :spellcheck="spellcheck"
         :readonly="readonly"
@@ -77,7 +77,7 @@ defineProps({
   id: null,
   title: {
     type: String,
-    required: true,
+    required: false,
   },
   name: {
     type: String,
@@ -95,11 +95,11 @@ defineProps({
     type: Number,
     required: false,
   },
-  maxlength: {
+  maxLength: {
     type: Number,
     required: false,
   },
-  minlength: {
+  minLength: {
     type: Number,
     required: false,
   },
