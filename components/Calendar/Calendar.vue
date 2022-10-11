@@ -70,11 +70,12 @@ export default {
 </script>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, watch, computed } from 'vue';
 import dayjs from "dayjs";
 
-const emit = defineEmits(['update']);
-const now = dayjs();
+const emit = defineEmits(['update', 'update:modelValue']);
+
+
 const props = defineProps({
   modelValue: {
     type: [Object, String],
@@ -100,6 +101,8 @@ const props = defineProps({
     default: () => false,
   }
 })
+
+const now = props.modelValue ? dayjs(props.modelValue, props.formatDate) : dayjs();
 
 const active = ref({
   dayjs: now,
@@ -129,11 +132,12 @@ const daysList = computed(() => {
   }
   display = display.sort((a, b) => a.$d - b.$d)
 
+  const today = dayjs();
   const days = Array.from(
     Array(active.value.dayjs.daysInMonth()),
     (v, i) => {
       const day = active.value.dayjs.date(++i)
-      day.isToday = day.isSame(now);
+      day.isToday = day.isSame(today, 'day');
       day.active = true;
       return day;
     },
@@ -169,6 +173,7 @@ const changeMonth = (inc, month = null) => {
 const chooseDate = (date) => {
   selectedDate.value = date;
   emit('update', date);
+  emit('update:modelValue', date);
 };
 
 const thClass = computed(() => {
@@ -184,6 +189,21 @@ const buttonClass = computed(() => {
 const activeClass = computed(() => {
   return ['bg-BLUE !text-white'];
 });
+
+watch(
+  () => props.modelValue,
+  (val) => {
+    const newDayjs = dayjs(val, props.formatDate);
+    active.value = {
+      dayjs: newDayjs,
+      year: newDayjs.year(),
+      month: newDayjs.month(),
+      date: newDayjs.date(),
+    }
+    selectedDate.value = newDayjs;
+  },
+  { deep: true }
+);
 
 </script>
 
