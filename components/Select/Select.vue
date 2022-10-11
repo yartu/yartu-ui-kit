@@ -24,7 +24,7 @@
               <slot name="selection" :item="item">
                 <p class="w-full">
                   <Tag v-if="chip" tertiary outline>{{ item }}</Tag>
-                  <span v-else-if="selected.length > 1">{{ item }}</span>
+                  <span v-else-if="selected.length > 0">{{ item }}</span>
                   <template v-if="selected.length > 1 && !chip">,</template>
                 </p>
               </slot>
@@ -33,8 +33,8 @@
           <template v-else>
             <slot name="selection" :item="selected">
               <p class="w-full text-left">
-                <Tag v-if="chip" tertiary outline>{{ selected }}</Tag>
-                <span v-else-if="selected.length > 1">{{ selected }}</span>
+                <Tag v-if="chip" tertiary outline>{{ selected[0] }}</Tag>
+                <span v-else-if="selected">{{ selected[0] }}</span>
               </p>
             </slot>
           </template>
@@ -57,7 +57,7 @@
         </span>
       </button>
       <p
-        v-if="(selected.length < 1 && !persistentHint) || persistentHint"
+        v-if="(selected.length === 0 && !persistentHint) || persistentHint"
         class="text-xs mt-2 pl-0.5 absolute inset-x-0"
         :class="disabled ? 'text-GREY-1' : 'text-BLACK-2 '"
       >
@@ -73,7 +73,12 @@
           type="button"
           :class="[optionClass, isSelected(item) ? 'bg-LIGHTBLUE-4' : '']"
         >
-          <slot name="select-item" :item="item" :selected="selected" :isSelected="isSelected">
+          <slot
+            name="select-item"
+            :item="item"
+            :selected="selected"
+            :isSelected="isSelected"
+          >
             <span v-if="isSelected(item)">
               <svg
                 width="24"
@@ -117,11 +122,11 @@ import { onClickOutside } from '@vueuse/core';
 import Tag from '../Tag/Tag.vue';
 
 const open = ref(false);
-const selected = ref(new Array());
+const selected = ref([]);
 const target = ref(null);
 const optionContainer = ref(null);
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'selected']);
 
 const props = defineProps({
   modelValue: {
@@ -174,7 +179,11 @@ onClickOutside(target, () => (open.value = false));
 
 watchEffect(() => {
   const { modelValue } = props;
-  selected.value = modelValue;
+  if (modelValue) {
+    selected.value = modelValue;
+  } else {
+    selected.value = [];
+  }
 });
 
 function openOptions() {
@@ -201,7 +210,9 @@ function choose(item) {
   if (props.multiple) {
     let index = -1;
     if (props.itemKey) {
-      index = selected.value.findIndex((s) => s[props.itemKey] === item[props.itemKey]);
+      index = selected.value.findIndex(
+        (s) => s[props.itemKey] === item[props.itemKey],
+      );
     } else {
       index = selected.value.findIndex((s) => s === item);
     }
@@ -211,21 +222,25 @@ function choose(item) {
       selected.value.splice(index, 1);
     }
   } else {
-    selected.value = item;
+    selected.value = [];
+    selected.value.push(item);
   }
   emit('update:modelValue', selected.value);
+  emit('selected', selected.value);
 }
 
 function isSelected(item) {
   if (props.multiple) {
     let index = -1;
     if (props.itemKey) {
-      index = selected.value.findIndex((s) => s[props.itemKey] === item[props.itemKey]);
+      index = selected.value.findIndex(
+        (s) => s[props.itemKey] === item[props.itemKey],
+      );
     } else {
       index = selected.value.findIndex((s) => s === item);
     }
     return index > -1;
-  } else if (props.itemKey){
+  } else if (props.itemKey) {
     return selected.value[props.itemKey] === item[props.itemKey];
   } else {
     return selected.value === item;

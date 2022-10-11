@@ -113,6 +113,7 @@ const globalConfig = {
         2: '0 6px 12px 0 rgba(13, 30, 91, 0.08)',
         3: '0 20px 80px 0 rgba(13, 30, 91, 0.08)',
         4: '0 1px 2px 0 #00000033',
+        5: '0 3px 8px rgba(0, 0, 0, 0.12)',
       },
       borderWidth: {
         3: '3px',
@@ -237,11 +238,7 @@ const globalConfig = {
       margin: ['first', 'last'],
     },
   },
-  plugins: [
-    require('@tailwindcss/typography'),
-    require('@tailwindcss/line-clamp'),
-    require('tailwind-scrollbar-hide'),
-  ],
+  plugins: [],
 };
 
 let projectConfig = {};
@@ -259,6 +256,7 @@ mergedConfig.content.push(
 );
 mergedConfig.plugins.concat([
   require('@tailwindcss/line-clamp'),
+  require('@tailwindcss/typography'),
   require('tailwind-scrollbar-hide'),
 ]);
 

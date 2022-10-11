@@ -35,7 +35,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    'indeterminate': {
+    indeterminate: {
       type: Boolean,
       default: false,
     },
@@ -55,6 +55,7 @@ export default {
     checkboxContainer() {
       return [
         'w-fit',
+        'subtitle-4',
         'inline-flex items-center justify-center flex-wrap gap-2',
       ];
     },
