@@ -39,7 +39,6 @@ export default {
     },
     modelValue: {},
     inputValue: {
-      type: String,
       required: true,
     },
   },
