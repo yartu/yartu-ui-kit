@@ -45,7 +45,7 @@
                     @click="chooseDate(daysList[7 * (week - 1) + (weekDay - 1)])"
                     :class="[
                       {
-                        'bg-BLUE !text-white': daysList[7 * (week - 1) + (weekDay - 1)].isSame(selectedDate),
+                        'bg-BLUE !text-white': daysList[7 * (week - 1) + (weekDay - 1)].isSame(selectedDate, 'day'),
                         'text-GREY-1': !daysList[7 * (week - 1) + (weekDay - 1)].active,
                         'after:absolute after:w-1 after:h-1 after:rounded-full after:bottom-0.5 after:left-3.5 after:bg-BLUE': daysList[7 * (week - 1) + (weekDay - 1)].isToday,
                       },
@@ -68,18 +68,18 @@
       <hr v-if="date" class="border-BORDER mb-4 calc-width-for-date-picker">
       <div class="flex flex-wrap gap-3">
         <div class="inline-flex flex-wrap items-center h-9">
-          <input placeholder="00" type="number" maxlength="2" max="23" min="0" class="w-11 h-9 rounded-lg text-center py-2 outline-BLUE border border-BORDER"/>
+          <input @keydown="isNumber($event, 'h')" v-model="timeData.h" placeholder="00" type="text" maxlength="2" max="23" min="0" class="w-11 h-9 rounded-lg text-center py-2 outline-BLUE border border-BORDER"/>
           <p class="px-1">:</p>
-          <input placeholder="00" type="number" maxlength="2" max="59" min="0" class="w-11 h-9 rounded-lg text-center py-2 outline-BLUE border border-BORDER" />
+          <input @keydown="isNumber($event, 'm')" v-model="timeData.m" placeholder="00" type="text" maxlength="2" max="59" min="0" class="w-11 h-9 rounded-lg text-center py-2 outline-BLUE border border-BORDER" />
         </div>
-        <div class="rounded-lg border border-BORDER inline-flex flex-wrap h-9">
+        <div v-if="!time24h" class="rounded-lg border border-BORDER inline-flex flex-wrap h-9">
           <label class="relative w-11 h-full px-3 py-2 flex items-center">
-            <input type="radio" value="am" class="appearance-none checked:bg-BLUE absolute inset-0 rounded-l-lg am-selector"/>
+            <input v-model="timeData.t" type="radio" value="am" class="appearance-none checked:bg-BLUE absolute inset-0 rounded-l-lg am-selector"/>
             <p class="body-1 relative z-1 uppercase">am</p>
           </label>
           <div class="h-full w-px bg-BORDER"></div>
           <label class="relative w-11 h-full px-3 py-2 flex items-center">
-            <input type="radio" value="pm" class="appearance-none checked:bg-BLUE absolute inset-0 rounded-r-lg pm-selector"/>
+            <input v-model="timeData.t" type="radio" value="pm" class="appearance-none checked:bg-BLUE absolute inset-0 rounded-r-lg pm-selector"/>
             <p class="body-1 relative z-1 uppercase">pm</p>
           </label>
         </div>
@@ -104,7 +104,6 @@ import { ref, watch, computed } from 'vue';
 import dayjs from "dayjs";
 
 const emit = defineEmits(['update', 'update:modelValue', 'close']);
-
 
 const props = defineProps({
   modelValue: {
@@ -139,21 +138,51 @@ const props = defineProps({
     type: Boolean,
     required: false,
     default: () => false,
-  }
+  },
+  time24h: {
+    type: Boolean,
+    default: () => false,
+  },
 })
-
+const months = ref(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);
 const now = props.modelValue ? dayjs(props.modelValue, props.formatDate) : dayjs();
-
+const selectedDate = ref(props.modelValue ? props.modelValue : now);
+const timeData = ref({
+  h: '00',
+  m: '00',
+  t: 'am',
+});
 const active = ref({
-  dayjs: now,
-  year: now.year(),
-  month: now.month(),
-  date: now.date(),
+  dayjs: null,
+  year: 0,
+  month: 0,
+  date: 0,
 });
 
-const months = ref(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);
+const initDateTime = (date) => {
+  let hour = date.hour();
+  const minute = date.minute();
+  const timeType = date.format('a');
 
-const selectedDate = ref(props.modelValue ? props.modelValue : now);
+  if (!props.time24h && hour > 12) {
+    hour -= 12;
+  } else if (props.time24h && timeType === 'pm' && hour < 12 ) {
+    hour += 12;
+  }
+
+  timeData.value = {
+    h: hour.toLocaleString('en-US', { minimumIntegerDigits: 2,useGrouping: false }),
+    m: minute.toLocaleString('en-US', { minimumIntegerDigits: 2,useGrouping: false }),
+    t: date.format('a'),
+  };
+
+  active.value = {
+    dayjs: date,
+    year: date.year(),
+    month: date.month(),
+    date: date.date(),
+  };
+};
 
 const weekDaysList = computed(() => {
   return Array.from(Array(7), (v, i) => {
@@ -193,6 +222,34 @@ const daysList = computed(() => {
   return display;
 });
 
+const isNumber = (ev, type) => {
+
+  const maxs = {
+    'm': 60,
+    'h': props.time24h ? 24 : 12,
+  }
+
+  if ((ev.keyCode === 8 || ev.keyCode === 46)) {
+    return true;
+  }
+
+  const lastNumber = parseInt(`${ev.target.value}${ev.key}`, 10);
+
+  if (!parseInt(ev.key) < 0) {
+    ev.preventDefault();
+  } else if (lastNumber < 0 || lastNumber > maxs[type]) {
+    ev.preventDefault();
+  } else {
+    if (lastNumber < 10) {
+      timeData.value[type] = `0${lastNumber}`;
+      ev.preventDefault();
+    } else {
+      timeData.value[type] = lastNumber;
+      ev.preventDefault();
+    }
+  }
+}
+
 const changeMonth = (inc, month = null) => {
 
   let newDayjs = {};
@@ -211,16 +268,28 @@ const changeMonth = (inc, month = null) => {
 };
 
 const emitSelected = () => {
+  if (props.time) {
+    let hour = parseInt(timeData.value.h) || 0;
+    const minute = parseInt(timeData.value.m) || 0;
+    if (!props.time24h && timeData.value.t === 'pm' && hour > 0) {
+      hour += 12;
+    }
+    selectedDate.value = selectedDate.value.set('hour',hour).set('minute', minute);
+  }
   emit('update', selectedDate.value);
   emit('update:modelValue', selectedDate.value);
 };
 
 const chooseDate = (date) => {
   selectedDate.value = date;
-  emitSelected();
-  emit('close');
+  if (props.inline) {
+    emitSelected();
+    emit('close');
+  }
 };
 
+// Created
+initDateTime(now);
 
 const thClass = computed(() => {
   return ['font-semibold capitalize text-BLACK-2 text-xs text-center'];
@@ -240,12 +309,7 @@ watch(
   () => props.modelValue,
   (val) => {
     const newDayjs = dayjs(val, props.formatDate);
-    active.value = {
-      dayjs: newDayjs,
-      year: newDayjs.year(),
-      month: newDayjs.month(),
-      date: newDayjs.date(),
-    }
+    initDateTime(newDayjs);
     selectedDate.value = newDayjs;
   },
   { deep: true }
