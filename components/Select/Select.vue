@@ -222,8 +222,7 @@ function choose(item) {
       selected.value.splice(index, 1);
     }
   } else {
-    selected.value = [];
-    selected.value.push(item);
+    selected.value =  item;
   }
   emit('update:modelValue', selected.value);
   emit('selected', selected.value);
