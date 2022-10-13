@@ -6,7 +6,7 @@
       </label>
       <label
         v-if="!inline"
-        class="inline-flex flex-wrap items-center px-4 py-2.5 border border-BORDER rounded-lg"
+        class="inline-flex flex-1 flex-wrap items-center px-4 py-2.5 border border-BORDER rounded-lg"
         :class="{ '!border-BLUE': showPicker }"
         :id="id"
       >
@@ -40,67 +40,69 @@
       </label>
     </div>
     <transition name="fade">
-      <div v-if="showPicker" :class="pickerClass">
-        <y-calendar
-          :date="date"
-          :time="time"
-          :firstDay="firstDay"
-          :formatDate="formatDate"
-          :eventDate="eventDate"
-          :dense="dense"
-          :inline="inline"
-          v-model="selectedDate"
-          class="!p-0"
-        ></y-calendar>
-        <div v-if="!inline" class="w-full flex flex-wrap gap-3 justify-end">
-          <button
-            @click="close"
-            class="border border-BORDER rounded-lg px-3 py-2 hover:bg-GREY-3"
-          >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+      <teleport v-if="!inline" to="body">
+        <div ref="pickerContainer" v-show="showPicker" :class="pickerClass">
+          <y-calendar
+            :date="date"
+            :time="time"
+            :firstDay="firstDay"
+            :formatDate="formatDate"
+            :eventDate="eventDate"
+            :dense="dense"
+            :inline="inline"
+            v-model="selectedDate"
+            class="!p-0"
+          ></y-calendar>
+          <div v-if="!inline" class="w-full flex flex-wrap gap-3 justify-end">
+            <button
+              @click="close"
+              class="border border-BORDER rounded-lg px-3 py-2 hover:bg-GREY-3"
             >
-              <path
-                d="M7 7L17 17"
-                stroke="#9AA1B4"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M7 17L17 7"
-                stroke="#9AA1B4"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </button>
-          <button
-            @click="emitSelected"
-            class="border border-BORDER rounded-lg px-3 py-2 hover:bg-GREY-3"
-          >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M7 7L17 17"
+                  stroke="#9AA1B4"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M7 17L17 7"
+                  stroke="#9AA1B4"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+            <button
+              @click="emitSelected"
+              class="border border-BORDER rounded-lg px-3 py-2 hover:bg-GREY-3"
             >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M19.5955 6.28757C20.0801 6.71801 20.1374 7.47547 19.7235 7.9794L11.8389 17.5794C11.6247 17.8402 11.3134 17.9932 10.9836 17.9998C10.6539 18.0064 10.3372 17.8659 10.1135 17.6138L5.30586 12.1951C4.87371 11.7081 4.90304 10.9489 5.37138 10.4994C5.83971 10.05 6.56969 10.0805 7.00184 10.5676L10.9282 14.9929L17.9688 6.42064C18.3827 5.91671 19.111 5.85713 19.5955 6.28757Z"
-                fill="#3663F2"
-              />
-            </svg>
-          </button>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M19.5955 6.28757C20.0801 6.71801 20.1374 7.47547 19.7235 7.9794L11.8389 17.5794C11.6247 17.8402 11.3134 17.9932 10.9836 17.9998C10.6539 18.0064 10.3372 17.8659 10.1135 17.6138L5.30586 12.1951C4.87371 11.7081 4.90304 10.9489 5.37138 10.4994C5.83971 10.05 6.56969 10.0805 7.00184 10.5676L10.9282 14.9929L17.9688 6.42064C18.3827 5.91671 19.111 5.85713 19.5955 6.28757Z"
+                  fill="#3663F2"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
-      </div>
+      </teleport>
     </transition>
   </div>
 </template>
@@ -112,7 +114,7 @@ export default {
 </script>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 
 import { onClickOutside } from '@vueuse/core';
 const emit = defineEmits(['update', 'update:modelValue', 'close']);
@@ -166,14 +168,20 @@ const props = defineProps({
 });
 
 const target = ref(null);
+const pickerContainer = ref(null);
 const showPicker = ref(false);
 
-onClickOutside(target, () => {
-  showPicker.value = false;
-});
+onClickOutside(
+  target,
+  () => {
+    showPicker.value = false;
+  },
+  { ignore: [pickerContainer] },
+);
 
 const open = () => {
   showPicker.value = true;
+  calculatePosition();
 };
 
 const close = () => {
@@ -189,6 +197,21 @@ const emitSelected = () => {
   emit('close');
 };
 
+const calculatePosition = () => {
+  let container = target.value.getBoundingClientRect();
+  let pickerContainerStyle = pickerContainer.value.style;
+  pickerContainerStyle.top = container.bottom + 16 + 'px';
+  pickerContainerStyle.left = container.left + 'px';
+};
+
+onMounted(() => {
+  window.addEventListener('resize', calculatePosition);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', calculatePosition);
+});
+
 const changeButtonClass = computed(() => {
   return [
     'flex items-center justify-center',
@@ -203,7 +226,7 @@ const thClass = computed(() => {
 });
 
 const inputContainerClass = computed(() => {
-  return ['text-BLACK-2', 'flex flex-col gap-2'];
+  return ['text-BLACK-2', 'inline-flex flex-col gap-2'];
 });
 
 const buttonClass = computed(() => {
