@@ -2,8 +2,12 @@
   <div
     class="inline-flex flex-col gap-4 bg-white border border-BORDER rounded-lg p-4 max-w-[264px]"
   >
-    <h1 class="subtitle-5" v-if="label">{{ label }}</h1>
-    <div :class="containerClass">
+    <h1 class="subtitle-5" v-if="label">
+      {{ label }}
+    </h1>
+    <div
+      :class="[containerClass, { 'border-RED border rounded-lg px-3 py-4': errors.length > 0 }]"
+    >
       <label
         v-for="(item, index) in colorPalette"
         :key="index"
@@ -21,22 +25,34 @@
         />
       </label>
     </div>
+    <div>
+      <h1
+        class="text-xs"
+        :class="{ 'text-RED': errors.length > 0 }"
+        v-if="errors.length > 0"
+      >
+        {{ errors.join(",") }}
+      </h1>
+    </div>
   </div>
 </template>
 
 <script>
+import FormItem from "../FormItem";
+
 export default {
-  name: 'y-color-picker',
+  name: "y-color-picker",
+  extends: FormItem,
 };
 </script>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
-import colors from '../../utils/colors';
+import { computed, onMounted, ref } from "vue";
+import colors from "../../utils/colors";
 
 const colorPalette = ref([]);
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(["update:modelValue"]);
 
 const props = defineProps({
   colors: {
@@ -57,7 +73,7 @@ const props = defineProps({
   },
   size: {
     type: String,
-    default: 'sm',
+    default: "sm",
   },
   modelValue: null,
 });
@@ -78,43 +94,44 @@ const model = computed({
     return props.modelValue;
   },
   set(val) {
-    emit('update:modelValue', val);
+    emit("update:modelValue", val);
   },
 });
 
 const containerClass = computed(() => {
+  console.log(FormItem);
   return [
-    'flex flex-wrap',
+    "flex flex-wrap",
     {
-      'gap-x-2.5 gap-y-2': props.size === 'sm',
-      'gap-x-3 gap-y-2': props.size === 'md',
-      'gap-x-4 gap-y-2': props.size === 'lg',
+      "gap-x-2.5 gap-y-2": props.size === "sm",
+      "gap-x-3 gap-y-2": props.size === "md",
+      "gap-x-4 gap-y-2": props.size === "lg",
     },
   ];
 });
 
 const swatchClass = computed(() => {
   return [
-    'relative',
-    'rounded-full',
+    "relative",
+    "rounded-full",
     {
-      'w-6 h-6': props.size === 'sm',
-      'w-7 h-7': props.size === 'md',
-      'w-8 h-8': props.size === 'lg',
-      'opacity-30': props.disabled,
+      "w-6 h-6": props.size === "sm",
+      "w-7 h-7": props.size === "md",
+      "w-8 h-8": props.size === "lg",
+      "opacity-30": props.disabled,
     },
   ];
 });
 
 const inputClass = computed(() => {
   return [
-    'appearance-none',
-    'cursor-pointer',
-    'absolute inset-0',
-    'rounded-full ',
-    'checked:ring-2',
-    'ring-BLUE ring-offset-2',
-    'disabled:cursor-not-allowed',
+    "appearance-none",
+    "cursor-pointer",
+    "absolute inset-0",
+    "rounded-full ",
+    "checked:ring-2",
+    "ring-BLUE ring-offset-2",
+    "disabled:cursor-not-allowed",
   ];
 });
 </script>
