@@ -1,37 +1,44 @@
 <template>
-  <div class="relative">
-    <label
-      v-if="!inline"
-      class="inline-flex flex-wrap items-center px-4 py-2.5 border border-BORDER rounded-lg"
-      :class="{ '!border-BLUE': showPicker }"
-    >
-      <input
-        type="text"
-        class="outline-none subtitle-5"
-        aria-autocomplete="none"
-        aria-haspopup="dialog"
-        aria-expanded="true"
-        inputmode="none"
-        tabindex="0"
-        @click="open"
-      />
-      <button @click="open">
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M7 2C7.55228 2 8 2.44772 8 3V4H16V3C16 2.44772 16.4477 2 17 2C17.5523 2 18 2.44772 18 3V4C20.2091 4 22 5.79086 22 8V17C22 19.2091 20.2091 21 18 21H6C3.79086 21 2 19.2091 2 17V8C2 5.79086 3.79086 4 6 4V3C6 2.44772 6.44772 2 7 2ZM18 6C19.1046 6 20 6.89543 20 8H4C4 6.89543 4.89543 6 6 6H18ZM4 10V17C4 18.1046 4.89543 19 6 19H18C19.1046 19 20 18.1046 20 17V10H4Z"
-            fill="#9AA1B4"
-          />
-        </svg>
-      </button>
-    </label>
+  <div ref="target" class="relative">
+    <div :class="inputContainerClass">
+      <label :id="id" class="text-sm font-semibold" v-if="label">
+        {{ label }}
+      </label>
+      <label
+        v-if="!inline"
+        class="inline-flex flex-wrap items-center px-4 py-2.5 border border-BORDER rounded-lg"
+        :class="{ '!border-BLUE': showPicker }"
+        :id="id"
+      >
+        <input
+          type="text"
+          class="outline-none subtitle-5"
+          aria-autocomplete="none"
+          aria-haspopup="dialog"
+          aria-expanded="true"
+          inputmode="none"
+          tabindex="0"
+          :placeholder="placeholder"
+          @click="open"
+        />
+        <button @click="open">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M7 2C7.55228 2 8 2.44772 8 3V4H16V3C16 2.44772 16.4477 2 17 2C17.5523 2 18 2.44772 18 3V4C20.2091 4 22 5.79086 22 8V17C22 19.2091 20.2091 21 18 21H6C3.79086 21 2 19.2091 2 17V8C2 5.79086 3.79086 4 6 4V3C6 2.44772 6.44772 2 7 2ZM18 6C19.1046 6 20 6.89543 20 8H4C4 6.89543 4.89543 6 6 6H18ZM4 10V17C4 18.1046 4.89543 19 6 19H18C19.1046 19 20 18.1046 20 17V10H4Z"
+              fill="#9AA1B4"
+            />
+          </svg>
+        </button>
+      </label>
+    </div>
     <transition name="fade">
       <div v-if="showPicker" :class="pickerClass">
         <y-calendar
@@ -107,12 +114,21 @@ export default {
 <script setup>
 import { ref, computed } from 'vue';
 
+import { onClickOutside } from '@vueuse/core';
 const emit = defineEmits(['update', 'update:modelValue', 'close']);
 
 const props = defineProps({
   modelValue: {
     type: [Object, String],
     required: false,
+  },
+  label: {
+    type: String,
+    required: false,
+  },
+  placeholder: {
+    type: String,
+    default: '',
   },
   dense: {
     type: Boolean,
@@ -149,7 +165,12 @@ const props = defineProps({
   },
 });
 
-const showPicker = ref(true);
+const target = ref(null);
+const showPicker = ref(false);
+
+onClickOutside(target, () => {
+  showPicker.value = false;
+});
 
 const open = () => {
   showPicker.value = true;
@@ -179,6 +200,10 @@ const changeButtonClass = computed(() => {
 
 const thClass = computed(() => {
   return ['font-semibold capitalize text-BLACK-2 text-xs text-center'];
+});
+
+const inputContainerClass = computed(() => {
+  return ['text-BLACK-2', 'flex flex-col gap-2'];
 });
 
 const buttonClass = computed(() => {
