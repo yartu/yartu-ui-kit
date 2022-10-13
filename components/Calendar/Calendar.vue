@@ -1,95 +1,172 @@
- <template>
-  <div class="flex flex-col justify-center items-center my-2">
-    <div class="p-3">
-      <div v-if="date">
-        <div class="flex justify-between items-center">
-          <button @click="changeMonth(-1)" class="hover:bg-BLACKOVERLAY rounded-full w-7 h-7">&lt;</button>
-          <y-dropdown :classes="'max-h-56 overflow-auto'">
-              <y-dropdown-item
-                v-for="(month, index) in months"
-                :key="month"
-                @click="changeMonth(null, index)"
-                class="truncate"
+<template>
+  <div :class="pickerClass">
+    <div v-if="date || !(date && time)">
+      <div class="flex justify-between items-center">
+        <button @click="changeMonth(-1)" :class="changeButtonClass">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10 12L6 8L10 4"
+              stroke="#9AA1B4"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+        <y-dropdown :classes="'max-h-56 overflow-auto'">
+          <y-dropdown-item
+            v-for="(month, index) in months"
+            :key="month"
+            @click="changeMonth(null, index)"
+            class="truncate"
+          >
+            <div class="flex">
+              <h1
+                class="caption"
+                :class="{ 'text-BLUE': active.month === index }"
               >
-                <div class="flex">
-                  <h1
-                    class="caption"
-                    :class="{ 'text-BLUE': active.month === index }"
-                  >
-                    {{ month }}
-                  </h1>
-                </div>
-              </y-dropdown-item>
-              <template #activator="{ open }">
-                <button @click="open" class="font-extrabold text-BLACK-2 text-xs">{{ active.dayjs.format('MMMM') }} {{ active.year }}</button>
-              </template>
-            </y-dropdown>
-          <button @click="changeMonth(1)" class="hover:bg-BLACKOVERLAY rounded-full w-7 h-7">&gt;</button>
-        </div>
-        <div class="w-full -ml-2 mt-4">
-          <table class="yartu-date-picker-table-calc-width">
-            <thead>
-              <tr>
-                <th
-                  :class="thClass"
-                  v-for="day in weekDaysList"
+                {{ month }}
+              </h1>
+            </div>
+          </y-dropdown-item>
+          <template #activator="{ open }">
+            <button @click="open" class="font-extrabold text-BLACK-2 text-xs">
+              {{ active.dayjs.format('MMMM') }} {{ active.year }}
+            </button>
+          </template>
+        </y-dropdown>
+        <button @click="changeMonth(1)" :class="changeButtonClass">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M6 12L10 8L6 4"
+              stroke="#9AA1B4"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
+      <div class="w-full -ml-2 mt-4">
+        <table class="yartu-date-picker-table-calc-width">
+          <thead>
+            <tr>
+              <th :class="thClass" v-for="day in weekDaysList">
+                {{ day[0] }}
+              </th>
+            </tr>
+          </thead>
+          <tbody v-if="daysList">
+            <tr v-for="week in 6">
+              <td v-for="weekDay in 7" class="p-0">
+                <button
+                  @click="chooseDate(daysList[7 * (week - 1) + (weekDay - 1)])"
+                  :class="[
+                    {
+                      'bg-BLUE !text-white hover:bg-BLUE':
+                        daysList[7 * (week - 1) + (weekDay - 1)].isSame(
+                          selectedDate,
+                        ),
+                      'text-GREY-1':
+                        !daysList[7 * (week - 1) + (weekDay - 1)].active,
+                      'after:absolute after:w-1 after:h-1 after:rounded-full after:bottom-0.5 after:left-1/2 after:-translate-x-1/2 after:bg-BLUE':
+                        daysList[7 * (week - 1) + (weekDay - 1)].isToday,
+                    },
+                    buttonClass,
+                  ]"
                 >
-                  {{ day[0] }}
-                </th>
-              </tr>
-            </thead>
-            <tbody v-if="daysList">
-              <tr v-for="week in 6">
-                <td v-for="weekDay in 7" class="p-0">
-                  <button
-                    @click="chooseDate(daysList[7 * (week - 1) + (weekDay - 1)])"
-                    :class="[
-                      {
-                        'bg-BLUE !text-white': daysList[7 * (week - 1) + (weekDay - 1)].isSame(selectedDate),
-                        'text-GREY-1': !daysList[7 * (week - 1) + (weekDay - 1)].active,
-                        'after:absolute after:w-1 after:h-1 after:rounded-full after:bottom-0.5 after:left-3.5 after:bg-BLUE': daysList[7 * (week - 1) + (weekDay - 1)].isToday,
-                      },
-                      buttonClass,
-                    ]
-                    "
-                  >
-                    <span>
-                      {{ daysList[7 * (week - 1) + (weekDay - 1)].$D }}
-                    </span>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                  <span>
+                    {{ daysList[7 * (week - 1) + (weekDay - 1)].$D }}
+                  </span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
-    <div v-if="time">
-      <hr v-if="date" class="border-BORDER mb-4 calc-width-for-date-picker">
-      <div class="flex flex-wrap gap-3">
+    <div class="w-full" v-if="time">
+      <hr v-if="!inline" class="border-BORDER mb-4" />
+      <div class="flex flex-wrap items-center gap-3">
+        <div>
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M12 3.81818C7.48131 3.81818 3.81818 7.48131 3.81818 12C3.81818 16.5187 7.48131 20.1818 12 20.1818C16.5187 20.1818 20.1818 16.5187 20.1818 12C20.1818 7.48131 16.5187 3.81818 12 3.81818ZM2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12Z"
+              fill="#9AA1B4"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M11.9655 7C12.4988 7 12.931 7.42495 12.931 7.94915V11.6238L14.7172 13.3797C15.0943 13.7504 15.0943 14.3513 14.7172 14.722C14.3401 15.0927 13.7288 15.0927 13.3518 14.722L11.2828 12.6881C11.1017 12.5101 11 12.2687 11 12.0169V7.94915C11 7.42495 11.4323 7 11.9655 7Z"
+              fill="#9AA1B4"
+            />
+          </svg>
+        </div>
         <div class="inline-flex flex-wrap items-center h-9">
-          <input placeholder="00" type="number" maxlength="2" max="23" min="0" class="w-11 h-9 rounded-lg text-center py-2 outline-BLUE border border-BORDER"/>
+          <input
+            placeholder="00"
+            type="number"
+            maxlength="2"
+            max="23"
+            min="0"
+            class="w-11 h-9 rounded-lg text-center py-2 outline-BLUE border border-BORDER"
+          />
           <p class="px-1">:</p>
-          <input placeholder="00" type="number" maxlength="2" max="59" min="0" class="w-11 h-9 rounded-lg text-center py-2 outline-BLUE border border-BORDER" />
+          <input
+            placeholder="00"
+            type="number"
+            maxlength="2"
+            max="59"
+            min="0"
+            class="w-11 h-9 rounded-lg text-center py-2 outline-BLUE border border-BORDER"
+          />
         </div>
         <div class="rounded-lg border border-BORDER inline-flex flex-wrap h-9">
-          <label class="relative w-11 h-full px-3 py-2 flex items-center">
-            <input type="radio" value="am" class="appearance-none checked:bg-BLUE absolute inset-0 rounded-l-lg am-selector"/>
+          <label
+            class="relative w-11 h-full px-3 py-2 flex items-center cursor-pointer"
+          >
+            <input
+              type="radio"
+              value="am"
+              class="appearance-none checked:bg-BLUE absolute inset-0 rounded-l-lg am-selector"
+            />
             <p class="body-1 relative z-1 uppercase">am</p>
           </label>
           <div class="h-full w-px bg-BORDER"></div>
-          <label class="relative w-11 h-full px-3 py-2 flex items-center">
-            <input type="radio" value="pm" class="appearance-none checked:bg-BLUE absolute inset-0 rounded-r-lg pm-selector"/>
+          <label
+            class="relative w-11 h-full px-3 py-2 flex items-center cursor-pointer"
+          >
+            <input
+              type="radio"
+              value="pm"
+              class="appearance-none checked:bg-BLUE absolute inset-0 rounded-r-lg pm-selector"
+            />
             <p class="body-1 relative z-1 uppercase">pm</p>
           </label>
         </div>
       </div>
     </div>
-    <div v-if="!inline" class="flex w-full p-3">
-      <y-button @click="emitSelected" primary class="ml-auto">
-        Save
-      </y-button>
-    </div>
+    <hr v-if="!inline" class="border-BORDER my-4 w-full" />
   </div>
 </template>
 
@@ -101,15 +178,18 @@ export default {
 
 <script setup>
 import { ref, watch, computed } from 'vue';
-import dayjs from "dayjs";
+import dayjs from 'dayjs';
 
 const emit = defineEmits(['update', 'update:modelValue', 'close']);
-
 
 const props = defineProps({
   modelValue: {
     type: [Object, String],
     required: false,
+  },
+  dense: {
+    type: Boolean,
+    default: false,
   },
   date: {
     type: Boolean,
@@ -138,11 +218,13 @@ const props = defineProps({
   inline: {
     type: Boolean,
     required: false,
-    default: () => false,
-  }
-})
+    default: () => true,
+  },
+});
 
-const now = props.modelValue ? dayjs(props.modelValue, props.formatDate) : dayjs();
+const now = props.modelValue
+  ? dayjs(props.modelValue, props.formatDate)
+  : dayjs();
 
 const active = ref({
   dayjs: now,
@@ -151,13 +233,28 @@ const active = ref({
   date: now.date(),
 });
 
-const months = ref(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);
+const months = ref([
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+]);
 
 const selectedDate = ref(props.modelValue ? props.modelValue : now);
 
 const weekDaysList = computed(() => {
   return Array.from(Array(7), (v, i) => {
-    return dayjs().day(i + props.firstDay).format('ddd');
+    return dayjs()
+      .day(i + props.firstDay)
+      .format('ddd');
   });
 });
 
@@ -170,18 +267,15 @@ const daysList = computed(() => {
     day.active = false;
     display.push(day);
   }
-  display = display.sort((a, b) => a.$d - b.$d)
+  display = display.sort((a, b) => a.$d - b.$d);
 
   const today = dayjs();
-  const days = Array.from(
-    Array(active.value.dayjs.daysInMonth()),
-    (v, i) => {
-      const day = active.value.dayjs.date(++i)
-      day.isToday = day.isSame(today, 'day');
-      day.active = true;
-      return day;
-    },
-  );
+  const days = Array.from(Array(active.value.dayjs.daysInMonth()), (v, i) => {
+    const day = active.value.dayjs.date(++i);
+    day.isToday = day.isSame(today, 'day');
+    day.active = true;
+    return day;
+  });
   display = display.concat(days);
   const leftDays = 42 - display.length;
 
@@ -194,7 +288,6 @@ const daysList = computed(() => {
 });
 
 const changeMonth = (inc, month = null) => {
-
   let newDayjs = {};
   if (month !== null) {
     newDayjs = active.value.dayjs.month(month);
@@ -207,7 +300,7 @@ const changeMonth = (inc, month = null) => {
     year: newDayjs.year(),
     month: newDayjs.month(),
     date: newDayjs.date(),
-  }
+  };
 };
 
 const emitSelected = () => {
@@ -221,6 +314,14 @@ const chooseDate = (date) => {
   emit('close');
 };
 
+const changeButtonClass = computed(() => {
+  return [
+    'flex items-center justify-center',
+    'hover:bg-GREY-3 ',
+    'rounded-full',
+    { 'w-10 h-10 text-sm': !props.dense, 'w-7 h-7 text-xs': props.dense },
+  ];
+});
 
 const thClass = computed(() => {
   return ['font-semibold capitalize text-BLACK-2 text-xs text-center'];
@@ -228,12 +329,22 @@ const thClass = computed(() => {
 
 const buttonClass = computed(() => {
   return [
-    'w-7 h-7 p-0 relative text-BLACK-2 text-xs text-center hover:bg-BLACKOVERLAY rounded-full',
+    'p-0 relative text-BLACK-2  text-center hover:bg-GREY-3 rounded-full',
+    { 'w-10 h-10 text-sm': !props.dense, 'w-7 h-7 text-xs': props.dense },
   ];
 });
 
-const activeClass = computed(() => {
-  return ['bg-BLUE !text-white'];
+const pickerClass = computed(() => {
+  return [
+    'flex flex-col justify-center items-center',
+    'mt-1',
+    'bg-white',
+    'relative',
+    {
+      'px-8 pb-4 pt-2': !props.dense,
+      'p-3': props.dense,
+    },
+  ];
 });
 
 watch(
@@ -245,28 +356,27 @@ watch(
       year: newDayjs.year(),
       month: newDayjs.month(),
       date: newDayjs.date(),
-    }
+    };
     selectedDate.value = newDayjs;
   },
-  { deep: true }
+  { deep: true },
 );
-
 </script>
 
 <style>
 .yartu-date-picker-table-calc-width {
-  width: calc(100% + 16px);
+  width: calc(100% + 1rem);
 }
 
-.am-selector:checked + p{
+.am-selector:checked + p {
   color: white;
 }
 
-.pm-selector:checked + p{
+.pm-selector:checked + p {
   color: white !important;
 }
 
-.calc-width-for-date-picker{
-  width: calc(100% - 0.75rem);
+.calc-width-for-date-picker {
+  width: calc(100% - 1rem);
 }
 </style>
