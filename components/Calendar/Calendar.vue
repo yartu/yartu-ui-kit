@@ -1,64 +1,94 @@
-<template>
-  <div class="p-3">
-    <div class="flex justify-between items-center">
-      <button @click="changeMonth(-1)" class="hover:bg-BLACKOVERLAY rounded-full w-7 h-7">&lt;</button>
-      <y-dropdown :classes="'max-h-56 overflow-auto'">
-          <y-dropdown-item
-            v-for="(month, index) in months"
-            :key="month"
-            @click="changeMonth(null, index)"
-            class="truncate"
-          >
-            <div class="flex">
-              <h1
-                class="caption"
-                :class="{ 'text-BLUE': active.month === index }"
+ <template>
+  <div class="flex flex-col justify-center items-center my-2">
+    <div class="p-3">
+      <div v-if="date">
+        <div class="flex justify-between items-center">
+          <button @click="changeMonth(-1)" class="hover:bg-BLACKOVERLAY rounded-full w-7 h-7">&lt;</button>
+          <y-dropdown :classes="'max-h-56 overflow-auto'">
+              <y-dropdown-item
+                v-for="(month, index) in months"
+                :key="month"
+                @click="changeMonth(null, index)"
+                class="truncate"
               >
-                {{ month }}
-              </h1>
-            </div>
-          </y-dropdown-item>
-          <template #activator="{ open }">
-            <button @click="open" class="font-extrabold text-BLACK-2 text-xs">{{ active.dayjs.format('MMMM') }} {{ active.year }}</button>
-          </template>
-        </y-dropdown>
-      <button @click="changeMonth(1)" class="hover:bg-BLACKOVERLAY rounded-full w-7 h-7">&gt;</button>
+                <div class="flex">
+                  <h1
+                    class="caption"
+                    :class="{ 'text-BLUE': active.month === index }"
+                  >
+                    {{ month }}
+                  </h1>
+                </div>
+              </y-dropdown-item>
+              <template #activator="{ open }">
+                <button @click="open" class="font-extrabold text-BLACK-2 text-xs">{{ active.dayjs.format('MMMM') }} {{ active.year }}</button>
+              </template>
+            </y-dropdown>
+          <button @click="changeMonth(1)" class="hover:bg-BLACKOVERLAY rounded-full w-7 h-7">&gt;</button>
+        </div>
+        <div class="w-full -ml-2 mt-4">
+          <table class="yartu-date-picker-table-calc-width">
+            <thead>
+              <tr>
+                <th
+                  :class="thClass"
+                  v-for="day in weekDaysList"
+                >
+                  {{ day[0] }}
+                </th>
+              </tr>
+            </thead>
+            <tbody v-if="daysList">
+              <tr v-for="week in 6">
+                <td v-for="weekDay in 7" class="p-0">
+                  <button
+                    @click="chooseDate(daysList[7 * (week - 1) + (weekDay - 1)])"
+                    :class="[
+                      {
+                        'bg-BLUE !text-white': daysList[7 * (week - 1) + (weekDay - 1)].isSame(selectedDate),
+                        'text-GREY-1': !daysList[7 * (week - 1) + (weekDay - 1)].active,
+                        'after:absolute after:w-1 after:h-1 after:rounded-full after:bottom-0.5 after:left-3.5 after:bg-BLUE': daysList[7 * (week - 1) + (weekDay - 1)].isToday,
+                      },
+                      buttonClass,
+                    ]
+                    "
+                  >
+                    <span>
+                      {{ daysList[7 * (week - 1) + (weekDay - 1)].$D }}
+                    </span>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-    <div class="w-full -ml-2 mt-4">
-      <table class="yartu-date-picker-table-calc-width">
-        <thead>
-          <tr>
-            <th
-              :class="thClass"
-              v-for="day in weekDaysList"
-            >
-              {{ day[0] }}
-            </th>
-          </tr>
-        </thead>
-        <tbody v-if="daysList">
-          <tr v-for="week in 6">
-            <td v-for="weekDay in 7" class="p-0">
-              <button
-                @click="chooseDate(daysList[7 * (week - 1) + (weekDay - 1)])"
-                :class="[
-                  {
-                    'bg-BLUE !text-white': daysList[7 * (week - 1) + (weekDay - 1)].isSame(selectedDate),
-                    'text-GREY-1': !daysList[7 * (week - 1) + (weekDay - 1)].active,
-                    'after:absolute after:w-1 after:h-1 after:rounded-full after:bottom-0.5 after:left-3.5 after:bg-BLUE': daysList[7 * (week - 1) + (weekDay - 1)].isToday,
-                  },
-                  buttonClass,
-                ]
-                "
-              >
-                <span>
-                  {{ daysList[7 * (week - 1) + (weekDay - 1)].$D }}
-                </span>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div v-if="time">
+      <hr v-if="date" class="border-BORDER mb-4 calc-width-for-date-picker">
+      <div class="flex flex-wrap gap-3">
+        <div class="inline-flex flex-wrap items-center h-9">
+          <input placeholder="00" type="number" maxlength="2" max="23" min="0" class="w-11 h-9 rounded-lg text-center py-2 outline-BLUE border border-BORDER"/>
+          <p class="px-1">:</p>
+          <input placeholder="00" type="number" maxlength="2" max="59" min="0" class="w-11 h-9 rounded-lg text-center py-2 outline-BLUE border border-BORDER" />
+        </div>
+        <div class="rounded-lg border border-BORDER inline-flex flex-wrap h-9">
+          <label class="relative w-11 h-full px-3 py-2 flex items-center">
+            <input type="radio" value="am" class="appearance-none checked:bg-BLUE absolute inset-0 rounded-l-lg am-selector"/>
+            <p class="body-1 relative z-1 uppercase">am</p>
+          </label>
+          <div class="h-full w-px bg-BORDER"></div>
+          <label class="relative w-11 h-full px-3 py-2 flex items-center">
+            <input type="radio" value="pm" class="appearance-none checked:bg-BLUE absolute inset-0 rounded-r-lg pm-selector"/>
+            <p class="body-1 relative z-1 uppercase">pm</p>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div v-if="!inline" class="flex w-full p-3">
+      <y-button @click="emitSelected" primary class="ml-auto">
+        Save
+      </y-button>
     </div>
   </div>
 </template>
@@ -73,13 +103,23 @@ export default {
 import { ref, watch, computed } from 'vue';
 import dayjs from "dayjs";
 
-const emit = defineEmits(['update', 'update:modelValue']);
+const emit = defineEmits(['update', 'update:modelValue', 'close']);
 
 
 const props = defineProps({
   modelValue: {
     type: [Object, String],
     required: false,
+  },
+  date: {
+    type: Boolean,
+    required: false,
+    default: () => true,
+  },
+  time: {
+    type: Boolean,
+    required: false,
+    default: () => false,
   },
   firstDay: {
     type: Number,
@@ -170,11 +210,17 @@ const changeMonth = (inc, month = null) => {
   }
 };
 
+const emitSelected = () => {
+  emit('update', selectedDate.value);
+  emit('update:modelValue', selectedDate.value);
+};
+
 const chooseDate = (date) => {
   selectedDate.value = date;
-  emit('update', date);
-  emit('update:modelValue', date);
+  emitSelected();
+  emit('close');
 };
+
 
 const thClass = computed(() => {
   return ['font-semibold capitalize text-BLACK-2 text-xs text-center'];
@@ -210,5 +256,17 @@ watch(
 <style>
 .yartu-date-picker-table-calc-width {
   width: calc(100% + 16px);
+}
+
+.am-selector:checked + p{
+  color: white;
+}
+
+.pm-selector:checked + p{
+  color: white !important;
+}
+
+.calc-width-for-date-picker{
+  width: calc(100% - 0.75rem);
 }
 </style>
