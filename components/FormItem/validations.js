@@ -1,5 +1,5 @@
 const VALIDATIONS = {
-  REQUIRED: [(v) => !!v.trim() || 'Required'],
+  REQUIRED: [(v) => !!v || (v && !!v.trim()) || 'Required'],
   EMAIL: [
     (v) => !!v || 'E-mail is required',
     (v) => /.+@.+/.test(v) || 'E-mail must be valid',

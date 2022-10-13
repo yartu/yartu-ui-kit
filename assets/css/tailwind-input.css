@@ -20,6 +20,12 @@
     border: .25em solid #9aa1b4;
   }
 
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
   .heading-1 {
     @apply font-extrabold text-3.25xl text-BLACK-2
   }
