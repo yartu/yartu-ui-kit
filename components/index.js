@@ -44,6 +44,7 @@ import DropdownDrawer from './DropdownDrawer';
 import NavigationDrawer from './NavigationDrawer';
 import CollapsiblePanel from './CollapsiblePanel';
 import DropdownDrawerItem from './DropdownDrawerItem';
+import DateTimePicker from './DateTimePicker';
 import NavigationDrawerItem from './NavigationDrawerItem';
 import YartuNotify from './YartuNotify';
 import YartuModal from './YartuModal';
@@ -103,6 +104,7 @@ export {
   InnerDropdown,
   ListItemGroup,
   NavigationTree,
+  DateTimePicker,
   DropdownDrawer,
   NavigationDrawer,
   CollapsiblePanel,
