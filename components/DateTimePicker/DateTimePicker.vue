@@ -22,7 +22,7 @@
           :placeholder="placeholder"
           @click="open"
         />
-        <button @click="open">
+        <button type="button" @click="open">
           <svg
             width="24"
             height="24"
