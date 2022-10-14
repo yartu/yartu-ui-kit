@@ -1,14 +1,14 @@
 <template>
   <div ref="target" class="relative">
     <div :class="inputContainerClass">
-      <label :id="id" class="text-sm font-semibold" v-if="label">
+      <label :id="label" class="text-sm font-semibold" v-if="label">
         {{ label }}
       </label>
       <label
         v-if="!inline"
         class="inline-flex flex-1 flex-wrap items-center px-4 py-2.5 border border-BORDER rounded-lg"
         :class="{ '!border-BLUE': showPicker }"
-        :id="id"
+        :id="label"
       >
         <input
           type="text"
@@ -18,6 +18,7 @@
           aria-expanded="true"
           inputmode="none"
           tabindex="0"
+          :value="selectedDate ? selectedDate.format(formatDate) : ''"
           :placeholder="placeholder"
           @click="open"
         />
@@ -55,7 +56,7 @@
           ></y-calendar>
           <div v-if="!inline" class="w-full flex flex-wrap gap-3 justify-end">
             <button
-              @click="close"
+              @click="clear"
               class="border border-BORDER rounded-lg px-3 py-2 hover:bg-GREY-3"
             >
               <svg
@@ -114,14 +115,15 @@ export default {
 </script>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
-
+import { ref, watch, computed, onMounted, onUnmounted } from 'vue';
 import { onClickOutside } from '@vueuse/core';
-const emit = defineEmits(['update', 'update:modelValue', 'close']);
 
+import dayjs from 'dayjs';
+
+const emit = defineEmits(['update', 'update:modelValue', 'close']);
 const props = defineProps({
   modelValue: {
-    type: [Object, String],
+    type: [Object, String, Date],
     required: false,
   },
   label: {
@@ -184,17 +186,19 @@ const open = () => {
   calculatePosition();
 };
 
-const close = () => {
+const clear = () => {
+  emit('update', '');
+  emit('update:modelValue', '');
   showPicker.value = false;
-  emit('close');
+  selectedDate.value = '';
 };
 
-const selectedDate = ref(props.modelValue);
+const selectedDate = ref(dayjs(props.modelValue));
 
 const emitSelected = () => {
   emit('update', selectedDate.value);
   emit('update:modelValue', selectedDate.value);
-  emit('close');
+  showPicker.value = false;
 };
 
 const calculatePosition = () => {
