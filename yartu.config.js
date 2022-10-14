@@ -66,6 +66,7 @@ const globalConfig = {
         PINK: '#ec4899ff',
         RED: '#eb6363ff',
         'RED-2': '#ff6542',
+        'RED-3': '#E93F3F',
         TEAL: '#2dd4bfff',
         KEPPEL: '#44bba4',
         EMERALD: '#6ED37E',
