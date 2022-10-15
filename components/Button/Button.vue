@@ -52,6 +52,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    error: {
+      type: Boolean,
+      default: false,
+    },
     text: {
       type: Boolean,
       default: false,
@@ -100,10 +104,11 @@ export default {
         {
           'bg-BLUE text-white hover:bg-HOVER-BLUE disabled:bg-LIGHTBLUE-3':
             this.primary,
-          'border border-BORDER bg-white text-BLUE hover:bg-LIGHTBLUE-5 disabled:bg-GREY-3 ':
+          'border border-BORDER bg-white text-BLUE hover:bg-LIGHTBLUE-5 disabled:bg-GREY-3':
             this.secondary,
-          'bg-BLACK-2 text-white hover:bg-BLACK-3 disabled:bg-GREY-3 disabled:border-BORDER disabled:border ':
+          'bg-BLACK-2 text-white hover:bg-BLACK-3 disabled:bg-GREY-3 disabled:border-BORDER disabled:border':
             this.tertiary,
+          'bg-RED text-white hover:bg-RED-3 disabled:opacity-50': this.error,
           'text-BLUE hover:underline disabled:text-GREY-3 !p-0': this.text,
 
           'h-10 py-2 px-7': this.size == 'lg',
