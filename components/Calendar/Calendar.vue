@@ -150,6 +150,7 @@
             class="relative w-11 h-full px-3 py-2 flex items-center cursor-pointer"
           >
             <input
+              @change="emitSelected"
               v-model="timeData.t"
               type="radio"
               value="am"
@@ -162,6 +163,7 @@
             class="relative w-11 h-full px-3 py-2 flex items-center cursor-pointer"
           >
             <input
+              @change="emitSelected"
               v-model="timeData.t"
               type="radio"
               value="pm"
@@ -308,34 +310,6 @@ const daysList = computed(() => {
   return display;
 });
 
-const isNumber = (ev, type) => {
-
-  const maxs = {
-    'm': 60,
-    'h': props.time24h ? 24 : 12,
-  }
-
-  if ((ev.keyCode === 8 || ev.keyCode === 46)) {
-    return true;
-  }
-
-  const lastNumber = parseInt(`${ev.target.value}${ev.key}`, 10);
-
-  if (!parseInt(ev.key) < 0) {
-    ev.preventDefault();
-  } else if (lastNumber < 0 || lastNumber > maxs[type]) {
-    ev.preventDefault();
-  } else {
-    if (lastNumber < 10) {
-      timeData.value[type] = `0${lastNumber}`;
-      ev.preventDefault();
-    } else {
-      timeData.value[type] = lastNumber;
-      ev.preventDefault();
-    }
-  }
-}
-
 const changeMonth = (inc, month = null) => {
   let newDayjs = {};
   if (month !== null) {
@@ -365,12 +339,40 @@ const emitSelected = () => {
   emit('update:modelValue', selectedDate.value);
 };
 
+const isNumber = (ev, type) => {
+
+const maxs = {
+  'm': 60,
+  'h': props.time24h ? 24 : 12,
+}
+
+if ((ev.keyCode === 8 || ev.keyCode === 46)) {
+  return true;
+}
+
+const lastNumber = parseInt(`${ev.target.value}${ev.key}`, 10);
+
+if (!parseInt(ev.key) < 0) {
+  ev.preventDefault();
+} else if (lastNumber < 0 || lastNumber > maxs[type]) {
+  ev.preventDefault();
+} else {
+  if (lastNumber < 10) {
+    timeData.value[type] = `0${lastNumber}`;
+    ev.preventDefault();
+  } else {
+    timeData.value[type] = lastNumber;
+    ev.preventDefault();
+  }
+  emitSelected();
+}
+}
+
+
 const chooseDate = (date) => {
   selectedDate.value = date;
-  if (props.inline) {
-    emitSelected();
-    emit('close');
-  }
+  emitSelected();
+  emit('close');
 };
 
 // Created
@@ -412,12 +414,14 @@ const pickerClass = computed(() => {
 watch(
   () => props.modelValue,
   (val) => {
-    const newDayjs = dayjs(val, props.formatDate);
+    const newDayjs = val ? dayjs(val, props.formatDate) : dayjs();
     initDateTime(newDayjs);
     selectedDate.value = newDayjs;
   },
   { deep: true },
 );
+
+
 </script>
 
 <style>
