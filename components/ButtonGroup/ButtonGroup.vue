@@ -8,7 +8,7 @@
       class="flex items-center gap-1 justify-center"
     >
       <label
-        class="w-24 p-1 flex items-center justify-center rounded-full gap-2 subtitle-4 cursor-pointer relative"
+        class="w-24 p-1 flex items-center justify-center rounded-full gap-2 subtitle-4 text-BLACK-2 cursor-pointer relative"
         :title="option.title"
       >
         <input
@@ -19,7 +19,7 @@
           class="appearance-none checked:bg-white checked:shadow-5 rounded-full absolute inset-0 transition-all duration-300"
         />
         <slot name="option" :option="option" :index="index">
-          <span v-if="optionLabel" class="subtitle-4 truncate relative z-1">
+          <span v-if="optionLabel" class="subtitle-4 text-BLACK-2 truncate relative z-1">
             {{ option[optionLabel] }}
           </span>
         </slot>
