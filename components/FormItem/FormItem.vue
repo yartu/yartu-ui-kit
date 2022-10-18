@@ -4,7 +4,12 @@ import { validate } from './validations';
 
 export default {
   name: 'formItem',
-  inject: ['yartuForm'],
+  inject: {
+    yartuForm: {
+      from: 'yartuForm',
+      default: () => {},
+    },
+  },
   data: () => ({
     errors: [],
   }),
