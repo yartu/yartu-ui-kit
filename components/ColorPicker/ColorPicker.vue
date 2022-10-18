@@ -19,8 +19,8 @@
           :id="item"
           :value="item"
           type="radio"
-          :disabled="disabled"
           v-model="model"
+          :disabled="disabled"
           :class="inputClass"
         />
       </label>
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+
 import FormItem from "../FormItem";
 
 export default {
@@ -52,8 +53,7 @@ import colors from "../../utils/colors";
 
 const colorPalette = ref([]);
 
-const emit = defineEmits(["update:modelValue"]);
-
+const emit = defineEmits(["update:modelValue", "update"]);
 const props = defineProps({
   colors: {
     type: Object,
@@ -95,11 +95,11 @@ const model = computed({
   },
   set(val) {
     emit("update:modelValue", val);
+    emit('update', val);
   },
 });
 
 const containerClass = computed(() => {
-  console.log(FormItem);
   return [
     "flex flex-wrap",
     {
@@ -134,4 +134,5 @@ const inputClass = computed(() => {
     "disabled:cursor-not-allowed",
   ];
 });
+
 </script>
