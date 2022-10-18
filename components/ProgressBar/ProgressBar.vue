@@ -12,7 +12,7 @@
       v-for="i in 4"
       :key="i"
       :style="setHeight"
-      class="w-1/2-2 bg-GREY-9 rounded-full"
+      class="w-1/2-gap-1 bg-GREY-9 rounded-full"
     >
       <div
         :style="[
