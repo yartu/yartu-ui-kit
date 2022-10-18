@@ -27,59 +27,59 @@
   }
 
   .heading-1 {
-    @apply font-extrabold text-3.25xl text-BLACK-2
+    @apply font-extrabold text-3.25xl
   }
 
   .heading-2 {
-    @apply font-normal text-3.25xl text-BLACK-2
+    @apply font-normal text-3.25xl
   }
 
   .heading-3 {
-    @apply font-extrabold text-2xl text-BLACK-2
+    @apply font-extrabold text-2xl
   }
 
   .heading-4 {
-    @apply font-extrabold text-xl text-BLACK-2
+    @apply font-extrabold text-xl
   }
 
   .subtitle-1 {
-    @apply font-extrabold text-base text-BLACK-2
+    @apply font-extrabold text-base
   }
 
   .subtitle-2 {
-    @apply font-semibold text-base text-BLACK-2
+    @apply font-semibold text-base
   }
 
   .subtitle-3 {
-    @apply font-extrabold text-sm text-BLACK-2
+    @apply font-extrabold text-sm
   }
 
   .subtitle-4 {
-    @apply font-semibold text-sm text-BLACK-2
+    @apply font-semibold text-sm
   }
 
   .subtitle-5 {
-    @apply font-semibold text-xs text-BLACK-2
+    @apply font-semibold text-xs
   }
 
   .body-1 {
-    @apply font-normal text-sm text-BLACK-2
+    @apply font-normal text-sm
   }
 
   .body-2 {
-    @apply font-normal text-base text-BLACK-2
+    @apply font-normal text-base
   }
 
   .caption {
-    @apply font-normal text-xs text-BLACK-2
+    @apply font-normal text-xs
   }
 
   .overline-1 {
-    @apply font-extrabold text-xs text-BLACK-2
+    @apply font-extrabold text-xs
   }
 
   .overline-2 {
-    @apply font-extrabold text-2xs text-BLACK-2
+    @apply font-extrabold text-2xs
   }
 
 }

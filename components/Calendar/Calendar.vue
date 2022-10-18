@@ -83,6 +83,7 @@
                         !daysList[7 * (week - 1) + (weekDay - 1)].active,
                       'after:absolute after:w-1 after:h-1 after:rounded-full after:bottom-0.5 after:left-1/2 after:-translate-x-1/2 after:bg-BLUE':
                         daysList[7 * (week - 1) + (weekDay - 1)].isToday,
+                      '!text-GREY-1 cursor-not-allowed': daysList[7 * (week - 1) + (weekDay - 1)].disabled,
                     },
                     buttonClass,
                   ]"
@@ -232,6 +233,14 @@ const props = defineProps({
     type: Boolean,
     default: () => false,
   },
+  min: {
+    type: [Date, Object],
+    required: false,
+  },
+  max: {
+    type: [Date, Object],
+    required: false,
+  },
 })
 const months = ref(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);
 const now = props.modelValue ? dayjs(props.modelValue, props.formatDate) : dayjs();
@@ -273,6 +282,18 @@ const initDateTime = (date) => {
   };
 };
 
+const isDisabled = (day) => {
+  if (props.max) {
+    return day.isAfter(props.max)
+  }
+
+  if (props.min) {
+    return day.isBefore(props.min)
+  }   
+
+  return false;
+};
+
 const weekDaysList = computed(() => {
   return Array.from(Array(7), (v, i) => {
     return dayjs()
@@ -288,15 +309,18 @@ const daysList = computed(() => {
   for (let i = 0; i <= current.day() - props.firstDay; i++) {
     const day = previous.subtract(i, 'day');
     day.active = false;
+    day.disabled = isDisabled(day);
     display.push(day);
   }
   display = display.sort((a, b) => a.$d - b.$d);
 
   const today = dayjs();
+  console.log('MIN', props.min)
   const days = Array.from(Array(active.value.dayjs.daysInMonth()), (v, i) => {
     const day = active.value.dayjs.date(++i);
     day.isToday = day.isSame(today, 'day');
     day.active = true;
+    day.disabled = isDisabled(day);
     return day;
   });
   display = display.concat(days);
@@ -305,8 +329,10 @@ const daysList = computed(() => {
   for (let i = 1; i <= leftDays; i++) {
     const day = active.value.dayjs.date(i).add(1, 'month');
     day.active = false;
+    day.disabled = isDisabled(day);
     display.push(day);
   }
+
   return display;
 });
 
@@ -334,6 +360,8 @@ const emitSelected = () => {
       hour += 12;
     }
     selectedDate.value = selectedDate.value.set('hour',hour).set('minute', minute);
+  } else {
+    selectedDate.value = selectedDate.value.startOf('day');
   }
   emit('update', selectedDate.value);
   emit('update:modelValue', selectedDate.value);
@@ -370,9 +398,11 @@ if (!parseInt(ev.key) < 0) {
 
 
 const chooseDate = (date) => {
-  selectedDate.value = date;
-  emitSelected();
-  emit('close');
+  if (!date.disabled) {
+    selectedDate.value = date;
+    emitSelected();
+    emit('close');
+  }
 };
 
 // Created
@@ -402,7 +432,6 @@ const pickerClass = computed(() => {
   return [
     'flex flex-col justify-center items-center',
     'mt-1',
-    'bg-white',
     'relative',
     {
       'px-8 pb-4 pt-2': !props.dense,
@@ -417,6 +446,14 @@ watch(
     const newDayjs = val ? dayjs(val, props.formatDate) : dayjs();
     initDateTime(newDayjs);
     selectedDate.value = newDayjs;
+  },
+  { deep: true },
+);
+
+watch(
+  () => props.time,
+  (val) => {
+    selectedDate.value = selectedDate.value.startOf('day');
   },
   { deep: true },
 );
