@@ -18,7 +18,7 @@
           aria-expanded="true"
           inputmode="none"
           tabindex="0"
-          :value="selectedDate ? selectedDate.format(formatDate) : ''"
+          :value="showDate ? showDate.format(formatDate) : ''"
           :placeholder="placeholder"
           @click="open"
         />
@@ -51,6 +51,8 @@
             :eventDate="eventDate"
             :dense="dense"
             :inline="inline"
+            :min="min"
+            :max="max"
             v-model="selectedDate"
             class="!p-0"
           ></y-calendar>
@@ -167,6 +169,14 @@ const props = defineProps({
     required: false,
     default: () => true,
   },
+  min: {
+    type: [Date, Object],
+    required: false,
+  },
+  max: {
+    type: [Date, Object],
+    required: false,
+  },
 });
 
 const target = ref(null);
@@ -191,13 +201,16 @@ const clear = () => {
   emit('update:modelValue', '');
   showPicker.value = false;
   selectedDate.value = '';
+  showDate.value = selectedDate.value;
 };
 
 const selectedDate = ref(dayjs(props.modelValue));
+const showDate = ref(dayjs(props.modelValue));
 
 const emitSelected = () => {
   emit('update', selectedDate.value);
   emit('update:modelValue', selectedDate.value);
+  showDate.value = selectedDate.value;
   showPicker.value = false;
 };
 
