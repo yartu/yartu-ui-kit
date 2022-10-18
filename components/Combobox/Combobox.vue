@@ -3,6 +3,7 @@
     <div class="bg-white">
       <p v-if="label != ''" :class="labelClass">{{ label }}</p>
       <button
+        type="button"
         ref="comboboxBtn"
         @click="openCombobox"
         :disabled="disabled"
@@ -30,7 +31,7 @@
                 <Tag v-if="chip" tertiary outline class="text-xs">
                   {{ item }}
                   <div v-if="closableChip">
-                    <button @click="removeItemByIndex(index)">
+                    <button type="button" @click="removeItemByIndex(index)">
                       <svg
                         width="18"
                         height="18"
