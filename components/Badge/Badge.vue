@@ -1,11 +1,13 @@
 <template>
-  <span :class="badgeContainerClass">
+  <div :class="badgeContainerClass">
     <slot></slot>
-    <span :class="badgeClass" :style="setStyle">
-      <span v-if="ping" :class="indicatorClass" :style="setStyle"></span>
-      {{ value }}
-    </span>
-  </span>
+    <div :class="badgeClass" :style="setStyle">
+      <div v-if="ping" :class="indicatorClass" :style="setStyle"></div>
+      <slot name="icon">
+        {{value}}
+      </slot>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -65,18 +67,17 @@ export default {
       return [
         'items-center justify-center',
         'rounded-full',
-        'absolute',
         'text-2xs',
         {
           'inline-flex': this.visible,
-          'hidden ': !this.visible,
-          'absolute ': !this.relative,
-          'relative ': this.relative,
+          'hidden': !this.visible,
+          'absolute': !this.relative,
+          'relative': this.relative,
           'top-0 right-0': !this.left && !this.bottom,
           'top-0 left-0': this.left && !this.bottom,
           'bottom-0 right-0': this.bottom && !this.left,
           'bottom-0 left-0': this.bottom && this.left,
-          'border ': this.border,
+          'border': this.border,
           'px-1': this.value !== '',
           'min-w-4 min-h-4': this.size == 'base',
           'min-w-3 min-h-3': this.size == 'sm',

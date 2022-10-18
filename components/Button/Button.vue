@@ -56,6 +56,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    success: {
+      type: Boolean,
+      default: false,
+    },
     text: {
       type: Boolean,
       default: false,
@@ -109,6 +113,7 @@ export default {
           'bg-BLACK-2 text-white hover:bg-BLACK-3 disabled:bg-GREY-3 disabled:border-BORDER disabled:border':
             this.tertiary,
           'bg-RED text-white hover:bg-RED-3 disabled:opacity-50': this.error,
+          'bg-GREEN text-white hover:bg-GREEN-2 disabled:opacity-50': this.success,
           'text-BLUE hover:underline disabled:text-GREY-3 !p-0': this.text,
 
           'h-10 py-2 px-7': this.size == 'lg',
