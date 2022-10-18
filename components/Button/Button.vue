@@ -129,6 +129,8 @@ export default {
             this.circle && this.size == 'sm',
           'w-6 h-6 !p-0 !rounded-full hover:bg-GREY-8':
             this.circle && this.size == 'xs',
+          'w-4 h-4 !p-0 !rounded-full hover:bg-GREY-8':
+            this.circle && this.size == '2xs',
 
           'bg-LIGHTBLUE-3 hover:bg-LIGHTBLUE-3': this.loading && this.primary,
           'bg-GREY-3 hover:bg-GREY-3':
