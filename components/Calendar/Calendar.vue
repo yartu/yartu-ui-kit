@@ -1,6 +1,6 @@
 <template>
   <div :class="pickerClass">
-    <div v-if="date || !(date && time)">
+    <div v-if="date">
       <div class="flex justify-between items-center">
         <button @click="changeMonth(-1)" :class="changeButtonClass">
           <svg
@@ -59,7 +59,7 @@
           </svg>
         </button>
       </div>
-      <div class="w-full -ml-2 mt-4">
+      <div v-if="date" class="w-full -ml-2 mt-4">
         <table class="yartu-date-picker-table-calc-width">
           <thead>
             <tr>
@@ -83,7 +83,8 @@
                         !daysList[7 * (week - 1) + (weekDay - 1)].active,
                       'after:absolute after:w-1 after:h-1 after:rounded-full after:bottom-0.5 after:left-1/2 after:-translate-x-1/2 after:bg-BLUE':
                         daysList[7 * (week - 1) + (weekDay - 1)].isToday,
-                      '!text-GREY-1 cursor-not-allowed': daysList[7 * (week - 1) + (weekDay - 1)].disabled,
+                      '!text-GREY-1 cursor-not-allowed':
+                        daysList[7 * (week - 1) + (weekDay - 1)].disabled,
                     },
                     buttonClass,
                   ]"
@@ -99,7 +100,7 @@
       </div>
     </div>
     <div class="w-full" v-if="time">
-      <hr v-if="!inline" class="border-BORDER mb-4" />
+      <hr v-if="!inline && date" class="border-BORDER mb-4" />
       <div class="flex flex-wrap items-center gap-3">
         <div>
           <svg
@@ -146,7 +147,7 @@
             class="w-11 h-9 rounded-lg text-center py-2 outline-BLUE border border-BORDER"
           />
         </div>
-        <div class="rounded-lg border border-BORDER inline-flex flex-wrap h-9">
+        <div v-if="!time24h" class="rounded-lg border border-BORDER inline-flex flex-wrap h-9">
           <label
             class="relative w-11 h-full px-3 py-2 flex items-center cursor-pointer"
           >
@@ -241,15 +242,35 @@ const props = defineProps({
     type: [Date, Object],
     required: false,
   },
-})
-const months = ref(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);
-const now = props.modelValue ? dayjs(props.modelValue, props.formatDate) : dayjs();
+});
+
+const months = ref([
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+]);
+
+const now = props.modelValue
+  ? dayjs(props.modelValue, props.formatDate)
+  : dayjs();
+
 const selectedDate = ref(props.modelValue ? props.modelValue : now);
+
 const timeData = ref({
   h: '00',
   m: '00',
   t: 'am',
 });
+
 const active = ref({
   dayjs: null,
   year: 0,
@@ -264,13 +285,19 @@ const initDateTime = (date) => {
 
   if (!props.time24h && hour > 12) {
     hour -= 12;
-  } else if (props.time24h && timeType === 'pm' && hour < 12 ) {
+  } else if (props.time24h && timeType === 'pm' && hour < 12) {
     hour += 12;
   }
 
   timeData.value = {
-    h: hour.toLocaleString('en-US', { minimumIntegerDigits: 2,useGrouping: false }),
-    m: minute.toLocaleString('en-US', { minimumIntegerDigits: 2,useGrouping: false }),
+    h: hour.toLocaleString('en-US', {
+      minimumIntegerDigits: 2,
+      useGrouping: false,
+    }),
+    m: minute.toLocaleString('en-US', {
+      minimumIntegerDigits: 2,
+      useGrouping: false,
+    }),
     t: date.format('a'),
   };
 
@@ -284,12 +311,12 @@ const initDateTime = (date) => {
 
 const isDisabled = (day) => {
   if (props.max) {
-    return day.isAfter(props.max)
+    return day.isAfter(props.max);
   }
 
   if (props.min) {
-    return day.isBefore(props.min)
-  }   
+    return day.isBefore(props.min);
+  }
 
   return false;
 };
@@ -315,7 +342,8 @@ const daysList = computed(() => {
   display = display.sort((a, b) => a.$d - b.$d);
 
   const today = dayjs();
-  console.log('MIN', props.min)
+  console.log('MIN', props.min);
+
   const days = Array.from(Array(active.value.dayjs.daysInMonth()), (v, i) => {
     const day = active.value.dayjs.date(++i);
     day.isToday = day.isSame(today, 'day');
@@ -323,6 +351,7 @@ const daysList = computed(() => {
     day.disabled = isDisabled(day);
     return day;
   });
+
   display = display.concat(days);
   const leftDays = 42 - display.length;
 
@@ -359,7 +388,9 @@ const emitSelected = () => {
     if (!props.time24h && timeData.value.t === 'pm' && hour > 0) {
       hour += 12;
     }
-    selectedDate.value = selectedDate.value.set('hour',hour).set('minute', minute);
+    selectedDate.value = selectedDate.value
+      .set('hour', hour)
+      .set('minute', minute);
   } else {
     selectedDate.value = selectedDate.value.startOf('day');
   }
@@ -368,34 +399,32 @@ const emitSelected = () => {
 };
 
 const isNumber = (ev, type) => {
+  const maxs = {
+    m: 60,
+    h: props.time24h ? 24 : 12,
+  };
 
-const maxs = {
-  'm': 60,
-  'h': props.time24h ? 24 : 12,
-}
+  if (ev.keyCode === 8 || ev.keyCode === 46) {
+    return true;
+  }
 
-if ((ev.keyCode === 8 || ev.keyCode === 46)) {
-  return true;
-}
+  const lastNumber = parseInt(`${ev.target.value}${ev.key}`, 10);
 
-const lastNumber = parseInt(`${ev.target.value}${ev.key}`, 10);
-
-if (!parseInt(ev.key) < 0) {
-  ev.preventDefault();
-} else if (lastNumber < 0 || lastNumber > maxs[type]) {
-  ev.preventDefault();
-} else {
-  if (lastNumber < 10) {
-    timeData.value[type] = `0${lastNumber}`;
+  if (!parseInt(ev.key) < 0) {
+    ev.preventDefault();
+  } else if (lastNumber < 0 || lastNumber > maxs[type]) {
     ev.preventDefault();
   } else {
-    timeData.value[type] = lastNumber;
-    ev.preventDefault();
+    if (lastNumber < 10) {
+      timeData.value[type] = `0${lastNumber}`;
+      ev.preventDefault();
+    } else {
+      timeData.value[type] = lastNumber;
+      ev.preventDefault();
+    }
+    emitSelected();
   }
-  emitSelected();
-}
-}
-
+};
 
 const chooseDate = (date) => {
   if (!date.disabled) {
@@ -457,8 +486,6 @@ watch(
   },
   { deep: true },
 );
-
-
 </script>
 
 <style>
