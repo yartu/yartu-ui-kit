@@ -7,6 +7,7 @@
     <component
       @closeYartuModal="closeModal"
       v-bind="comOptions.component"
+      v-on="comOptions.emits"
       :is="dynamicComponent"
     >
     </component>
