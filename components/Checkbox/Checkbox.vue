@@ -76,7 +76,7 @@ const model = computed({
 const checkboxContainer = computed(() => {
   return [
     'w-fit',
-    'subtitle-4',
+    'subtitle-4 text-BLACK-2',
     'inline-flex items-center justify-center flex-wrap gap-2',
   ];
 });
