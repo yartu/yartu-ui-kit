@@ -1,10 +1,11 @@
 <template>
-  <div ref="target" class="relative">
+  <div class="relative">
     <div :class="inputContainerClass">
       <label :id="label" class="text-sm font-semibold" v-if="label">
         {{ label }}
       </label>
       <label
+        ref="target"
         v-if="!inline"
         class="flex flex-1 items-center px-4 py-2.5 border border-BORDER rounded-lg"
         :class="{ '!border-BLUE': showPicker }"
@@ -82,7 +83,7 @@
           <div v-if="!inline" class="w-full flex flex-wrap gap-3 justify-end">
             <button
               @click="clear"
-              class="border border-BORDER rounded-lg px-3 py-2 hover:bg-GREY-3"
+              class="border border-BORDER rounded-lg px-2 py-1 hover:bg-GREY-3 h-fit"
             >
               <svg
                 width="24"
@@ -109,7 +110,7 @@
             </button>
             <button
               @click="emitSelected"
-              class="border border-BORDER rounded-lg px-3 py-2 hover:bg-GREY-3"
+              class="border border-BORDER rounded-lg px-2 py-1 hover:bg-GREY-3 h-fit"
             >
               <svg
                 width="24"
