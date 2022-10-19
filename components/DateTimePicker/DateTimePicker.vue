@@ -1,29 +1,31 @@
 <template>
-  <div ref="target" class="relative">
+  <div class="relative">
     <div :class="inputContainerClass">
       <label :id="label" class="text-sm font-semibold" v-if="label">
         {{ label }}
       </label>
       <label
+        ref="target"
         v-if="!inline"
-        class="inline-flex flex-1 flex-wrap items-center px-4 py-2.5 border border-BORDER rounded-lg"
+        class="flex flex-1 items-center px-4 py-2.5 border border-BORDER rounded-lg"
         :class="{ '!border-BLUE': showPicker }"
         :id="label"
       >
         <input
           type="text"
-          class="outline-none subtitle-5"
+          class="outline-none subtitle-5 text-BLACK-2 flex-1"
           aria-autocomplete="none"
           aria-haspopup="dialog"
           aria-expanded="true"
           inputmode="none"
           tabindex="0"
-          :value="showDate ? showDate.format(formatDate) : ''"
+          :value="showDateWithFormat"
           :placeholder="placeholder"
           @click="open"
         />
         <button type="button" @click="open">
           <svg
+            v-if="date"
             width="24"
             height="24"
             viewBox="0 0 24 24"
@@ -34,6 +36,27 @@
               fill-rule="evenodd"
               clip-rule="evenodd"
               d="M7 2C7.55228 2 8 2.44772 8 3V4H16V3C16 2.44772 16.4477 2 17 2C17.5523 2 18 2.44772 18 3V4C20.2091 4 22 5.79086 22 8V17C22 19.2091 20.2091 21 18 21H6C3.79086 21 2 19.2091 2 17V8C2 5.79086 3.79086 4 6 4V3C6 2.44772 6.44772 2 7 2ZM18 6C19.1046 6 20 6.89543 20 8H4C4 6.89543 4.89543 6 6 6H18ZM4 10V17C4 18.1046 4.89543 19 6 19H18C19.1046 19 20 18.1046 20 17V10H4Z"
+              fill="#9AA1B4"
+            />
+          </svg>
+          <svg
+            v-else
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M12 3.81818C7.48131 3.81818 3.81818 7.48131 3.81818 12C3.81818 16.5187 7.48131 20.1818 12 20.1818C16.5187 20.1818 20.1818 16.5187 20.1818 12C20.1818 7.48131 16.5187 3.81818 12 3.81818ZM2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12Z"
+              fill="#9AA1B4"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M11.9655 7C12.4988 7 12.931 7.42495 12.931 7.94915V11.6238L14.7172 13.3797C15.0943 13.7504 15.0943 14.3513 14.7172 14.722C14.3401 15.0927 13.7288 15.0927 13.3518 14.722L11.2828 12.6881C11.1017 12.5101 11 12.2687 11 12.0169V7.94915C11 7.42495 11.4323 7 11.9655 7Z"
               fill="#9AA1B4"
             />
           </svg>
@@ -53,13 +76,14 @@
             :inline="inline"
             :min="min"
             :max="max"
+            :time24h="time24h"
             v-model="selectedDate"
             class="!p-0"
           ></y-calendar>
           <div v-if="!inline" class="w-full flex flex-wrap gap-3 justify-end">
             <button
               @click="clear"
-              class="border border-BORDER rounded-lg px-3 py-2 hover:bg-GREY-3"
+              class="border border-BORDER rounded-lg px-2 py-1 hover:bg-GREY-3 h-fit"
             >
               <svg
                 width="24"
@@ -86,7 +110,7 @@
             </button>
             <button
               @click="emitSelected"
-              class="border border-BORDER rounded-lg px-3 py-2 hover:bg-GREY-3"
+              class="border border-BORDER rounded-lg px-2 py-1 hover:bg-GREY-3 h-fit"
             >
               <svg
                 width="24"
@@ -117,7 +141,7 @@ export default {
 </script>
 
 <script setup>
-import { ref, watch, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 
 import dayjs from 'dayjs';
@@ -159,6 +183,11 @@ const props = defineProps({
     required: false,
     default: 'YYYY-MM-DD',
   },
+  formatHour: {
+    type: String,
+    required: false,
+    default: 'HH.mm',
+  },
   eventDate: {
     type: Array,
     required: false,
@@ -168,6 +197,10 @@ const props = defineProps({
     type: Boolean,
     required: false,
     default: () => true,
+  },
+  time24h: {
+    type: Boolean,
+    default: () => false,
   },
   min: {
     type: [Date, Object],
@@ -182,6 +215,8 @@ const props = defineProps({
 const target = ref(null);
 const pickerContainer = ref(null);
 const showPicker = ref(false);
+const selectedDate = ref(dayjs(props.modelValue));
+const showDate = ref(dayjs(props.modelValue));
 
 onClickOutside(
   target,
@@ -204,15 +239,22 @@ const clear = () => {
   showDate.value = selectedDate.value;
 };
 
-const selectedDate = ref(dayjs(props.modelValue));
-const showDate = ref(dayjs(props.modelValue));
-
 const emitSelected = () => {
   emit('update', selectedDate.value);
   emit('update:modelValue', selectedDate.value);
   showDate.value = selectedDate.value;
   showPicker.value = false;
 };
+
+const showDateWithFormat = computed(() => {
+  let value = '';
+  if (showDate.value && props.date) {
+    value = showDate.value.format(props.formatDate);
+  } else if (showDate.value && !props.date && props.time) {
+    value = showDate.value.format(props.formatHour);
+  }
+  return value;
+});
 
 const calculatePosition = () => {
   let container = target.value.getBoundingClientRect();
@@ -229,34 +271,15 @@ onUnmounted(() => {
   window.removeEventListener('resize', calculatePosition);
 });
 
-const changeButtonClass = computed(() => {
-  return [
-    'flex items-center justify-center',
-    'hover:bg-GREY-3 ',
-    'rounded-full',
-    { 'w-10 h-10': !props.dense, 'w-7 h-7': props.dense },
-  ];
-});
-
-const thClass = computed(() => {
-  return ['font-semibold capitalize text-BLACK-2 text-xs text-center'];
-});
-
 const inputContainerClass = computed(() => {
-  return ['text-BLACK-2', 'inline-flex flex-col gap-2'];
-});
-
-const buttonClass = computed(() => {
-  return [
-    'p-0 relative text-BLACK-2 text-xs text-center hover:bg-GREY-3 rounded-full',
-    { 'w-10 h-10': !props.dense, 'w-7 h-7': props.dense },
-  ];
+  return ['text-BLACK-2', 'flex flex-col gap-2'];
 });
 
 const pickerClass = computed(() => {
   return [
     'flex flex-col justify-center items-center',
     'mt-1',
+    'shadow-1',
     'bg-white',
     'rounded-lg border border-BORDER',
     {
