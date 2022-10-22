@@ -66,21 +66,31 @@
     <transition name="fade">
       <teleport v-if="!inline" to="body">
         <div ref="pickerContainer" v-show="showPicker" :class="pickerClass">
-          <y-calendar
-            :date="date"
-            :time="time"
-            :firstDay="firstDay"
-            :formatDate="formatDate"
-            :eventDate="eventDate"
-            :dense="dense"
-            :inline="inline"
-            :min="min"
-            :max="max"
-            :time24h="time24h"
-            v-model="selectedDate"
-            class="!p-0"
-          ></y-calendar>
+          <div class="flex gap-3 flex-wrap">
+            <y-calendar
+              :date="date"
+              :time="time"
+              :firstDay="firstDay"
+              :formatDate="formatDate"
+              :eventDate="eventDate"
+              dense
+              inline
+              :min="min"
+              :max="max"
+              :time24h="time24h"
+              v-model="selectedDate"
+              class="!p-0"
+            ></y-calendar>
+            <y-time-picker inline v-model="selectedTime" :outline="false" dense></y-time-picker>
+          </div>
           <div v-if="!inline" class="w-full flex flex-wrap gap-3 justify-end">
+            <div>
+              <pre>
+                burası date: {{ selectedDate }}
+                
+                burası time: {{ selectedTime }}
+              </pre>
+            </div>
             <button
               @click="clear"
               class="border border-BORDER rounded-lg px-2 py-1 hover:bg-GREY-3 h-fit"
@@ -216,6 +226,7 @@ const target = ref(null);
 const pickerContainer = ref(null);
 const showPicker = ref(false);
 const selectedDate = ref(dayjs(props.modelValue));
+const selectedTime = ref(dayjs(props.modelValue));
 const showDate = ref(dayjs(props.modelValue));
 
 onClickOutside(
@@ -284,8 +295,8 @@ const pickerClass = computed(() => {
     'rounded-lg border border-BORDER',
     {
       'absolute z-50': !props.inline,
-      'px-8 py-4': !props.dense,
-      'px-4 py-2': props.dense,
+      'p-4': !props.dense,
+      'p-2': props.dense,
     },
   ];
 });
