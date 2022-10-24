@@ -1,6 +1,6 @@
 <template>
   <div :class="pickerClass">
-    <div v-if="date">
+    <div>
       <div class="flex justify-between items-center">
         <button @click="changeMonth(-1)" :class="changeButtonClass">
           <svg
@@ -19,28 +19,12 @@
             />
           </svg>
         </button>
-        <y-dropdown :classes="'max-h-56 overflow-auto'">
-          <y-dropdown-item
-            v-for="(month, index) in months"
-            :key="month"
-            @click="changeMonth(null, index)"
-            class="truncate"
-          >
-            <div class="flex">
-              <h1
-                class="caption"
-                :class="{ 'text-BLUE': active.month === index }"
-              >
-                {{ month }}
-              </h1>
-            </div>
-          </y-dropdown-item>
-          <template #activator="{ open }">
-            <button @click="open" class="font-extrabold text-BLACK-2 text-xs">
-              {{ active.dayjs.format('MMMM') }} {{ active.year }}
-            </button>
-          </template>
-        </y-dropdown>
+        <button
+          @click="toggleMonthSelector"
+          class="font-extrabold text-BLACK-2 text-xs"
+        >
+          {{ active.dayjs.format('MMMM') }} {{ active.year }}
+        </button>
         <button @click="changeMonth(1)" :class="changeButtonClass">
           <svg
             width="16"
@@ -59,8 +43,24 @@
           </svg>
         </button>
       </div>
-      <div v-if="date" class="w-full -ml-2 mt-4">
-        <table class="yartu-date-picker-table-calc-width">
+      <div class="w-full -ml-2 mt-4">
+        <div
+          v-if="monthSelect"
+          class="yartu-date-picker-table-calc-width flex flex-wrap gap-2 max-w-54 justify-between"
+        >
+          <button
+            v-for="(month, index) in months"
+            :key="month"
+            @click="changeMonth(null, index)"
+            class="truncate caption w-11 h-11 rounded-md hover:bg-LIGHTBLUE-6 text-BLACK-2"
+            :class="{
+              'text-white bg-BLUE hover:!bg-BLUE': active.month === index,
+            }"
+          >
+            {{ month.substring(0, 3) }}
+          </button>
+        </div>
+        <table v-else class="yartu-date-picker-table-calc-width">
           <thead>
             <tr>
               <th :class="thClass" v-for="day in weekDaysList">
@@ -99,71 +99,6 @@
         </table>
       </div>
     </div>
-    <div class="w-full" v-if="time">
-      <hr v-if="!inline && date" class="border-BORDER mb-4" />
-      <div class="flex flex-wrap gap-3">
-        <div class="inline-flex flex-wrap items-center min-w-">
-          <div
-            class="max-h-40 snap-y snap-proximity overflow-y-auto scrollbar-hide flex flex-col"
-          >
-            <button
-              @click="timeData.h = index"
-              v-for="(item, index) in 24"
-              :key="item"
-              :class="timeData.h == index ? 'bg-BLUE text-white' : 'text-BLACK-2 hover:bg-LIGHTBLUE-6'"
-              class="snap-start w-11 h-9 rounded-lg text-center py-2  mx-3 text-sm font-semibold"
-            >
-              {{ index >= 10 ? index : `0${index}` }}
-            </button>
-          </div>
-          <div class="bg-BORDER w-px h-40"></div>
-          <div
-            class="max-h-40 snap-y snap-proximity overflow-y-auto scrollbar-hide flex flex-col"
-          >
-            <button
-              @click="timeData.m = index"
-              v-for="(item, index) in 60"
-              :key="item"
-              :class="timeData.m == index ? 'bg-BLUE text-white' : 'text-BLACK-2 hover:bg-LIGHTBLUE-6'"
-              class="snap-start w-11 h-9 rounded-lg text-center py-2 mx-3 text-sm font-semibold"
-            >
-              {{ index >= 10 ? index : `0${index}` }}
-            </button>
-          </div>
-        </div>
-        <div
-          v-if="!time24h"
-          class="rounded-lg border border-BORDER inline-flex flex-wrap h-9"
-        >
-          <label
-            class="relative w-11 h-full px-3 py-2 flex items-center cursor-pointer"
-          >
-            <input
-              @change="emitSelected"
-              v-model="timeData.t"
-              type="radio"
-              value="am"
-              class="appearance-none checked:bg-BLUE absolute inset-0 rounded-l-lg am-selector"
-            />
-            <p class="body-1 relative z-1 uppercase">am</p>
-          </label>
-          <div class="h-full w-px bg-BORDER"></div>
-          <label
-            class="relative w-11 h-full px-3 py-2 flex items-center cursor-pointer"
-          >
-            <input
-              @change="emitSelected"
-              v-model="timeData.t"
-              type="radio"
-              value="pm"
-              class="appearance-none checked:bg-BLUE absolute inset-0 rounded-r-lg pm-selector"
-            />
-            <p class="body-1 relative z-1 uppercase">pm</p>
-          </label>
-        </div>
-      </div>
-    </div>
-    <hr v-if="!inline" class="border-BORDER my-4 w-full" />
   </div>
 </template>
 
@@ -188,16 +123,6 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  date: {
-    type: Boolean,
-    required: false,
-    default: () => true,
-  },
-  time: {
-    type: Boolean,
-    required: false,
-    default: () => false,
-  },
   firstDay: {
     type: Number,
     default: 0, // Sunday
@@ -211,11 +136,6 @@ const props = defineProps({
     type: Array,
     required: false,
     default: () => [],
-  },
-  inline: {
-    type: Boolean,
-    required: false,
-    default: () => false,
   },
   time24h: {
     type: Boolean,
@@ -252,12 +172,6 @@ const now = props.modelValue
 
 const selectedDate = ref(props.modelValue ? props.modelValue : now);
 
-const timeData = ref({
-  h: '00',
-  m: '00',
-  t: 'am',
-});
-
 const active = ref({
   dayjs: null,
   year: 0,
@@ -265,29 +179,13 @@ const active = ref({
   date: 0,
 });
 
+const monthSelect = ref(false);
+
+const toggleMonthSelector = () => {
+  monthSelect.value = !monthSelect.value;
+};
+
 const initDateTime = (date) => {
-  let hour = date.hour();
-  const minute = date.minute();
-  const timeType = date.format('a');
-
-  if (!props.time24h && hour > 12) {
-    hour -= 12;
-  } else if (props.time24h && timeType === 'pm' && hour < 12) {
-    hour += 12;
-  }
-
-  timeData.value = {
-    h: hour.toLocaleString('en-US', {
-      minimumIntegerDigits: 2,
-      useGrouping: false,
-    }),
-    m: minute.toLocaleString('en-US', {
-      minimumIntegerDigits: 2,
-      useGrouping: false,
-    }),
-    t: date.format('a'),
-  };
-
   active.value = {
     dayjs: date,
     year: date.year(),
@@ -366,21 +264,11 @@ const changeMonth = (inc, month = null) => {
     month: newDayjs.month(),
     date: newDayjs.date(),
   };
+  monthSelect.value = false;
 };
 
 const emitSelected = () => {
-  if (props.time) {
-    let hour = parseInt(timeData.value.h) || 0;
-    const minute = parseInt(timeData.value.m) || 0;
-    if (!props.time24h && timeData.value.t === 'pm' && hour > 0) {
-      hour += 12;
-    }
-    selectedDate.value = selectedDate.value
-      .set('hour', hour)
-      .set('minute', minute);
-  } else {
-    selectedDate.value = selectedDate.value.startOf('day');
-  }
+  selectedDate.value = selectedDate.value.startOf('day');
   emit('update', selectedDate.value);
   emit('update:modelValue', selectedDate.value);
 };
