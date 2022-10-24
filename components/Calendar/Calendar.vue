@@ -46,7 +46,7 @@
       <div class="w-full -ml-2 mt-4">
         <div
           v-if="monthSelect"
-          class="yartu-date-picker-table-calc-width flex flex-wrap gap-2 max-w-54"
+          class="yartu-date-picker-table-calc-width flex flex-wrap gap-2 max-w-54 justify-between"
         >
           <button
             v-for="(month, index) in months"

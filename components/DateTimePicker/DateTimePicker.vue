@@ -68,8 +68,8 @@
         <div ref="pickerContainer" v-show="showPicker" :class="pickerClass">
           <div class="flex gap-3 flex-wrap">
             <y-calendar
+              v-if="date"
               :date="date"
-              :time="time"
               :firstDay="firstDay"
               :formatDate="formatDate"
               :eventDate="eventDate"
@@ -81,16 +81,15 @@
               v-model="selectedDate"
               class="!p-0"
             ></y-calendar>
-            <y-time-picker inline v-model="selectedTime" :outline="false" dense></y-time-picker>
+            <y-time-picker
+              v-if="time"
+              inline
+              v-model="selectedTime"
+              :outline="false"
+              dense
+            ></y-time-picker>
           </div>
-          <div v-if="!inline" class="w-full flex flex-wrap gap-3 justify-end">
-            <div>
-              <pre>
-                burası date: {{ selectedDate }}
-                
-                burası time: {{ selectedTime }}
-              </pre>
-            </div>
+          <div v-if="!inline && buttons" class="w-full flex flex-wrap gap-3 justify-end">
             <button
               @click="clear"
               class="border border-BORDER rounded-lg px-2 py-1 hover:bg-GREY-3 h-fit"
@@ -182,7 +181,7 @@ const props = defineProps({
   time: {
     type: Boolean,
     required: false,
-    default: () => false,
+    default: () => true,
   },
   firstDay: {
     type: Number,
@@ -220,6 +219,11 @@ const props = defineProps({
     type: [Date, Object],
     required: false,
   },
+  buttons: {
+    type: Boolean,
+    required: false,
+    default: () => false,
+  },
 });
 
 const target = ref(null);
@@ -228,6 +232,7 @@ const showPicker = ref(false);
 const selectedDate = ref(dayjs(props.modelValue));
 const selectedTime = ref(dayjs(props.modelValue));
 const showDate = ref(dayjs(props.modelValue));
+const dateTime = ref(null);
 
 onClickOutside(
   target,
@@ -251,8 +256,18 @@ const clear = () => {
 };
 
 const emitSelected = () => {
-  emit('update', selectedDate.value);
-  emit('update:modelValue', selectedDate.value);
+  datetime.value = new Date(
+    selectedDate.value.$d.getFullYear(),
+    selectedDate.value.$d.getMonth(),
+    selectedDate.value.$d.getDate(),
+    selectedTime.value.$d.getHours(),
+    selectedTime.value.$d.getMinutes(),
+    selectedTime.value.$d.getSeconds(),
+  );
+
+  console.log('merged', datetime.value);
+  emit('update', datetime.value);
+  emit('update:modelValue', datetime.value);
   showDate.value = selectedDate.value;
   showPicker.value = false;
 };
@@ -261,9 +276,12 @@ const showDateWithFormat = computed(() => {
   let value = '';
   if (showDate.value && props.date) {
     value = showDate.value.format(props.formatDate);
-  } else if (showDate.value && !props.date && props.time) {
-    value = showDate.value.format(props.formatHour);
+  } else if (selectedTime.value && !props.date && props.time) {
+    value = selectedTime.value.format(props.formatHour);
+  } else {
+    value = showDate.value.format(props.formatDate + props.formatHour);
   }
+  console.log("showDateWithFormat", value);
   return value;
 });
 
@@ -301,21 +319,3 @@ const pickerClass = computed(() => {
   ];
 });
 </script>
-
-<style>
-.yartu-date-picker-table-calc-width {
-  width: calc(100% + 1rem);
-}
-
-.am-selector:checked + p {
-  color: white;
-}
-
-.pm-selector:checked + p {
-  color: white !important;
-}
-
-.calc-width-for-date-picker {
-  width: calc(100% - 1rem);
-}
-</style>

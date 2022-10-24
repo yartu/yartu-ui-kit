@@ -1,9 +1,8 @@
 <template>
   <div class="relative inline-block">
-    {{ timeData }}
     <div :class="inputContainerClass">
       <label :id="label" class="text-sm font-semibold" v-if="label">
-        {{ label }}
+        {{ label }} 
       </label>
       <label
         ref="target"
@@ -183,7 +182,7 @@ const props = defineProps({
   formatTime: {
     type: String,
     required: false,
-    default: 'HH.mm A',
+    default: 'HH.mm',
   },
   inline: {
     type: Boolean,
@@ -257,7 +256,6 @@ const calculatePosition = () => {
 };
 
 onMounted(() => {
-  console.log('mounted tineData', timeData.value);
   minuteButtons.value = document.querySelectorAll('[data-minute-value]');
   hourButtons.value = document.querySelectorAll('[data-hour-value]');
   window.addEventListener('resize', calculatePosition);
@@ -271,7 +269,7 @@ const initTime = (date) => {
   let hour = date.hour();
   const minute = date.minute();
   const timeType = date.format('a');
-
+  
   if (!props.time24h && hour > 12) {
     hour -= 12;
   } else if (props.time24h && timeType === 'pm' && hour < 12) {
@@ -301,16 +299,9 @@ const emitSelected = () => {
   selectedTime.value = selectedTime.value
     .set('hour', hour)
     .set('minute', minute);
-  
-  // console.log(selectedTime.value.$d.getHours());
-  // console.log(selectedTime.value.$d.getMinutes());
-  // console.log(selectedTime.value.$d.getTime());
-  // console.log(selectedTime.value.$d.toTimeString());
-  // console.log(selectedTime.value);
-  // time.format(format.value);
 
-  emit('update', selectedTime.value.$d.toTimeString());
-  emit('update:modelValue', selectedTime.value.$d.toTimeString());
+  emit('update', selectedTime.value);
+  emit('update:modelValue', selectedTime.value);
 };
 
 const chooseTime = (time) => {
