@@ -204,6 +204,8 @@ const calculatePosition = () => {
   else {
     optionContainer.value.style.left = dropdownContainer.left + 'px';
   }
+  optionContainer.value.style.minWidth =
+    dropdownContainer.right - dropdownContainer.left + 'px';
 };
 
 function choose(item) {
@@ -282,12 +284,11 @@ const labelClass = computed(() => {
 
 const optionContainerClass = computed(() => {
   return [
-    'absolute z-1001',
+    'fixed z-1001',
     'bg-white',
-    'border-Border rounded-lg',
+    'border-BORDER rounded-lg',
     'overflow-y-auto',
     'transition-all duration-300',
-    'w-max',
     {
       'max-h-56 py-2 border': open.value,
       'max-h-0 py-0 border-none': !open.value,
