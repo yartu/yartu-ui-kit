@@ -1,5 +1,5 @@
 <template>
-  <div class="relative inline-block">
+  <div class="relative w-full">
     <div :class="inputContainerClass">
       <label :id="label" class="text-sm font-semibold" v-if="label">
         {{ label }} 
@@ -13,7 +13,7 @@
       >
         <input
           type="text"
-          class="outline-none subtitle-5 text-BLACK-2 flex-1 w-[4.125rem]"
+          class="outline-none subtitle-5 text-BLACK-2 flex-1"
           aria-autocomplete="none"
           aria-haspopup="dialog"
           aria-expanded="true"
