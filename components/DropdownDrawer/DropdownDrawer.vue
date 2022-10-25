@@ -24,7 +24,7 @@
           {{ title }}
         </p>
       </span>
-      <div class="ml-auto pr-6">
+      <div class="ml-auto pr-6 flex items-center">
         <slot name="postfix"></slot>
       </div>
     </button>
