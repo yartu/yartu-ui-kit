@@ -52,7 +52,7 @@
             v-for="(month, index) in months"
             :key="month"
             @click="changeMonth(null, index)"
-            class="truncate caption w-11 h-11 rounded-md hover:bg-LIGHTBLUE-6 text-BLACK-2"
+            class="truncate caption w-11 h-11 rounded-md hover:bg-LIGHTBLUE-6 text-BLACK-2 font-semibold"
             :class="{
               'text-white bg-BLUE hover:!bg-BLUE': active.month === index,
             }"
@@ -112,7 +112,7 @@ export default {
 import { ref, watch, computed } from 'vue';
 import dayjs from 'dayjs';
 
-const emit = defineEmits(['update', 'update:modelValue', 'close']);
+const emit = defineEmits(['update', 'update:modelValue', 'monthChange', 'close']);
 
 const props = defineProps({
   modelValue: {
@@ -227,8 +227,6 @@ const daysList = computed(() => {
   display = display.sort((a, b) => a.$d - b.$d);
 
   const today = dayjs();
-  console.log('MIN', props.min);
-
   const days = Array.from(Array(active.value.dayjs.daysInMonth()), (v, i) => {
     const day = active.value.dayjs.date(++i);
     day.isToday = day.isSame(today, 'day');
@@ -265,17 +263,18 @@ const changeMonth = (inc, month = null) => {
     date: newDayjs.date(),
   };
   monthSelect.value = false;
+  emit('monthChange', newDayjs)
 };
 
 const emitSelected = () => {
   selectedDate.value = selectedDate.value.startOf('day');
-  emit('update', selectedDate.value);
   emit('update:modelValue', selectedDate.value);
+  emit('update', selectedDate.value);
 };
 
 const chooseDate = (date) => {
   if (!date.disabled) {
-    selectedDate.value = date;
+    selectedDate.value = selectedDate.value.set('date', date.date()).set('year', date.year()).set('month', date.month());
     emitSelected();
     emit('close');
   }

@@ -11,13 +11,11 @@ const VALIDATIONS = {
       'IP must be valid',
   ],
   MAX_LENGTH: [
-    (v, param) =>
-      (!!v.trim() && v.trim().length < param) ||
+    (v, param) => (!!v && !!v.trim() && v.trim().length < param) ||
       `This field should be max ${param}`,
   ],
   MIN_LENGTH: [
-    (v, param) =>
-      (!!v.trim() && v.trim().length >= param) ||
+    (v, param) => !!v && (!!v.trim() && v.trim().length >= param) ||
       `This field should be min ${param}`,
   ],
   VALID_NAME: [
