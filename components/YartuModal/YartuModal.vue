@@ -1,14 +1,15 @@
 <template>
   <Modal
-    v-model="openModal"
-    v-bind="comOptions.modal"
-    @closed="closeModal"
+    v-for="(modal, index) in modals"
+    v-model="modal.openModal"
+    v-bind="modal.options.modal"
+    @closed="closeModal(modal, index, 1)"
   > 
     <component
-      @closeYartuModal="closeModal"
-      v-bind="comOptions.component"
-      v-on="comOptions.emits"
-      :is="dynamicComponent"
+      @closeYartuModal="closeModal(modal, index, 2)"
+      v-bind="modal.options.component"
+      v-on="modal.options.emits"
+      :is="modal.dynamicComponent"
     >
     </component>
   </Modal>
@@ -19,30 +20,30 @@ import { useEventBus } from '@vueuse/core';
 import { markRaw, ref, onMounted } from 'vue';
 import { Modal } from '../Modal'
 
-let dynamicComponent = ref(null);
-const comOptions = ref({});
-const openModal = ref(false);
+const modals = ref([]);
 const bus = useEventBus('yartuModal');
 
 const listener = (type, { instance, options, callBack }) => {
   if (type === 'open') {
-    comOptions.value = options;
-    dynamicComponent.value = markRaw(instance);
-
-    if (callBack) {
-      comOptions.value.callBack = callBack;
-    }
-
-    openModal.value = true;
+    const modal = {
+      options,
+      dynamicComponent: markRaw(instance),
+      openModal: true,
+      callBack,
+    };
+    modals.value.push(modal);
   } else if (type === 'clear') {
-    openModal.value = false;
+    modals.value.forEach(modal => {
+      modal.openModal = false;
+    });
   }
 };
 
-const closeModal = () => {
-  openModal.value = false;
-  if (comOptions.value.callBack) {
-    comOptions.value.callBack();
+const closeModal = (modal, index, x) => {
+  modal.openModal = false;
+  modals.value.splice(index, 1);
+  if (modal.options.callBack) {
+    modal.options.callBack();
   }
 }
 
