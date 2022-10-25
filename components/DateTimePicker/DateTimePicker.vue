@@ -25,7 +25,6 @@
         />
         <button type="button" @click="open">
           <svg
-            v-if="date"
             width="24"
             height="24"
             viewBox="0 0 24 24"
@@ -39,27 +38,6 @@
               fill="#9AA1B4"
             />
           </svg>
-          <svg
-            v-else
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M12 3.81818C7.48131 3.81818 3.81818 7.48131 3.81818 12C3.81818 16.5187 7.48131 20.1818 12 20.1818C16.5187 20.1818 20.1818 16.5187 20.1818 12C20.1818 7.48131 16.5187 3.81818 12 3.81818ZM2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12Z"
-              fill="#9AA1B4"
-            />
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M11.9655 7C12.4988 7 12.931 7.42495 12.931 7.94915V11.6238L14.7172 13.3797C15.0943 13.7504 15.0943 14.3513 14.7172 14.722C14.3401 15.0927 13.7288 15.0927 13.3518 14.722L11.2828 12.6881C11.1017 12.5101 11 12.2687 11 12.0169V7.94915C11 7.42495 11.4323 7 11.9655 7Z"
-              fill="#9AA1B4"
-            />
-          </svg>
         </button>
       </label>
     </div>
@@ -68,8 +46,8 @@
         <div ref="pickerContainer" v-show="showPicker" :class="pickerClass">
           <div class="flex gap-3 flex-wrap">
             <y-calendar
-              v-if="date"
-              :date="date"
+              @update="emitSelected"
+              @monthChange="$emit('monthChange')"
               :firstDay="firstDay"
               :formatDate="formatDate"
               :eventDate="eventDate"
@@ -83,9 +61,10 @@
             ></y-calendar>
             <y-time-picker
               v-if="time"
-              inline
+              @update="emitSelected"
               v-model="selectedTime"
               :outline="false"
+              inline
               dense
             ></y-time-picker>
           </div>
@@ -155,7 +134,7 @@ import { onClickOutside } from '@vueuse/core';
 
 import dayjs from 'dayjs';
 
-const emit = defineEmits(['update', 'update:modelValue', 'close']);
+const emit = defineEmits(['update', 'update:modelValue', 'monthChange', 'close']);
 const props = defineProps({
   modelValue: {
     type: [Object, String, Date],
@@ -173,15 +152,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  date: {
-    type: Boolean,
-    required: false,
-    default: () => true,
-  },
   time: {
     type: Boolean,
     required: false,
-    default: () => true,
+    default: () => false,
   },
   firstDay: {
     type: Number,
@@ -192,10 +166,10 @@ const props = defineProps({
     required: false,
     default: 'YYYY-MM-DD',
   },
-  formatHour: {
+  formatTime: {
     type: String,
     required: false,
-    default: 'HH.mm',
+    default: 'HH:mm',
   },
   eventDate: {
     type: Array,
@@ -231,8 +205,6 @@ const pickerContainer = ref(null);
 const showPicker = ref(false);
 const selectedDate = ref(dayjs(props.modelValue));
 const selectedTime = ref(dayjs(props.modelValue));
-const showDate = ref(dayjs(props.modelValue));
-const dateTime = ref(null);
 
 onClickOutside(
   target,
@@ -252,36 +224,24 @@ const clear = () => {
   emit('update:modelValue', '');
   showPicker.value = false;
   selectedDate.value = '';
-  showDate.value = selectedDate.value;
 };
 
 const emitSelected = () => {
-  datetime.value = new Date(
-    selectedDate.value.$d.getFullYear(),
-    selectedDate.value.$d.getMonth(),
-    selectedDate.value.$d.getDate(),
-    selectedTime.value.$d.getHours(),
-    selectedTime.value.$d.getMinutes(),
-    selectedTime.value.$d.getSeconds(),
-  );
-
-  console.log('merged', datetime.value);
-  emit('update', datetime.value);
-  emit('update:modelValue', datetime.value);
-  showDate.value = selectedDate.value;
-  showPicker.value = false;
+  if (props.time && selectedTime.value) {
+    selectedDate.value = selectedDate.value.set('hour', selectedTime.value.hour()).set('minute', selectedTime.value.minute());
+  }
+  emit('update', selectedDate.value);
+  emit('update:modelValue', selectedDate.value);
 };
 
 const showDateWithFormat = computed(() => {
   let value = '';
-  if (showDate.value && props.date) {
-    value = showDate.value.format(props.formatDate);
-  } else if (selectedTime.value && !props.date && props.time) {
-    value = selectedTime.value.format(props.formatHour);
-  } else {
-    value = showDate.value.format(props.formatDate + props.formatHour);
+  if (selectedDate.value) {
+    value = selectedDate.value.format(props.formatDate);
+    if (selectedTime && props.time) {
+      value = `${value} ${selectedTime.value.format(props.formatTime)}`;
+    }
   }
-  console.log("showDateWithFormat", value);
   return value;
 });
 
