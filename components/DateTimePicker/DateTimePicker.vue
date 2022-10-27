@@ -7,7 +7,7 @@
       <label
         ref="target"
         v-if="!inline"
-        class="flex flex-1 items-center px-4 py-2.5 border border-BORDER rounded-lg"
+        class="flex flex-1 items-center px-4 py-2 border border-BORDER rounded-lg"
         :class="{ '!border-BLUE': showPicker }"
         :id="label"
       >
