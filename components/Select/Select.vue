@@ -33,8 +33,8 @@
           <template v-else>
             <slot name="selection" :item="selected">
               <p class="w-full text-left">
-                <Tag v-if="chip" tertiary outline>{{ selected[0] }}</Tag>
-                <span v-else-if="selected">{{ selected[0] }}</span>
+                <Tag v-if="chip" tertiary outline>{{ Array.isArray(selected) ? selected[0] : selected }}</Tag>
+                <span v-else-if="selected">{{ Array.isArray(selected) ? selected[0] : selected }}</span>
               </p>
             </slot>
           </template>
