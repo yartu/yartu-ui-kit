@@ -73,7 +73,7 @@ export default {
 <script setup>
 import { computed } from '@vue/reactivity';
 
-defineProps({
+const props = defineProps({
   id: null,
   title: {
     type: String,
@@ -131,6 +131,11 @@ defineProps({
     type: String,
     required: false,
   },
+  resize: {
+    type: String,
+    required: false,
+    default: 'both',
+  },
   modelValue: null,
 });
 
@@ -138,11 +143,16 @@ const yTextAreaClass = computed(() => {
   return [
     'yartu-text-area',
     'focus:outline-none',
-    'resize',
     'disabled:text-GREY-1 disabled:cursor-not-allowed',
     'cursor-auto ',
     'min-h-[64px] max-w-full h-full min-w-full',
     'bg-LIGHTBLUE-6',
+    {
+      'resize': props.resize === 'both',
+      'resize-y': props.resize === 'vertical',
+      'resize-x': props.resize === 'horizontal',
+      'resize-none': props.resize === 'none',
+    },
   ];
 });
 </script>
