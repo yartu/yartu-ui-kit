@@ -11,7 +11,10 @@
       >
         <div
           class="flex-1 flex flex-wrap items-center"
-          :class="chip ? 'gap-2' : ''"
+          :class="[
+            !multiple ? 'calc-width-for-select-items truncate' : '',
+            chip ? 'gap-2' : '',
+          ]"
         >
           <p
             v-if="placeholder && selected.length === 0"
@@ -32,10 +35,14 @@
           </template>
           <template v-else>
             <slot name="selection" :item="selected">
-              <p class="w-full text-left">
-                <Tag v-if="chip" tertiary outline>{{ Array.isArray(selected) ? selected[0] : selected }}</Tag>
-                <span v-else-if="selected">{{ Array.isArray(selected) ? selected[0] : selected }}</span>
-              </p>
+              <div class="text-left truncate">
+                <Tag v-if="chip" tertiary outline>
+                  {{ Array.isArray(selected) ? selected[0] : selected }}
+                </Tag>
+                <span v-else-if="selected" :class="!multiple ? 'truncate' : ''">
+                  {{ Array.isArray(selected) ? selected[0] : selected }}
+                </span>
+              </div>
             </slot>
           </template>
         </div>
@@ -100,7 +107,7 @@
             <p v-if="itemText">
               {{ item[itemText] }}
             </p>
-            <p v-else>
+            <p v-else class="calc-width-for-select-items truncate">
               {{ item }}
             </p>
           </slot>
@@ -262,7 +269,7 @@ const selectClass = computed(() => {
   return [
     'w-full',
     'border rounded-lg',
-    'py-2 px-4',
+    'py-2 px-3',
     'text-BLACK-2 font-semibold text-xs',
     'flex flex-wrap items-center gap-2',
     'disabled:border-GREY-2 disabled:bg-GREY-3',
@@ -301,7 +308,7 @@ const optionContainerClass = computed(() => {
 const optionClass = computed(() => {
   return [
     'flex flex-wrap items-center gap-2',
-    'font-semibold text-BLACK-2 text-sm',
+    'font-semibold text-BLACK-2 text-xs',
     'text-left rtl:text-right',
     'py-3 pl-2 pr-6',
     'w-full',
@@ -309,3 +316,9 @@ const optionClass = computed(() => {
   ];
 });
 </script>
+
+<style>
+.calc-width-for-select-items {
+  width: calc(100% - 2.2rem);
+}
+</style>
