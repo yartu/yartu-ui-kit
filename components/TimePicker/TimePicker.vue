@@ -84,6 +84,7 @@
             <div class="inline-flex flex-wrap gap-3">
               <div :class="minuteBtnContainer">
                 <button
+                  type="button"
                   @click="
                     timeData.h = index.toString();
                     emitSelected();
@@ -110,6 +111,7 @@
               ></div>
               <div :class="minuteBtnContainer">
                 <button
+                  type="button"
                   @click="
                     timeData.m = index.toString();
                     emitSelected();
@@ -149,7 +151,7 @@ import { onClickOutside } from '@vueuse/core';
 const emit = defineEmits(['update', 'update:modelValue', 'close']);
 const props = defineProps({
   modelValue: {
-    type: [Object, String],
+    type: [Object, Date, String],
     required: false,
   },
   label: {
@@ -164,20 +166,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  date: {
-    type: Boolean,
-    required: false,
-    default: () => true,
-  },
   outline: {
     type: Boolean,
     required: false,
     default: () => true,
-  },
-  time: {
-    type: Boolean,
-    required: false,
-    default: () => false,
   },
   formatTime: {
     type: String,
@@ -300,8 +292,8 @@ const emitSelected = () => {
     .set('hour', hour)
     .set('minute', minute);
 
-  emit('update', selectedTime.value);
   emit('update:modelValue', selectedTime.value);
+  emit('update', selectedTime.value);
 };
 
 const chooseTime = (time) => {

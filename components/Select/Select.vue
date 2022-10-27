@@ -209,6 +209,7 @@ const calculatePosition = () => {
 };
 
 function choose(item) {
+  console.log('CHOOSE', item);
   if (props.multiple) {
     let index = -1;
     if (props.itemKey) {
@@ -224,7 +225,8 @@ function choose(item) {
       selected.value.splice(index, 1);
     }
   } else {
-    selected.value =  item;
+    selected.value = item;
+    console.log('SELECTED', selected.value);
   }
   emit('update:modelValue', selected.value);
   emit('selected', selected.value);
