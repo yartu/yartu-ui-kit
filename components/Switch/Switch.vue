@@ -1,27 +1,40 @@
 <template>
-  <label :for="inputValue" :class="switchContainerClass">
-    <input
-      :id="inputValue"
-      :class="switchClass"
-      v-model="model"
-      :value="inputValue"
-      :checked="checked"
-      :disabled="disabled"
-      type="checkbox"
-    />
-    <span :class="dotClass"><slot></slot></span>
-    <span :class="switchLabelClass"></span>
-  </label>
+  <div class="flex flex-wrap gap-2 items-center">
+    <label :for="id" :class="switchContainerClass">
+      <input
+        :id="id"
+        :class="switchClass"
+        v-model="model"
+        :value="inputValue"
+        :checked="checked"
+        :disabled="disabled"
+        type="checkbox"
+      />
+      <span :class="dotClass"><slot></slot></span>
+      <span :class="switchLabelClass"></span>
+    </label>
+    <label :for="id" class="subtitle-4 text-BLACK-2">
+      {{ label }}
+    </label>
+  </div>
 </template>
 <script>
 export default {
   name: 'y-switch',
   props: {
+    id: {
+      type: Boolean,
+      default: false,
+    },
     color: {
       type: String,
       default: '#ffffff',
     },
     bgColor: {
+      type: String,
+      default: '#ffffff',
+    },
+    label: {
       type: String,
       default: '#ffffff',
     },

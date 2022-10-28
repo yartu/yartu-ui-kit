@@ -1,6 +1,6 @@
 <template>
   <div class="relative" ref="target">
-    <div class="bg-white">
+    <div>
       <p v-if="label != ''" :class="labelClass">{{ label }}</p>
       <button
         type="button"
@@ -223,7 +223,7 @@ const searchText = ref('');
 const searching = ref(false);
 const optionContainer = ref(null);
 
-const emit = defineEmits(['update:modelValue', 'search']);
+const emit = defineEmits(['update:modelValue', 'search', 'selected']);
 const props = defineProps({
   modelValue: {
     type: Array,
@@ -307,12 +307,16 @@ onUnmounted(() => {
   window.removeEventListener('resize', calculatePosition);
 });
 
-onClickOutside(target, () => {
-  open.value = false;
-  if (props.suggest) {
-    enterSuggestRequest(comboboxInput.value.value);
-  }
-});
+onClickOutside(
+  target,
+  () => {
+    open.value = false;
+    if (props.suggest) {
+      enterSuggestRequest(comboboxInput.value.value);
+    }
+  },
+  { ignore: [optionContainer] },
+);
 
 watchEffect(() => {
   if (props.multiple) {
@@ -382,11 +386,9 @@ const choose = (item) => {
 
   if (props.closeAfterSelect) {
     open.value = false;
-  } else {
-    openCombobox();
   }
-
-  emit('update:modelValue', selected);
+  emit('selected', selected.value);
+  emit('update:modelValue', selected.value);
 };
 
 const isSelected = (item) => {
