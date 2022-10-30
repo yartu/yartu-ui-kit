@@ -20,9 +20,11 @@
           :class="[prefix, prefixClass]"
           aria-hidden="true"
         ></i>
-        <p :class="titleClass">
-          {{ title }}
-        </p>
+        <slot name="title">
+          <p :class="titleClass">
+            {{ title }}
+          </p>
+        </slot>
       </span>
       <div class="ml-auto pr-6 flex items-center">
         <slot name="postfix"></slot>

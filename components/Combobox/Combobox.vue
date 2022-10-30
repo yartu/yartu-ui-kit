@@ -297,6 +297,19 @@ const props = defineProps({
     type: Boolean,
     required: false,
   },
+  clearAfterSelect: {
+    type: Boolean,
+    default: () => false,
+  },
+  clearCache: {
+    type: Boolean,
+    default: false,
+    required: false,
+  },
+  clearCacheKey: {
+    type: String,
+    required: false,
+  },
 });
 
 onMounted(() => {
@@ -324,6 +337,8 @@ watchEffect(() => {
     if (selected.value?.length > 2) {
       closedItems.value.push('+ ' + (selected.value.length - 2));
     }
+  } else {
+    closedItems.value = selected.value;
   }
 });
 
@@ -377,18 +392,32 @@ const choose = (item) => {
     } else {
       selected.value.splice(index, 1);
     }
-  } else {
+  } else if (!props.clearAfterSelect) {
     selected.value = [item];
   }
   comboboxInput.value.value = '';
+
   filter('');
   focusInput();
 
   if (props.closeAfterSelect) {
     open.value = false;
   }
-  emit('selected', selected.value);
-  emit('update:modelValue', selected.value);
+
+  if (!props.clearAfterSelect) {
+    emit('update:modelValue', selected.value);
+    emit('selected', selected.value);
+  } else {
+    emit('selected', item);
+  }
+  if (props.clearCache) {
+    filteredItems.value = filteredItems.value.filter((a) => {
+      if (props.clearCacheKey) {
+        return a[props.clearCacheKey] !== item[props.clearCacheKey];
+      }
+      return a.email !== item.email;
+    });
+  }
 };
 
 const isSelected = (item) => {
