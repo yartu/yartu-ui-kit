@@ -25,6 +25,7 @@
       <div>
         <Modal
           :closable="dialog.closable"
+          v-on="dialog.emits"
           v-for="(dialog, index) in dialogs"
           :key="index"
           v-model="dialog.open"
