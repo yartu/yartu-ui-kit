@@ -15,7 +15,7 @@
     <div
       class="absolute bottom-0 z-1 inset-x-0 bg-LIGHTBLUE-9 flex flex-wrap items-center justify-end gap-4 px-7 py-4 rounded-b-lg"
     >
-      <y-button secondary size="lg" @click="$emit('close')">
+      <y-button v-if="showCancelButton" secondary size="lg" @click="$emit('close')">
         {{ cancelButton }}
       </y-button>
       <y-button
@@ -87,6 +87,10 @@ export default {
       type: Array,
       required: false,
       default: () => [],
+    },
+    showCancelButton: {
+      type: Boolean,
+      default: () => true,
     },
   },
   computed: {
