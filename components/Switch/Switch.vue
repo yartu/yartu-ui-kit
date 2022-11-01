@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-wrap gap-2 items-center">
+  <div class="inline-flex flex-wrap gap-2 items-center">
     <label :for="id" :class="switchContainerClass">
       <input
         :id="id"
@@ -13,7 +13,7 @@
       <span :class="dotClass"><slot></slot></span>
       <span :class="switchLabelClass"></span>
     </label>
-    <label :for="id" class="subtitle-4 text-BLACK-2">
+    <label v-if="label && id" :for="id" class="subtitle-4 text-BLACK-2">
       {{ label }}
     </label>
   </div>
@@ -24,7 +24,6 @@ export default {
   props: {
     id: {
       type: Boolean,
-      default: false,
     },
     color: {
       type: String,
@@ -36,7 +35,6 @@ export default {
     },
     label: {
       type: String,
-      default: '#ffffff',
     },
     borderColor: {
       type: String,
