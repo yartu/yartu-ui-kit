@@ -201,6 +201,7 @@ function openOptions() {
 const calculatePosition = () => {
   // improve this @aziz
   let dropdownContainer = target.value.getBoundingClientRect();
+
   if (props.top) {
     optionContainer.value.style.top = dropdownContainer.top - 12 + 'px';
   } else {
@@ -213,6 +214,16 @@ const calculatePosition = () => {
   }
   optionContainer.value.style.minWidth =
     dropdownContainer.right - dropdownContainer.left + 'px';
+
+  if (window.innerHeight - dropdownContainer.bottom < 224) {
+    console.log(
+      'optionContainer.value.classList',
+      optionContainer.value.classList,
+    );
+    setTimeout(() => {
+      optionContainer.value.classList.add('force-to-top');
+    }, 50);
+  }
 };
 
 function choose(item) {
@@ -318,5 +329,9 @@ const optionClass = computed(() => {
 <style>
 .calc-width-for-select-items {
   width: calc(100% - 2.2rem);
+}
+
+.force-to-top {
+  transform: translateY(calc(calc(100% * -1) - 4rem));
 }
 </style>
