@@ -4,6 +4,12 @@ const VALIDATIONS = {
     (v) => !!v || 'E-mail is required',
     (v) => /.+@.+/.test(v) || 'E-mail must be valid',
   ],
+  PASSWORD: [
+    (v) => !!v || 'Required',
+  ],
+  PASSWORD_CONFIRM: [
+    (v) => !!v || 'Required',
+  ],
   IPv4: [
     (v) => !!v || 'Required',
     (v) =>

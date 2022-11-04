@@ -14,12 +14,13 @@
           :class="chip ? 'gap-2' : ''"
         >
           <div
-            v-for="(item, index) in !open ? closedItems : selected"
+            v-for="(item, index) in activeItems"
             :key="index"
             tabindex="0"
             @keydown.delete="deleteItem"
             @keypress="focusInput"
             class="combobox-selected-items focus:opacity-40 focus:outline-none"
+            :class="`yartu-${componentId}`"
           >
             <slot
               name="selection"
@@ -65,7 +66,7 @@
             ref="comboboxInput"
             type="text"
             :class="[
-              selected.length < 1 ? 'pl-2' : 'pr-2',
+              (multiple && selected.length < 1) ? 'pl-2' : 'pr-2',
               inputContainerClass,
             ]"
             :placeholder="placeholder"
@@ -212,8 +213,8 @@ import { validate } from '../FormItem/validations';
 
 import Tag from '../Tag/Tag.vue';
 
+const componentId = ref(Math.random().toString(36).replace(/[^a-z]+/g, ''));
 const open = ref(false);
-const selected = ref(props.modelValue || []);
 const target = ref(null);
 const closedItems = ref(null);
 const comboboxInput = ref(null);
@@ -223,10 +224,13 @@ const searchText = ref('');
 const searching = ref(false);
 const optionContainer = ref(null);
 
+const selected = ref(props.modelValue || (props.multiple ? [] : {}));
+console.log('SELECRED', selected.value);
+
 const emit = defineEmits(['update:modelValue', 'search', 'selected']);
 const props = defineProps({
   modelValue: {
-    type: Array,
+    type: [Array, Object],
     required: true,
   },
   multiple: {
@@ -338,7 +342,13 @@ watchEffect(() => {
       closedItems.value.push('+ ' + (selected.value.length - 2));
     }
   } else {
-    closedItems.value = selected.value;
+    closedItems.value = [selected.value];
+  }
+});
+
+watchEffect(() => {
+  if (props.items) {
+    filteredItems.value = props.items;
   }
 });
 
@@ -393,7 +403,7 @@ const choose = (item) => {
       selected.value.splice(index, 1);
     }
   } else if (!props.clearAfterSelect) {
-    selected.value = [item];
+    selected.value = item;
   }
   comboboxInput.value.value = '';
 
@@ -440,9 +450,13 @@ const isSelected = (item) => {
 
 // TODO:: improve delete item function
 const deleteItem = (key) => {
-  let items = document.getElementsByClassName('combobox-selected-items');
+  let items = document.getElementsByClassName(`yartu-${componentId.value}`);
   if (document.activeElement === items[items.length - 1]) {
-    selected.value.pop();
+    if (props.multiple) {
+      selected.value.pop();
+    } else {
+      selected.value = '';
+    }
     setTimeout(() => {
       focusInput();
     }, 100);
@@ -525,6 +539,8 @@ const filter = async (value) => {
       searching.value = false;
     }
     emit('search', value);
+  } else {
+    filteredItems.value = props.items;
   }
 };
 
@@ -600,6 +616,13 @@ const optionContainerClass = computed(() => {
       'mt-2': !props.dense,
     },
   ];
+});
+
+const activeItems = computed(() => {
+  if (props.multiple) {
+    return !open.value ? closedItems.value : selected.value;
+  }
+  return !open.value ? closedItems.value : [selected.value];
 });
 
 const optionClass = computed(() => {
