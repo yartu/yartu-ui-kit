@@ -216,10 +216,6 @@ const calculatePosition = () => {
     dropdownContainer.right - dropdownContainer.left + 'px';
 
   if (window.innerHeight - dropdownContainer.bottom < 224) {
-    console.log(
-      'optionContainer.value.classList',
-      optionContainer.value.classList,
-    );
     setTimeout(() => {
       optionContainer.value.classList.add('force-to-top');
     }, 50);
