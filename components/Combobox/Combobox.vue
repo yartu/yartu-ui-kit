@@ -108,7 +108,7 @@
     </div>
     <teleport to="body">
       <div ref="optionContainer" :class="optionContainerClass">
-        <template v-if="searching">
+        <template v-if="searching && searchingMode">
           <!-- TODO: @aziz fix me! -->
           <div class="p-2">
             <svg
@@ -314,6 +314,10 @@ const props = defineProps({
     type: String,
     required: false,
   },
+  searchingMode: {
+    type: Boolean,
+    default: () => true,
+  },
 });
 
 onMounted(() => {
@@ -514,7 +518,9 @@ const enterSuggestRequest = (suggest) => {
 };
 
 const focusInput = () => {
-  comboboxInput.value.focus();
+  if (comboboxInput.value) {
+    comboboxInput.value.focus();
+  }
 };
 
 const filter = async (value) => {
