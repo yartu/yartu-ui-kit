@@ -7,7 +7,7 @@
         type="button"
         @click="openOptions"
         :disabled="disabled"
-        :class="selectClass"
+        :class="[selectClass, { 'border-RED focus:border-RED': hasError }]"
       >
         <div
           class="flex-1 flex flex-wrap items-center"
@@ -40,7 +40,12 @@
                   {{ Array.isArray(selected) ? selected[0] : selected }}
                 </Tag>
                 <span v-else-if="selected" :class="!multiple ? 'truncate' : ''">
-                  {{ Array.isArray(selected) ? selected[0] : selected }}
+                  <template v-if="itemText && itemText.length > 0">
+                    {{ Array.isArray(selected) ? selected[0] : selected[itemText] }}
+                  </template>
+                  <template v-else>
+                    {{ Array.isArray(selected) ? selected[0] : selected }}
+                  </template>
                 </span>
               </div>
             </slot>
@@ -75,7 +80,7 @@
       <div ref="optionContainer" :class="optionContainerClass">
         <button
           @click="choose(item)"
-          v-for="(item, index) in items"
+          v-for="(item, index) in itemsList"
           :key="index"
           type="button"
           :class="[optionClass, isSelected(item) ? 'bg-LIGHTBLUE-4' : '']"
@@ -114,12 +119,26 @@
         </button>
       </div>
     </teleport>
+    <div :class="helperClass" v-if="helper">
+      <slot name="helper"> </slot>
+      <div v-if="errors && errors.length > 0">
+        {{ errors.join(',') }}
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import FormItem from '../FormItem';
+
 export default {
   name: 'y-select',
+  extends: FormItem,
+  computed: {
+    hasError() {
+      return this.errors && this.errors.length > 0;
+    }
+  }
 };
 </script>
 
@@ -134,7 +153,6 @@ const target = ref(null);
 const optionContainer = ref(null);
 
 const emit = defineEmits(['update:modelValue', 'selected']);
-
 const props = defineProps({
   modelValue: {
     type: [Object, Array, String, Number],
@@ -154,7 +172,7 @@ const props = defineProps({
     default: false,
   },
   items: {
-    type: [Object, Array],
+    type: [Object, Array, Function],
   },
   placeholder: {
     type: String,
@@ -180,6 +198,11 @@ const props = defineProps({
     type: String,
     required: false,
   },
+  helper: {
+    type: Boolean,
+    required: false,
+    default: () => false,
+  }
 });
 
 onClickOutside(target, () => (open.value = false));
@@ -268,6 +291,25 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('resize', calculatePosition);
+});
+
+const itemsList = computed(() => {
+  if (props.items) {
+    if (typeof props.items === 'function') {
+      return props.items();
+    }
+    return props.items;
+  }
+  return [];
+});
+
+const helperClass = computed(() => {
+  return [
+    'text-xs',
+    'mt-2',
+    'flex gap-1 items-center',
+    'text-RED',
+  ];
 });
 
 const selectClass = computed(() => {
