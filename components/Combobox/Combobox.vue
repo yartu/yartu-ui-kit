@@ -108,7 +108,7 @@
     </div>
     <teleport to="body">
       <div ref="optionContainer" :class="optionContainerClass">
-        <template v-if="searching">
+        <template v-if="searching && searchingMode">
           <!-- TODO: @aziz fix me! -->
           <div class="p-2">
             <svg
@@ -224,7 +224,7 @@ const searchText = ref('');
 const searching = ref(false);
 const optionContainer = ref(null);
 
-const selected = ref(props.modelValue || (props.multiple ? [] : {}));
+const selected = ref(props.modelValue || (props.multiple ? [] : ''));
 console.log('SELECRED', selected.value);
 
 const emit = defineEmits(['update:modelValue', 'search', 'selected']);
@@ -313,6 +313,10 @@ const props = defineProps({
   clearCacheKey: {
     type: String,
     required: false,
+  },
+  searchingMode: {
+    type: Boolean,
+    default: () => true,
   },
 });
 
@@ -471,7 +475,11 @@ const deleteItem = (key) => {
 };
 
 const removeItemByIndex = (index) => {
-  selected.value.splice(index, 1);
+  if (props.multiple) {
+    selected.value.splice(index, 1);
+  } else {
+    selected.value = '';
+  }
 };
 
 const enterSuggestRequest = (suggest) => {
@@ -514,7 +522,9 @@ const enterSuggestRequest = (suggest) => {
 };
 
 const focusInput = () => {
-  comboboxInput.value.focus();
+  if (comboboxInput.value) {
+    comboboxInput.value.focus();
+  }
 };
 
 const filter = async (value) => {

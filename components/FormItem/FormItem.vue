@@ -10,6 +10,9 @@ export default {
       default: () => {},
     },
   },
+  provide: {
+    'form-item': this,
+  },
   data: () => ({
     errors: [],
   }),
