@@ -15,7 +15,6 @@
           type="radio"
           :value="option[dataKey]"
           @input="emitModelValue($event.target.value)"
-          v-model="modelValue"
           class="appearance-none checked:bg-white checked:shadow-5 rounded-full absolute inset-0 transition-all duration-300"
         />
         <slot name="option" :option="option" :index="index">
