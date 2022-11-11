@@ -23,7 +23,7 @@ export default {
   name: 'y-switch',
   props: {
     id: {
-      type: Boolean,
+      type: String,
     },
     color: {
       type: String,
