@@ -1,7 +1,12 @@
 <template>
   <div class="relative" ref="target">
     <div>
-      <p v-if="label != ''" :class="labelClass">{{ label }}</p>
+      <p
+        v-if="label != ''"
+        :class="labelClass"
+      >
+        {{ label }}
+      </p>
       <button
         type="button"
         ref="comboboxBtn"
@@ -15,12 +20,12 @@
         >
           <div
             v-for="(item, index) in activeItems"
-            :key="index"
-            tabindex="0"
             @keydown.delete="deleteItem"
             @keypress="focusInput"
-            class="combobox-selected-items focus:opacity-40 focus:outline-none"
+            tabindex="0"
+            :key="index"
             :class="`yartu-${componentId}`"
+            class="combobox-selected-items focus:opacity-40 focus:outline-none"
           >
             <slot
               name="selection"
@@ -29,8 +34,18 @@
               :close="removeItemByIndex"
             >
               <p class="w-full">
-                <Tag v-if="chip" tertiary outline class="text-xs">
-                  {{ item }}
+                <Tag
+                  v-if="chip"
+                  tertiary
+                  outline
+                  class="text-xs"
+                >
+                  <template v-if="itemText">
+                    {{ item[itemText] }}
+                  </template>
+                  <template v-else>
+                    {{ item }}
+                  </template>
                   <div v-if="closableChip">
                     <button type="button" @click="removeItemByIndex(index)">
                       <svg
@@ -58,7 +73,14 @@
                     </button>
                   </div>
                 </Tag>
-                <span v-else>{{ item }}</span>
+                <span v-else>
+                  <template v-if="itemText">
+                    {{ item[itemText] }}
+                  </template>
+                  <template v-else>
+                    {{ item }}
+                  </template>
+                </span>
               </p>
             </slot>
           </div>
@@ -66,7 +88,7 @@
             ref="comboboxInput"
             type="text"
             :class="[
-              (multiple && selected.length < 1) ? 'pl-2' : 'pr-2',
+              (multiple && selected && selected.length < 1) ? 'pl-2' : 'pr-2',
               inputContainerClass,
             ]"
             :placeholder="placeholder"
@@ -99,7 +121,7 @@
         </span>
       </button>
       <p
-        v-if="(selected.length < 1 && !persistentHint) || persistentHint"
+        v-if="(selected && selected.length < 1 && !hint) || hint"
         class="text-xs mt-2 pl-0.5 absolute inset-x-0"
         :class="disabled ? 'text-GREY-1' : 'text-BLACK-2 '"
       >
@@ -108,8 +130,7 @@
     </div>
     <teleport to="body">
       <div ref="optionContainer" :class="optionContainerClass">
-        <template v-if="searching && searchingMode">
-          <!-- TODO: @aziz fix me! -->
+        <template v-if="searching">
           <div class="p-2">
             <svg
               class="animate-spin -ml-1 mr-3 h-5 w-5 text-BLUE"
@@ -183,7 +204,14 @@
                 </svg>
               </span>
               <span v-else class="w-6 h-6"></span>
-              <p>{{ item }}</p>
+              <p>
+                <template v-if="itemText">
+                  {{ item[itemText] }}
+                </template>
+                <template v-else>
+                  {{ item }}
+                </template>
+              </p>
             </slot>
           </button>
         </template>
@@ -199,6 +227,7 @@ export default {
 </script>
 
 <script setup>
+
 import {
   ref,
   computed,
@@ -208,74 +237,85 @@ import {
   onUpdated,
   nextTick,
 } from 'vue';
+
 import { onClickOutside } from '@vueuse/core';
 import { validate } from '../FormItem/validations';
-
 import Tag from '../Tag/Tag.vue';
 
-const componentId = ref(Math.random().toString(36).replace(/[^a-z]+/g, ''));
-const open = ref(false);
-const target = ref(null);
-const closedItems = ref(null);
-const comboboxInput = ref(null);
-const comboboxBtn = ref(null);
-const filteredItems = ref(props.items);
-const searchText = ref('');
-const searching = ref(false);
-const optionContainer = ref(null);
-
-const selected = ref(props.modelValue || (props.multiple ? [] : ''));
-console.log('SELECRED', selected.value);
-
-const emit = defineEmits(['update:modelValue', 'search', 'selected']);
+const emit = defineEmits(['search', 'selected', 'update:modelValue']);
 const props = defineProps({
   modelValue: {
-    type: [Array, Object],
+    type: [Array, Object, String, Number],
     required: true,
-  },
-  multiple: {
-    type: Boolean,
-    default: false,
-  },
-  label: {
-    type: String,
-    default: '',
-  },
-  chip: {
-    type: Boolean,
-    default: false,
-  },
-  items: {
-    type: Array,
-    required: true,
-  },
-  placeholder: {
-    type: String,
-    default: '',
-  },
-  hint: {
-    type: String,
-    default: '',
-  },
-  persistentHint: {
-    type: Boolean,
-    default: false,
-  },
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
-  itemText: {
-    type: String,
-    required: false,
   },
   itemKey: {
     type: String,
     required: false,
   },
+  itemText: {
+    type: String,
+    required: false,
+  },
+  items: {
+    type: Array,
+    required: true,
+  },
+  returnObject: {
+    type: Boolean,
+    default: () => false,
+  },
+  top: {
+    type: Boolean,
+    default: () => false,
+  },
+  left: {
+    type: Boolean,
+    default: () => false,
+  },
+  multiple: {
+    type: Boolean,
+    default: () => false,
+  },
+  disabled: {
+    type: Boolean,
+    default: () => false,
+  },
+  dense: {
+    type: Boolean,
+    default: () => false,
+  },
+  chip: {
+    type: Boolean,
+    default: () => false,
+  },
+  closableChip: {
+    type: Boolean,
+    default: () => true,
+  },
+  clearAfterSelect: {
+    type: Boolean,
+    default: () => false,
+  },
+  closeAfterSelect: {
+    type: Boolean,
+    required: false,
+    default: true,
+  },
+  label: {
+    type: String,
+    required: false,
+  },
+  placeholder: {
+    type: String,
+    required: false,
+  },
   filter: {
     type: Function,
-    default: null,
+    required: false,
+  },
+  hint: {
+    type: String,
+    default: '',
   },
   suggest: {
     type: Boolean,
@@ -289,22 +329,6 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  dense: {
-    type: Boolean,
-    default: false,
-  },
-  closableChip: {
-    type: Boolean,
-    required: false,
-  },
-  closeAfterSelect: {
-    type: Boolean,
-    required: false,
-  },
-  clearAfterSelect: {
-    type: Boolean,
-    default: () => false,
-  },
   clearCache: {
     type: Boolean,
     default: false,
@@ -314,11 +338,18 @@ const props = defineProps({
     type: String,
     required: false,
   },
-  searchingMode: {
-    type: Boolean,
-    default: () => true,
-  },
 });
+
+const componentId = ref(Math.random().toString(36).replace(/[^a-z]+/g, ''));
+const optionContainer = ref(null);
+const target = ref(null);
+const comboboxBtn = ref(null);
+const filteredItems = ref(props.items);
+const closedItems = ref([]);
+const open = ref(false);
+const searching = ref(false);
+const comboboxInput = ref(null);
+const searchText = ref('');
 
 onMounted(() => {
   window.addEventListener('resize', calculatePosition);
@@ -326,34 +357,6 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('resize', calculatePosition);
-});
-
-onClickOutside(
-  target,
-  () => {
-    open.value = false;
-    if (props.suggest) {
-      enterSuggestRequest(comboboxInput.value.value);
-    }
-  },
-  { ignore: [optionContainer] },
-);
-
-watchEffect(() => {
-  if (props.multiple) {
-    closedItems.value = selected.value?.filter((i, index) => index < 2);
-    if (selected.value?.length > 2) {
-      closedItems.value.push('+ ' + (selected.value.length - 2));
-    }
-  } else {
-    closedItems.value = [selected.value];
-  }
-});
-
-watchEffect(() => {
-  if (props.items) {
-    filteredItems.value = props.items;
-  }
 });
 
 const scrollToEnd = () => {
@@ -369,87 +372,101 @@ onUpdated(async () => {
   scrollToEnd();
 });
 
+onClickOutside(
+  target,
+  () => {
+    open.value = false;
+    if (props.suggest) {
+      enterSuggestRequest(comboboxInput.value.value);
+    }
+  },
+  { ignore: [optionContainer] },
+);
+
+const initModels = () => {
+  if (props.returnObject) {
+
+    if (props.multiple) {
+      let modelData = props.modelValue || [];
+      if (!Array.isArray(modelData)) {
+        modelData = [modelData];
+      }
+
+      const firstItem = modelData[0];
+      if (typeof firstItem !== 'object' && props.itemKey) {
+        const res = props.items.filter((f) => props.modelValue.includes(f[props.itemKey]));
+        return ref(res);
+      }
+      return ref(modelData);
+    } else {
+
+      if (typeof props.modelValue !== 'object' && props.itemKey) {
+        const res = props.items.find((f) => f[props.itemKey] === props.modelValue);
+        return ref(res);
+      }
+      return ref(props.modelValue);
+    }
+
+  } else if (props.itemKey) {
+
+    let modelData = props.modelValue;
+    if (modelData && typeof modelData !== 'object' && props.itemKey) {
+      if (props.multiple) {
+        const res = props.items.filter((f) => props.modelValue.includes(f[props.itemKey]));
+        return ref(res);
+      } else {
+        const res = props.items.find((f) => f[props.itemKey] === props.modelValue);
+        if (!res) {
+          const lorem = {};
+          lorem[props.itemKey] = props.modelValue;
+          return ref(lorem);
+        }
+
+        return ref(res);
+      }
+    } else if (!modelData) {
+      return ref('');
+    } else {
+      return ref(modelData);
+    }
+
+  }
+  return ref(props.modelValue);
+};
+
+const emitModel = () => {
+  let emitData = selected.value;
+  if (emitData) {
+    if (!props.returnObject && props.itemKey) {
+      if (props.multiple) {
+        emitData = selected.value.map((e) => e[props.itemKey])
+      } else {
+        emitData = selected.value[props.itemKey];
+      }
+    }
+  
+    if (!props.clearAfterSelect) {
+      emit('update:modelValue', emitData);
+      emit('selected', emitData);
+    } else {
+      emit('selected', emitData);
+    }
+  }
+};
+
+const selected = initModels();
+
+emitModel();
+
+const focusInput = () => {
+  if (comboboxInput.value) {
+    comboboxInput.value.focus();
+  }
+};
+
 const openCombobox = () => {
   open.value = true;
   focusInput();
-};
-
-const calculatePosition = () => {
-  // improve this @aziz
-  let dropdownContainer = target.value.getBoundingClientRect();
-  if (props.top) {
-    optionContainer.value.style.top = dropdownContainer.top - 12 + 'px';
-  } else {
-    optionContainer.value.style.top = dropdownContainer.bottom + 12 + 'px';
-  }
-  if (props.left)
-    optionContainer.value.style.left = dropdownContainer.right + 'px';
-  else {
-    optionContainer.value.style.left = dropdownContainer.left + 'px';
-  }
-  optionContainer.value.style.minWidth =
-    dropdownContainer.right - dropdownContainer.left + 'px';
-};
-
-const choose = (item) => {
-  if (props.multiple) {
-    let index = -1;
-    if (props.itemKey) {
-      index = selected.value.findIndex(
-        (s) => s[props.itemKey] === item[props.itemKey],
-      );
-    } else {
-      index = selected.value.findIndex((s) => s === item);
-    }
-    if (index === -1) {
-      selected.value.push(item);
-    } else {
-      selected.value.splice(index, 1);
-    }
-  } else if (!props.clearAfterSelect) {
-    selected.value = item;
-  }
-  comboboxInput.value.value = '';
-
-  filter('');
-  focusInput();
-
-  if (props.closeAfterSelect) {
-    open.value = false;
-  }
-
-  if (!props.clearAfterSelect) {
-    emit('update:modelValue', selected.value);
-    emit('selected', selected.value);
-  } else {
-    emit('selected', item);
-  }
-  if (props.clearCache) {
-    filteredItems.value = filteredItems.value.filter((a) => {
-      if (props.clearCacheKey) {
-        return a[props.clearCacheKey] !== item[props.clearCacheKey];
-      }
-      return a.email !== item.email;
-    });
-  }
-};
-
-const isSelected = (item) => {
-  if (props.multiple) {
-    let index = -1;
-    if (props.itemKey) {
-      index = selected.value.findIndex(
-        (s) => s[props.itemKey] === item[props.itemKey],
-      );
-    } else {
-      index = selected.value.findIndex((s) => s === item);
-    }
-    return index > -1;
-  } else if (props.itemKey) {
-    return selected.value[props.itemKey] === item[props.itemKey];
-  } else {
-    return selected.value === item;
-  }
 };
 
 // TODO:: improve delete item function
@@ -473,7 +490,6 @@ const deleteItem = (key) => {
     items[items.length - 1].focus();
   }
 };
-
 const removeItemByIndex = (index) => {
   if (props.multiple) {
     selected.value.splice(index, 1);
@@ -481,7 +497,6 @@ const removeItemByIndex = (index) => {
     selected.value = '';
   }
 };
-
 const enterSuggestRequest = (suggest) => {
   const acceptCodes = [188, 13];
   if (
@@ -521,12 +536,6 @@ const enterSuggestRequest = (suggest) => {
   }
 };
 
-const focusInput = () => {
-  if (comboboxInput.value) {
-    comboboxInput.value.focus();
-  }
-};
-
 const filter = async (value) => {
   searchText.value = value;
   open.value = true;
@@ -534,15 +543,18 @@ const filter = async (value) => {
     searching.value = true;
     if (!props.filter) {
       open.value = true;
-      value = value.toLowerCase();
+      const searchValue = value.toLowerCase();
       filteredItems.value = props.items.filter((data) => {
         let filterItem = data;
         if (typeof filterItem === 'object') {
+          if (!props.itemKey) {
+            console.error('[YARTU] itemKey required key for this items')
+          }
           filterItem = filterItem[props.itemKey];
         }
         // TODO :: add timeout @akucuk
         searching.value = false;
-        return filterItem.toLowerCase().match(value);
+        return filterItem.toLowerCase().match(searchValue);
       });
     } else {
       filteredItems.value = await props.filter(props.items, value);
@@ -554,34 +566,97 @@ const filter = async (value) => {
   }
 };
 
-const comboboxClass = computed(() => {
-  return [
-    'w-full max-h-55',
-    'overflow-y-auto relative',
-    'border rounded-lg',
-    'text-BLACK-2 font-semibold text-xs',
-    'flex flex-wrap items-center gap-2',
-    'disabled:border-GREY-2 disabled:bg-GREY-3',
-    {
-      'border-BLUE': open.value,
-      'border-BORDER': !open.value,
-      'py-1 pl-2 pr-4': props.dense,
-      'py-2 px-4': !props.dense,
-      'opacity-50': props.disabled,
-    },
-  ];
+const choose = (item) => {
+
+  if (props.multiple) {
+    let index = -1;
+    if (props.itemKey) {
+      index = selected.value.findIndex(
+        (s) => s[props.itemKey] === item[props.itemKey],
+      );
+    } else {
+      index = selected.value.findIndex((s) => s === item);
+    }
+    if (index === -1) {
+      selected.value.push(item);
+    } else {
+      selected.value.splice(index, 1);
+    }
+  } else {
+    selected.value = item;
+  }
+
+  comboboxInput.value.value = '';
+
+  filter('');
+  focusInput();  
+  emitModel();
+
+  if (props.closeAfterSelect) {
+    open.value = false;
+  }
+
+  if (props.clearCache) {
+    filteredItems.value = filteredItems.value.filter((a) => {
+      if (props.clearCacheKey) {
+        return a[props.clearCacheKey] !== item[props.clearCacheKey];
+      }
+      return a.email !== item.email;
+    });
+  }
+};
+
+const isSelected = (item) => {
+  if (props.multiple) {
+    let index = -1;
+    if (props.itemKey) {
+      index = selected.value.findIndex(
+        (s) => s[props.itemKey] === item[props.itemKey],
+      );
+    } else {
+      index = selected.value.findIndex((s) => s === item);
+    }
+    return index > -1;
+  } else if (props.itemKey) {
+    return selected.value[props.itemKey] === item[props.itemKey];
+  } else {
+    return selected.value === item;
+  }
+};
+
+const calculatePosition = () => {
+  let dropdownContainer = target.value.getBoundingClientRect();
+  if (props.top) {
+    optionContainer.value.style.top = dropdownContainer.top - 12 + 'px';
+  } else {
+    optionContainer.value.style.top = dropdownContainer.bottom + 12 + 'px';
+  }
+  if (props.left)
+    optionContainer.value.style.left = dropdownContainer.right + 'px';
+  else {
+    optionContainer.value.style.left = dropdownContainer.left + 'px';
+  }
+  optionContainer.value.style.minWidth =
+    dropdownContainer.right - dropdownContainer.left + 'px';
+};
+
+const activeItems = computed(() => {
+  if (props.multiple) {
+    return !open.value ? closedItems.value : selected.value;
+  } else {
+    return !open.value ? closedItems.value : [selected.value];
+  }
 });
 
-const labelClass = computed(() => {
-  return [
-    'font-semibold text-sm',
-    'mb-2 pl-0.5',
-    {
-      'text-GREY-1': props.disabled,
-      'text-BLACK-2': !props.disabled,
-      'opacity-50': props.disabled,
-    },
-  ];
+watchEffect(() => {
+  if (props.multiple) {
+    closedItems.value = selected.value?.filter((i, index) => index < 2);
+    if (selected.value?.length > 2) {
+      closedItems.value.push(`+ ${selected.value.length - 2}`);
+    }
+  } else {
+    closedItems.value = [selected.value];
+  }
 });
 
 const openStatus = computed(() => {
@@ -598,16 +673,6 @@ const openStatus = computed(() => {
   }
 
   return true;
-});
-
-const inputContainerClass = computed(() => {
-  return [
-    'h-full bg-transparent focus:outline-none text-BLACK-2 caret-inherit',
-    {
-      'py-1': props.dense,
-      'py-2': !props.dense,
-    },
-  ];
 });
 
 const optionContainerClass = computed(() => {
@@ -628,11 +693,44 @@ const optionContainerClass = computed(() => {
   ];
 });
 
-const activeItems = computed(() => {
-  if (props.multiple) {
-    return !open.value ? closedItems.value : selected.value;
-  }
-  return !open.value ? closedItems.value : [selected.value];
+const labelClass = computed(() => {
+  return [
+    'font-semibold text-sm',
+    'mb-2 pl-0.5',
+    {
+      'text-GREY-1': props.disabled,
+      'text-BLACK-2': !props.disabled,
+      'opacity-50': props.disabled,
+    },
+  ];
+});
+
+const comboboxClass = computed(() => {
+  return [
+    'w-full max-h-55',
+    'overflow-y-auto relative',
+    'border rounded-lg',
+    'text-BLACK-2 font-semibold text-xs',
+    'flex flex-wrap items-center gap-2',
+    'disabled:border-GREY-2 disabled:bg-GREY-3',
+    {
+      'border-BLUE': open.value,
+      'border-BORDER': !open.value,
+      'py-1 pl-2 pr-4': props.dense,
+      'py-2 px-4': !props.dense,
+      'opacity-50': props.disabled,
+    },
+  ];
+});
+
+const inputContainerClass = computed(() => {
+  return [
+    'h-full bg-transparent focus:outline-none text-BLACK-2 caret-inherit',
+    {
+      'py-1': props.dense,
+      'py-2': !props.dense,
+    },
+  ];
 });
 
 const optionClass = computed(() => {
