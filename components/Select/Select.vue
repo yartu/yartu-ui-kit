@@ -1,11 +1,13 @@
 <template>
   <div class="relative" ref="target">
-    <label :for="id">
+    <label
+      :for="componentId"
+    >
       <p v-if="label" :class="labelClass">{{ label }}</p>
       <button
-        :id="id"
         type="button"
         @click="openOptions"
+        :id="componentId"
         :disabled="disabled"
         :class="[selectClass, { 'border-RED focus:border-RED': hasError }]"
       >
@@ -17,17 +19,24 @@
           ]"
         >
           <p
-            v-if="placeholder && selected.length === 0"
+            v-if="placeholder && !selected"
             class="text-sm font-normal text-GREY-1"
           >
             {{ placeholder }}
           </p>
-          <template v-if="props.multiple">
+          <template v-if="loading || isLoading">
+            Loading..
+          </template>
+          <template v-else-if="props.multiple">
             <div v-for="(item, index) in selected" :key="index">
               <slot name="selection" :item="item">
                 <p class="w-full">
-                  <Tag v-if="chip" tertiary outline>{{ item }}</Tag>
-                  <span v-else-if="selected.length > 0">{{ item }}</span>
+                  <Tag v-if="chip" tertiary outline>
+                    {{ itemText ? item[itemText] : item }}
+                  </Tag>
+                  <span v-else-if="selected.length > 0">
+                    {{ itemText ? item[itemText] : item }}
+                  </span>
                   <template v-if="selected.length > 1 && !chip">,</template>
                 </p>
               </slot>
@@ -35,17 +44,20 @@
           </template>
           <template v-else>
             <slot name="selection" :item="selected">
-              <div class="text-left truncate">
+              <div v-if="selected" class="text-left truncate">
                 <Tag v-if="chip" tertiary outline>
-                  {{ Array.isArray(selected) ? selected[0] : selected }}
+                  {{ selected }}
                 </Tag>
-                <span v-else-if="selected" :class="!multiple ? 'truncate' : ''">
-                  <template v-if="itemText && itemText.length > 0">
+                <span v-else :class="!multiple ? 'truncate' : ''">
+
+                  {{ itemText ? selected[itemText] : selected }} 
+                  
+                  <!-- <template v-if="itemText && itemText.length > 0">
                     {{ Array.isArray(selected) ? selected[0] : selected[itemText] }}
                   </template>
                   <template v-else>
                     {{ Array.isArray(selected) ? selected[0] : selected }}
-                  </template>
+                  </template> -->
                 </span>
               </div>
             </slot>
@@ -69,7 +81,7 @@
         </span>
       </button>
       <p
-        v-if="(selected.length === 0 && !persistentHint) || persistentHint"
+        v-if="(selected.length === 0 && !hint) || hint"
         class="text-xs mt-2 pl-0.5 absolute inset-x-0"
         :class="disabled ? 'text-GREY-1' : 'text-BLACK-2 '"
       >
@@ -141,16 +153,19 @@ export default {
   }
 };
 </script>
-
 <script setup>
-import { ref, computed, watchEffect, onUnmounted, onMounted } from 'vue';
+
+import {
+  ref,
+  computed,
+  onMounted,
+  onUnmounted,
+  watch,
+  watchEffect,
+} from 'vue';
+
 import { onClickOutside } from '@vueuse/core';
 import Tag from '../Tag/Tag.vue';
-
-const open = ref(false);
-const selected = ref([]);
-const target = ref(null);
-const optionContainer = ref(null);
 
 const emit = defineEmits(['update:modelValue', 'selected']);
 const props = defineProps({
@@ -158,63 +173,202 @@ const props = defineProps({
     type: [Object, Array, String, Number],
     required: true,
   },
-  multiple: {
-    type: Boolean,
-    default: false,
-  },
-  label: {
+  itemKey: {
     type: String,
-    default: '',
-  },
-  id: null,
-  chip: {
-    type: Boolean,
-    default: false,
-  },
-  items: {
-    type: [Object, Array, Function],
-  },
-  placeholder: {
-    type: String,
-    default: '',
-  },
-  hint: {
-    type: String,
-    default: '',
-  },
-  persistentHint: {
-    type: Boolean,
-    default: false,
-  },
-  disabled: {
-    type: Boolean,
-    default: false,
+    required: false,
   },
   itemText: {
     type: String,
     required: false,
   },
-  itemKey: {
-    type: String,
-    required: false,
+  items: {
+    type: [Array, Object, Function],
+    required: true,
+  },
+  returnObject: {
+    type: Boolean,
+    default: () => false,
+  },
+  top: {
+    type: Boolean,
+    default: () => false,
+  },
+  left: {
+    type: Boolean,
+    default: () => false,
+  },
+  multiple: {
+    type: Boolean,
+    default: () => false,
+  },
+  disabled: {
+    type: Boolean,
+    default: () => false,
+  },
+  dense: {
+    type: Boolean,
+    default: () => false,
+  },
+  chip: {
+    type: Boolean,
+    default: () => false,
+  },
+  closableChip: {
+    type: Boolean,
+    default: () => true,
+  },
+  clearAfterSelect: {
+    type: Boolean,
+    default: () => false,
   },
   helper: {
     type: Boolean,
-    required: false,
     default: () => false,
+  },
+  loading: {
+    type: Boolean,
+    default: () => false,
+  },
+  closeAfterSelect: {
+    type: Boolean,
+    required: false,
+    default: true,
+  },
+  label: {
+    type: String,
+    required: false,
+  },
+  placeholder: {
+    type: String,
+    required: false,
+  },
+  filter: {
+    type: Function,
+    required: false,
+  },
+  hint: {
+    type: String,
+    default: '',
+  },
+});
+
+const componentId = ref(Math.random().toString(36).replace(/[^a-z]+/g, ''));
+const open = ref(false);
+const isLoading = ref(false);
+const target = ref(null);
+const optionContainer = ref(null);
+const itemsList = ref([]);
+
+onMounted(() => {
+  window.addEventListener('resize', calculatePosition);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', calculatePosition);
+});
+
+watchEffect(async () => {
+  const { items } = props;
+  if (items) {
+    if (typeof items === 'function') {
+      isLoading.value = true;
+      const res =  await items();
+      itemsList.value = res.folders;
+      isLoading.value = false;
+      selected.value = initModels();
+    } else {
+      itemsList.value = items;
+    }
+  } else {
+    itemsList.value = [];
   }
 });
+
+const initModels = () => {
+
+  if (isLoading.value) {
+    return [];
+  }
+
+  if (props.returnObject) {
+
+    if (props.multiple) {
+      let modelData = props.modelValue || [];
+      if (!Array.isArray(modelData)) {
+        modelData = [modelData];
+      }
+
+      const firstItem = modelData[0];
+      if (typeof firstItem !== 'object' && props.itemKey) {
+        const res = itemsList.value.filter((f) => props.modelValue.includes(f[props.itemKey]));
+        return res;
+      }
+      return modelData;
+    } else {
+
+      if (typeof props.modelValue !== 'object' && props.itemKey) {
+        const res = itemsList.value.find((f) => f[props.itemKey] === props.modelValue);
+        return res;
+      }
+      return props.modelValue;
+    }
+
+  } else if (props.itemKey) {
+    let modelData = props.modelValue;
+    if (typeof modelData !== 'object' && props.itemKey) {
+      if (props.multiple) {
+        const res = itemsList.value.filter((f) => props.modelValue.includes(f[props.itemKey]));
+        return res;
+      } else {
+        const res = itemsList.value.find((f) => f[props.itemKey] === props.modelValue);
+        return res;
+      }
+    } else {
+      alert(1);
+      return modelData[props.itemKey];
+    }
+  }
+  return props.modelValue;
+};
+
+const selected = ref(initModels());
+
+watch(
+  () => props.modelValue,
+  (val) => {
+    if (val) {
+      selected.value = initModels();
+    }
+  },
+);
+
+watch(
+  () => itemsList,
+  () => {
+    selected.value = initModels();
+  },
+);
+
+const emitModel = () => {
+  let emitData = selected.value;
+  if (!props.returnObject && props.itemKey) {
+    if (props.multiple) {
+      emitData = selected.value.map((e) => e[props.itemKey])
+    } else {
+      emitData = selected.value[props.itemKey];
+    }
+  }
+
+  if (!props.clearAfterSelect) {
+    emit('update:modelValue', emitData);
+    emit('selected', emitData);
+  } else {
+    emit('selected', emitData);
+  }
+};
+
 
 onClickOutside(target, () => (open.value = false));
-
-watchEffect(() => {
-  const { modelValue } = props;
-  if (modelValue) {
-    selected.value = modelValue;
-  } else {
-    selected.value = [];
-  }
-});
 
 function openOptions() {
   open.value = !open.value;
@@ -245,7 +399,7 @@ const calculatePosition = () => {
   }
 };
 
-function choose(item) {
+const choose = (item) => {
   if (props.multiple) {
     let index = -1;
     if (props.itemKey) {
@@ -263,11 +417,15 @@ function choose(item) {
   } else {
     selected.value = item;
   }
-  emit('update:modelValue', selected.value);
-  emit('selected', selected.value);
-}
 
-function isSelected(item) {
+  emitModel();
+
+  if (props.closeAfterSelect) {
+    open.value = false;
+  }
+};
+
+const isSelected = (item) => {
   if (props.multiple) {
     let index = -1;
     if (props.itemKey) {
@@ -283,25 +441,7 @@ function isSelected(item) {
   } else {
     return selected.value === item;
   }
-}
-
-onMounted(() => {
-  window.addEventListener('resize', calculatePosition);
-});
-
-onUnmounted(() => {
-  window.removeEventListener('resize', calculatePosition);
-});
-
-const itemsList = computed(() => {
-  if (props.items) {
-    if (typeof props.items === 'function') {
-      return props.items();
-    }
-    return props.items;
-  }
-  return [];
-});
+};
 
 const helperClass = computed(() => {
   return [
@@ -311,6 +451,7 @@ const helperClass = computed(() => {
     'text-RED',
   ];
 });
+
 
 const selectClass = computed(() => {
   return [
@@ -362,14 +503,5 @@ const optionClass = computed(() => {
     'hover:bg-LIGHTBLUE-6',
   ];
 });
+
 </script>
-
-<style>
-.calc-width-for-select-items {
-  width: calc(100% - 2.2rem);
-}
-
-.force-to-top {
-  transform: translateY(calc(calc(100% * -1) - 4rem));
-}
-</style>
