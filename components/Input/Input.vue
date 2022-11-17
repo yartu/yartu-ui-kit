@@ -4,6 +4,11 @@
       {{ label }}
     </label>
     <div :class="inputContentClass">
+      <div :class="prefixClass" v-if="prefix">
+        <slot name="prefix">
+          {{ prefix }}
+        </slot>
+      </div>
       <input
         :id="id"
         :value="modelValue"
@@ -13,6 +18,11 @@
         :placeholder="placeholder"
         :disabled="disabled"
       />
+      <div :class="suffixClass" v-if="suffix">
+        <slot name="suffix">
+          {{ suffix }}
+        </slot>
+      </div>
       <div :class="iconClass" v-if="action">
         <slot name="icon"></slot>
       </div>
@@ -121,6 +131,14 @@ export default {
       type: Boolean,
       default: false,
     },
+    prefix: {
+      type: String,
+      default: false,
+    },
+    suffix: {
+      type: String,
+      default: false,
+    },
   },
   computed: {
     hasError() {
@@ -178,6 +196,26 @@ export default {
           'right-4': this.iconRight && this.action,
           'left-4': !this.iconRight && this.action,
         },
+      ];
+    },
+
+    prefixClass() {
+      return [
+        'flex justify-center items-center',
+        'text-GREY-1',
+        'absolute',
+        'right-4',
+        'z-1',
+      ];
+    },
+
+    suffixClass() {
+      return [
+        'flex justify-center items-center',
+        'text-GREY-1',
+        'absolute',
+        'left-4',
+        'z-1',
       ];
     },
 
