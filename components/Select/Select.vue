@@ -19,7 +19,7 @@
           ]"
         >
           <p
-            v-if="placeholder && !selected"
+            v-if="placeholder && (!selected || (selected && selected.length === 0))"
             class="text-sm font-normal text-GREY-1"
           >
             {{ placeholder }}
@@ -316,6 +316,11 @@ const initModels = () => {
   } else if (props.itemKey) {
     let modelData = props.modelValue;
     if (typeof modelData !== 'object' && props.itemKey) {
+
+      if (Object.keys(modelData).length === 0) {
+        return {};
+      }
+
       if (props.multiple) {
         const res = itemsList.value.filter((f) => props.modelValue.includes(f[props.itemKey]));
         return res;
@@ -324,8 +329,9 @@ const initModels = () => {
         return res;
       }
     } else {
-      alert(1);
-      return modelData[props.itemKey];
+      const res = itemsList.value.find((f) => f[props.itemKey] === modelData[props.itemKey]);
+      return res || {};
+      // return modelData[props.itemKey] || {};
     }
   }
   return props.modelValue;
