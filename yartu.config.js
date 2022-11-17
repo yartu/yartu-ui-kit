@@ -32,6 +32,7 @@ const globalConfig = {
         BLACKOVERLAY: '#394c6680',
         BLUE: '#3663f2ff',
         'BLUE-2': '#546a7b',
+        'BLUE-3': '#3663f21f',
         BUD: '#b1cf5f',
         'HOVER-BLUE': '#0E3DD3ff',
         'HOVER-BLUE-0.2': '#0E3DD333',
