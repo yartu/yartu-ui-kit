@@ -253,6 +253,9 @@ const globalConfig = {
       xl: '1279.98px',
       '2xl': '1535.98px',
     },
+    blur: {
+      xs: '2px',
+    }
   },
   variants: {
     extend: {
