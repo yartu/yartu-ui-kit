@@ -2,7 +2,11 @@ const VALIDATIONS = {
   REQUIRED: [(v) => !!v || (v && !!v.trim()) || 'Required'],
   EMAIL: [
     (v) => !!v || 'E-mail is required',
-    (v) => /.+@.+/.test(v) || 'E-mail must be valid',
+    (v) => /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'E-mail must be valid',
+  ],
+  USERNAME: [
+    (v) => !!v || 'Username is required',
+    (v) => /[a-z0-9_.]+$/.test(v) || 'Username be valid',
   ],
   PASSWORD: [
     (v) => !!v || 'Required',
