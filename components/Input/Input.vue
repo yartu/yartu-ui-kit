@@ -10,40 +10,53 @@
         </slot>
       </div>
       <input
+        v-if="disabled && disabledText"
+        :class="inputClass"
+        :value="disabledText"
+        type="text"
+        disabled
+      />
+      <input
+        v-else
         :id="id"
-        :value="modelValue"
-        @input="$emit('update:modelValue', $event.target.value)"
+        v-model="modelData.value"
+        @input="emitModel()"
         :class="inputClass"
         :type="type"
         :placeholder="placeholder"
         :disabled="disabled"
       />
-      <div :class="suffixClass" v-if="suffix">
-        <slot name="suffix">
-          {{ suffix }}
-        </slot>
-      </div>
-      <div :class="iconClass" v-if="action">
-        <slot name="icon"></slot>
-      </div>
-      <button
-        v-if="dropdown"
-        @click="open = !open"
-        class="flex justify-center items-center w-6 h-6 text-GREY-1 absolute rounded-full right-4 text-sm"
-      >
-        {{ dropdownTitle }}
-        <i :class="dropdownIcon" aria-hidden="true"></i>
-      </button>
-      <div v-if="dropdown" :class="dropdownClass">
-        <ol>
-          <li
-            :class="listClass"
-            v-for="(item, index) in dropdownItem"
-            :key="index"
+      <div>
+        <div :class="suffixClass" v-if="suffix">
+          <slot name="suffix">
+            {{ suffix }}
+          </slot>
+        </div>
+        <div :class="iconClass" v-if="action">
+          <slot name="icon"></slot>
+        </div>
+        <div ref="optionsContainer">
+          <button
+            v-if="dropdown && !disabled"
+            @click="open = !open"
+            class="flex justify-center items-center w-6 h-6 text-GREY-1 absolute rounded-full right-4 text-sm"
           >
-            {{ item }}
-          </li>
-        </ol>
+            {{ modelData.select }}
+            <i :class="dropdownIcon" aria-hidden="true"></i>
+          </button>
+          <div v-if="dropdown" :class="dropdownClass">
+            <ol>
+              <li
+                :class="listClass"
+                v-for="(item, index) in dropdownItem"
+                :key="index"
+                @click="modelData.select = item; emitModel();"
+              >
+                {{ item }}
+              </li>
+            </ol>
+          </div>
+        </div>
       </div>
     </div>
     <div :class="helperClass" v-if="helper">
@@ -57,18 +70,48 @@
 
 <script>
 import FormItem from '../FormItem';
+import { onClickOutside } from '@vueuse/core';
 
 export default {
   name: 'y-input',
   extends: FormItem,
-  data() {
-    return {
-      open: false,
-    };
+  data: () => ({
+    open: false,
+    modelData: {
+      value: '',
+      select: '',
+    },
+  }),
+  mounted() {
+    onClickOutside(this.$refs.optionsContainer, () => (this.open = false));
+  },
+  created() {
+    this.modelData.value = this.modelValue
+    if (typeof this.modelValue === 'object') {
+      this.modelData.value = this.modelValue.value;
+      this.modelData.select = this.modelValue.select;
+    } else {
+      this.modelData.value = this.modelValue;
+      if (this.dropdownModel) {
+        this.modelData.select = this.dropdownMdel;
+      }
+    }
+    console.log('DATA', this.modelData);
+  },
+  methods: {
+    emitModel() {
+      if (this.dropdown) {
+        const data = this.modelData;
+        this.$emit('update:modelValue', data);
+      } else {
+        this.$emit('update:modelValue', this.modelData.value);
+      }
+      this.open = false;
+    },
   },
   props: {
     modelValue: {
-      type: String,
+      type: [String, Object],
     },
     id: null,
     label: {
@@ -87,6 +130,10 @@ export default {
       type: String,
       default: '',
     },
+    disabledText: {
+      type: String,
+      default: '',
+    },
     disabled: {
       type: Boolean,
       default: false,
@@ -99,7 +146,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    dropdownTitle: {
+    dropdownModel: {
       type: String,
       default: '',
     },
@@ -133,10 +180,14 @@ export default {
     },
     prefix: {
       type: String,
-      default: false,
+      default: '',
     },
     suffix: {
       type: String,
+      default: '',
+    },
+    returnObject: {
+      type: Boolean,
       default: false,
     },
   },
@@ -204,7 +255,7 @@ export default {
         'flex justify-center items-center',
         'text-GREY-1',
         'absolute',
-        'right-4',
+        'left-4',
         'z-1',
       ];
     },
@@ -214,7 +265,7 @@ export default {
         'flex justify-center items-center',
         'text-GREY-1',
         'absolute',
-        'left-4',
+        'right-4',
         'z-1',
       ];
     },

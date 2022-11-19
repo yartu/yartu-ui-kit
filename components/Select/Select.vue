@@ -19,13 +19,16 @@
           ]"
         >
           <p
-            v-if="placeholder && (!selected || (selected && selected.length === 0))"
+            v-if="placeholder && !isLoading && (!selected || (selected && selected.length === 0))"
             class="text-sm font-normal text-GREY-1"
           >
             {{ placeholder }}
           </p>
-          <template v-if="loading || isLoading">
+          <template v-if="isLoading">
             Loading..
+          </template>
+          <template v-if="disabled && disabledText">
+            {{ disabledText }}
           </template>
           <template v-else-if="props.multiple">
             <div v-for="(item, index) in selected" :key="index">
@@ -49,15 +52,7 @@
                   {{ selected }}
                 </Tag>
                 <span v-else :class="!multiple ? 'truncate' : ''">
-
                   {{ itemText ? selected[itemText] : selected }} 
-                  
-                  <!-- <template v-if="itemText && itemText.length > 0">
-                    {{ Array.isArray(selected) ? selected[0] : selected[itemText] }}
-                  </template>
-                  <template v-else>
-                    {{ Array.isArray(selected) ? selected[0] : selected }}
-                  </template> -->
                 </span>
               </div>
             </slot>
@@ -185,6 +180,10 @@ const props = defineProps({
     type: [Array, Object, Function],
     required: true,
   },
+  fetchResultKey: {
+    type: String,
+    required: false,
+  },
   returnObject: {
     type: Boolean,
     default: () => false,
@@ -250,6 +249,10 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  disabledText: {
+    type: String,
+    default: '',
+  },
 });
 
 const componentId = ref(Math.random().toString(36).replace(/[^a-z]+/g, ''));
@@ -273,7 +276,11 @@ watchEffect(async () => {
     if (typeof items === 'function') {
       isLoading.value = true;
       const res =  await items();
-      itemsList.value = res.folders;
+      if (props.fetchResultKey) {
+        itemsList.value = res[props.fetchResultKey];
+      } else {
+        itemsList.value = res;
+      }
       isLoading.value = false;
       selected.value = initModels();
     } else {
@@ -331,7 +338,6 @@ const initModels = () => {
     } else {
       const res = itemsList.value.find((f) => f[props.itemKey] === modelData[props.itemKey]);
       return res || {};
-      // return modelData[props.itemKey] || {};
     }
   }
   return props.modelValue;
@@ -377,8 +383,10 @@ const emitModel = () => {
 onClickOutside(target, () => (open.value = false));
 
 function openOptions() {
-  open.value = !open.value;
-  calculatePosition();
+  if(!isLoading.value) {
+    open.value = !open.value;
+    calculatePosition();
+  }
 }
 
 const calculatePosition = () => {
