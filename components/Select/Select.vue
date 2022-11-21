@@ -19,7 +19,7 @@
           ]"
         >
           <p
-            v-if="placeholder && !isLoading && (!selected || (selected && selected.length === 0))"
+            v-if="placeholder && !isLoading && selectedIsEmpty"
             class="text-sm font-normal text-GREY-1"
           >
             {{ placeholder }}
@@ -324,7 +324,7 @@ const initModels = () => {
     let modelData = props.modelValue;
     if (typeof modelData !== 'object' && props.itemKey) {
 
-      if (Object.keys(modelData).length === 0) {
+      if (!modelData) {
         return {};
       }
 
@@ -456,6 +456,18 @@ const isSelected = (item) => {
     return selected.value === item;
   }
 };
+
+const selectedIsEmpty = computed(() => {
+  if (!selected.value) {
+    return true;
+  }
+
+  if (typeof selected.value === 'object') {
+    return Object.keys(selected.value).length === 0;
+  }
+  return false;
+});
+
 
 const helperClass = computed(() => {
   return [

@@ -86,19 +86,21 @@ export default {
     onClickOutside(this.$refs.optionsContainer, () => (this.open = false));
   },
   created() {
-    this.modelData.value = this.modelValue
-    if (typeof this.modelValue === 'object') {
-      this.modelData.value = this.modelValue.value;
-      this.modelData.select = this.modelValue.select;
-    } else {
-      this.modelData.value = this.modelValue;
-      if (this.dropdownModel) {
-        this.modelData.select = this.dropdownMdel;
-      }
-    }
-    console.log('DATA', this.modelData);
+    this.initModel();
   },
   methods: {
+    initModel() {
+      this.modelData.value = this.modelValue
+      if (typeof this.modelValue === 'object') {
+        this.modelData.value = this.modelValue.value;
+        this.modelData.select = this.modelValue.select;
+      } else {
+        this.modelData.value = this.modelValue;
+        if (this.dropdownModel) {
+          this.modelData.select = this.dropdownMdel;
+        }
+      }
+    },
     emitModel() {
       if (this.dropdown) {
         const data = this.modelData;
@@ -107,6 +109,14 @@ export default {
         this.$emit('update:modelValue', this.modelData.value);
       }
       this.open = false;
+    },
+  },
+  watch: {
+    modelValue: {
+      handler: function () {
+        this.initModel();
+      },
+      deep: true,
     },
   },
   props: {
