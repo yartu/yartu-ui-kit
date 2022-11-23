@@ -10,7 +10,7 @@ export default {
   computed: {
     containerClass() {
       return [
-        'flex flex-col',
+        'flex',
         'border border-BORDER rounded-lg',
         'hover:border-BLUE cursor-pointer',
         'transition-all duration-300',
