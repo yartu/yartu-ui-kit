@@ -3,7 +3,7 @@
     <div
       v-if="!split"
       :style="[setHeight, setWidth]"
-      :class="[progressClass, animationType]"
+      :class="[progressClass, animationType, color ? 'setColor' : '']"
     >
       <slot v-if="indeterminate === ''"></slot>
     </div>
@@ -61,6 +61,10 @@ export default {
     cancel: {
       type: Boolean,
       default: false,
+    },
+    color: {
+      type: String,
+      default: '',
     },
   },
   computed: {
@@ -141,3 +145,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.setColor {
+  background-color: v-bind(color) !important;
+}
+</style>
