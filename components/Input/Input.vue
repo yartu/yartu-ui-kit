@@ -121,7 +121,7 @@ export default {
   },
   props: {
     modelValue: {
-      type: [String, Object],
+      type: [String, Number, Object],
     },
     id: null,
     label: {
