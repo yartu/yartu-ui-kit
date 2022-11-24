@@ -19,8 +19,8 @@
       <input
         v-else
         :id="id"
-        v-model="modelData.value"
-        @input="emitModel()"
+        :value="modelValue"
+        @input="$emit('update:modelValue', $event.target.value)"
         :class="inputClass"
         :type="type"
         :placeholder="placeholder"
@@ -32,25 +32,20 @@
             {{ suffix }}
           </slot>
         </div>
-        <div :class="iconClass" v-if="action">
-          <slot name="icon"></slot>
-        </div>
         <div ref="optionsContainer">
-          <button
-            v-if="dropdown && !disabled"
-            @click="open = !open"
-            class="flex justify-center items-center w-6 h-6 text-GREY-1 absolute rounded-full right-4 text-sm"
+          <slot
+            name="dropdown"
+            :open="openDropdown"
+            :selected="dropdownSelected"
           >
-            {{ modelData.select }}
-            <i :class="dropdownIcon" aria-hidden="true"></i>
-          </button>
+          </slot>
           <div v-if="dropdown" :class="dropdownClass">
             <ol>
               <li
                 :class="listClass"
                 v-for="(item, index) in dropdownItem"
                 :key="index"
-                @click="modelData.select = item; emitModel();"
+                @click="dropdownSelected = item"
               >
                 {{ item }}
               </li>
@@ -77,48 +72,19 @@ export default {
   extends: FormItem,
   data: () => ({
     open: false,
-    modelData: {
-      value: '',
-      select: '',
-    },
+    dropdownSelected: undefined,
   }),
+
   mounted() {
     onClickOutside(this.$refs.optionsContainer, () => (this.open = false));
   },
-  created() {
-    this.initModel();
-  },
+
   methods: {
-    initModel() {
-      this.modelData.value = this.modelValue
-      if (typeof this.modelValue === 'object') {
-        this.modelData.value = this.modelValue.value;
-        this.modelData.select = this.modelValue.select;
-      } else {
-        this.modelData.value = this.modelValue;
-        if (this.dropdownModel) {
-          this.modelData.select = this.dropdownMdel;
-        }
-      }
-    },
-    emitModel() {
-      if (this.dropdown) {
-        const data = this.modelData;
-        this.$emit('update:modelValue', data);
-      } else {
-        this.$emit('update:modelValue', this.modelData.value);
-      }
-      this.open = false;
+    openDropdown() {
+      this.open = true;
     },
   },
-  watch: {
-    modelValue: {
-      handler: function () {
-        this.initModel();
-      },
-      deep: true,
-    },
-  },
+
   props: {
     modelValue: {
       type: [String, Number, Object],
@@ -156,6 +122,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    rounded: {
+      type: Boolean,
+      default: false,
+    },
     dropdownModel: {
       type: String,
       default: '',
@@ -189,18 +159,19 @@ export default {
       default: false,
     },
     prefix: {
-      type: String,
-      default: '',
+      type: Boolean,
+      default: false,
     },
     suffix: {
-      type: String,
-      default: '',
+      type: Boolean,
+      default: false,
     },
     returnObject: {
       type: Boolean,
       default: false,
     },
   },
+
   computed: {
     hasError() {
       return this.error || this.errors.length > 0;
@@ -211,26 +182,32 @@ export default {
     },
 
     inputContentClass() {
-      return ['relative', 'flex items-center'];
+      return [
+        'relative',
+        'flex items-center',
+        'border border-BORDER rounded-lg',
+        'text-sm',
+        {
+          'border-RED focus:border-RED': this.hasError,
+          'border-YELLOW focus:border-YELLOW': this.warning,
+          'border-BLUE focus:border-BLUE': this.info,
+          'rounded-full text-sm': this.rounded,
+        },
+      ];
     },
     inputClass() {
       return [
         'relative',
         'min-w-[200px]',
         'flex-1',
-        'border border-BORDER rounded-lg text-sm',
         'focus:outline-none',
         'w-full',
-        'focus:border-BLUE',
+        'mr-[0.063rem]',
+        'bg-transparent',
         {
-          'pr-11': this.iconRight && this.action && !this.dropdown,
-          'pl-11': !this.iconRight && this.action,
-          'pr-14': this.dropdown,
-          'border-RED focus:border-RED': this.hasError,
-          'border-YELLOW focus:border-YELLOW': this.warning,
-          'border-BLUE focus:border-BLUE': this.info,
-          'p-1.5 px-3': this.dense,
-          'p-3 h-11': !this.dense,
+          'p-1.5': this.dense,
+          'p-3': !this.dense,
+          'py-2 text-sm': this.rounded,
         },
       ];
     },
@@ -247,37 +224,12 @@ export default {
       ];
     },
 
-    iconClass() {
-      return [
-        'flex justify-center items-center',
-        'text-GREY-1',
-        'absolute',
-        'rounded-full',
-        {
-          'right-4': this.iconRight && this.action,
-          'left-4': !this.iconRight && this.action,
-        },
-      ];
-    },
-
     prefixClass() {
-      return [
-        'flex justify-center items-center',
-        'text-GREY-1',
-        'absolute',
-        'left-4',
-        'z-1',
-      ];
+      return ['flex justify-center items-center', 'text-GREY-1'];
     },
 
     suffixClass() {
-      return [
-        'flex justify-center items-center',
-        'text-GREY-1',
-        'absolute',
-        'right-4',
-        'z-1',
-      ];
+      return ['flex justify-center items-center', 'text-GREY-1'];
     },
 
     dropdownClass() {
