@@ -25,13 +25,19 @@
           </svg>
         </div>
         <input
-          @input="filter($event.target.value)"
+          @input="search($event.target.value)"
+          placeholder="Search.."
           class="rounded-full outline-1 outline-BLUE focus:outline border border-BORDER pl-14 pr-4 py-2 text-sm"
           type="text"
         />
       </label>
     </div>
-    <SimpleTable>
+    <div v-if="loading">
+      Loading..
+    </div>
+    <SimpleTable
+      v-else
+    >
       <template #thead>
         <tr class="text-BLACK-2">
           <th
@@ -110,6 +116,10 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  loading: {
+    type: Boolean,
+    default: true,
+  },
   items: {
     type: Array,
     required: true,
@@ -130,6 +140,10 @@ const props = defineProps({
   search: {
     type: Boolean,
     default: false,
+  },
+  filter: {
+    type: Function,
+    required: false,
   },
   filterFields: {
     type: Array,
@@ -175,7 +189,9 @@ const tableItems = computed(() => {
   return props.items;
 });
 
-const filter = (query) => {
-  console.log(query);
+const search = (query) => {
+  if (props.filter) {
+    props.filter(query);
+  }
 };
 </script>
