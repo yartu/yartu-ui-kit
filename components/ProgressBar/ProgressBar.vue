@@ -92,7 +92,7 @@ export default {
         'text-white',
         {
           'bg-BLUE': this.default,
-          'bg-GREEN-2': this.success,
+          'bg-GREEN': this.success,
           'bg-RED': this.error,
           'bg-GREY-1': this.cancel,
         },
@@ -107,7 +107,7 @@ export default {
             this.indeterminate.toLowerCase() === 'move',
           'bg-gradient-to-r from-GREY-9 via-BLUE to-GREY-9':
             this.indeterminate.toLowerCase() != '' && this.default,
-          'bg-gradient-to-r from-GREY-9 via-GREEN-2 to-GREY-9':
+          'bg-gradient-to-r from-GREY-9 via-GREEN to-GREY-9':
             this.indeterminate.toLowerCase() != '' && this.success,
           'bg-gradient-to-r from-GREY-9 via-RED to-GREY-9':
             this.indeterminate.toLowerCase() != '' && this.error,
