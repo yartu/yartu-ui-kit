@@ -21,6 +21,7 @@
         :id="id"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
+        @change="$emit('change')"
         :class="inputClass"
         :type="type"
         :placeholder="placeholder"
@@ -84,10 +85,10 @@ export default {
       this.open = true;
     },
   },
-
+  emits: ['update:modelValue', 'change'],
   props: {
     modelValue: {
-      type: [String, Object],
+      type: [String, Number, Object],
     },
     id: null,
     label: {

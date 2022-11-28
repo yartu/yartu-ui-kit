@@ -61,6 +61,7 @@ export default {
       },
       set(val) {
         this.$emit('update:modelValue', val);
+        this.$emit('input', val);
       },
     },
     switchContainerClass() {

@@ -5,8 +5,7 @@
         <y-icon v-if="dialogIcon" :name="`yi ${ dialogIcon } ${ dialogColor }`"></y-icon>
         {{ title }}
       </h1>
-      <p>
-        {{ subtitle }}
+      <p v-html="subtitle">
       </p>
       <y-form v-if="form" ref="yartuDialogForm" name="dialog-form" class="flex flex-col gap-5 mt-2">
         <y-input helper v-model="form.model" :label="form.label" :placeholder="form.placeholder" :rules="form.rules"></y-input>
