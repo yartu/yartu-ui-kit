@@ -19,6 +19,9 @@
       <input
         v-else
         :id="id"
+        ref="yartuInput"
+        @blur="setFocusState(false)"
+        @focus="setFocusState(true)"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
         @change="$emit('change')"
@@ -74,6 +77,7 @@ export default {
   data: () => ({
     open: false,
     dropdownSelected: undefined,
+    focused: false,
   }),
 
   mounted() {
@@ -83,6 +87,16 @@ export default {
   methods: {
     openDropdown() {
       this.open = true;
+    },
+    focus() {
+      this.$refs.yartuInput.focus();
+    },
+    setFocusState(e) {
+      if (e) {
+        this.focused = true;
+        return;
+      }
+      this.focused = false;
     },
   },
   emits: ['update:modelValue', 'change'],
@@ -193,13 +207,13 @@ export default {
           'border-YELLOW focus:border-YELLOW': this.warning,
           'border-BLUE focus:border-BLUE': this.info,
           'rounded-full text-sm': this.rounded,
+          'border-BLUE focus:border-BLUE': this.focused
         },
       ];
     },
     inputClass() {
       return [
         'relative',
-        'min-w-[200px]',
         'flex-1',
         'focus:outline-none',
         'w-full',
