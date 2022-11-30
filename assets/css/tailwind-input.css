@@ -42,6 +42,10 @@
     @apply font-extrabold text-xl
   }
 
+  .heading-5 {
+    @apply text-xl leading-10
+  }
+
   .subtitle-1 {
     @apply font-extrabold text-base
   }
