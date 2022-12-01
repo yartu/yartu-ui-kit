@@ -8,6 +8,14 @@ const VALIDATIONS = {
     (v) => !!v || 'Username is required',
     (v) => /[a-z0-9_.]+$/.test(v) || 'Username be valid',
   ],
+  URL: [
+    (v) => !!v || 'Url is required',
+    (v) => /(https?:\/\/)((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|((\d{1,3}\.){3}\d{1,3}))(\:\d+)?(\/[-a-z\d%_.~+]*)*(\?[;&a-z\d%_.~+=-]*)?(\#[-a-z\d_]*)?$/i.test(v) || 'Url must be valid ex: https://www.yartu.io',
+  ],
+  URL_DOMAIN: [
+    (v) => !!v || 'Domain is required',
+    (v) => /^((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|((\d{1,3}\.){3}\d{1,3}))(\:\d+)?(\/[-a-z\d%_.~+]*)*(\?[;&a-z\d%_.~+=-]*)?(\#[-a-z\d_]*)?$/i.test(v) || 'Domain must be valid ex: yartu.io',
+  ],
   PASSWORD: [
     (v) => !!v || 'Required',
   ],
