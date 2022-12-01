@@ -100,7 +100,7 @@ export default {
   computed: {
     buttonClass() {
       return [
-        'font-semibold',
+        'font-semibold text-sm',
         'rounded-lg',
         'transition-all duration-300',
         'inline-flex items-center justify-center',
@@ -113,9 +113,10 @@ export default {
           'bg-BLACK-2 text-white hover:bg-BLACK-3 disabled:bg-GREY-3 disabled:border-BORDER disabled:border':
             this.tertiary,
           'bg-RED text-white hover:bg-RED-3 disabled:opacity-50': this.error,
-          'bg-GREEN text-white hover:bg-GREEN-2 disabled:opacity-50': this.success,
+          'bg-GREEN text-white hover:bg-GREEN-2 disabled:opacity-50':
+            this.success,
           'text-BLUE hover:underline disabled:text-GREY-3 !p-0': this.text,
-
+          
           'h-10 py-2 px-7': this.size == 'lg',
           'h-9 py-2 px-3': this.size == 'md',
           'h-8 py-1 px-3': this.size == 'sm',
@@ -150,5 +151,3 @@ export default {
   },
 };
 </script>
-
-<style></style>

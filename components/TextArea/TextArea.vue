@@ -7,13 +7,13 @@
       <label :for="id">
         {{ title }}
       </label>
-      <span class="text-GREY-1">
+      <span v-if="showLength" class="text-GREY-1">
         {{ modelValue?.length || 0 }} / {{ maxLength }}
       </span>
     </div>
     <label
       :for="id"
-      class="focus-within:border-BLUE relative py-3 px-4 border border-BORDER rounded-lg bg-LIGHTBLUE-6"
+      class="focus-within:border-BLUE relative py-3 px-4 border border-BORDER rounded-lg bg-LIGHTBLUE-6 flex-1"
     >
       <div
         class="absolute bg-transparent pointer-events-none text-base w-4 h-4 bottom-4 right-3"
@@ -40,7 +40,7 @@
         </svg>
       </div>
       <textarea
-        :class="yTextAreaClass"
+        :class="TextAreaClass"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
         :id="id"
@@ -115,6 +115,10 @@ const props = defineProps({
     type: Boolean,
     required: false,
   },
+  showLength: {
+    type: Boolean,
+    required: false,
+  },
   autofocus: {
     type: Boolean,
     required: false,
@@ -139,16 +143,16 @@ const props = defineProps({
   modelValue: null,
 });
 
-const yTextAreaClass = computed(() => {
+const TextAreaClass = computed(() => {
   return [
     'yartu-text-area',
     'focus:outline-none',
     'disabled:text-GREY-1 disabled:cursor-not-allowed',
-    'cursor-auto ',
+    'cursor-auto',
     'min-h-[64px] max-w-full h-full min-w-full',
     'bg-LIGHTBLUE-6',
     {
-      'resize': props.resize === 'both',
+      resize: props.resize === 'both',
       'resize-y': props.resize === 'vertical',
       'resize-x': props.resize === 'horizontal',
       'resize-none': props.resize === 'none',

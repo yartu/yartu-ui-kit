@@ -4,7 +4,7 @@
       <div v-if="modelValue" :class="containerClass">
         <div
           class="bg-white rounded-xl relative overflow-auto"
-          :style="widthStyle"
+          :style="sizeStyle"
           role="dialog"
           aria-labelledby="modalTitle"
           aria-describedby="modalDescription"
@@ -54,6 +54,10 @@
 export default {
   name: 'y-modal',
   props: {
+    fullScreen: {
+      type: Boolean,
+      default: false,
+    },
     maxWidth: {
       type: String,
       default: '404px',
@@ -61,6 +65,10 @@ export default {
     minWidth: {
       type: String,
       default: '404px',
+    },
+    maxHeight: {
+      type: String,
+      required: false,
     },
     closable: {
       type: Boolean,
@@ -80,8 +88,12 @@ export default {
         'flex justify-center items-center',
       ];
     },
-    widthStyle() {
-      return [`min-width: ${this.minWidth};`, `max-width: ${this.maxWidth};`];
+    sizeStyle() {
+      const sizes = [`min-width: ${this.minWidth};`, `max-width: ${this.maxWidth};`];
+      if (this.maxHeight && !this.fullScreen) {
+        sizes.push(`max-height: ${this.maxHeight};`);
+      }
+      return sizes;
     },
   },
 };
