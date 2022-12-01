@@ -68,6 +68,7 @@ const globalConfig = {
         RED: '#eb6363ff',
         'RED-2': '#ff6542',
         'RED-3': '#E93F3F',
+        'RED-4': 'ffc3c81a',
         TEAL: '#2dd4bfff',
         KEPPEL: '#44bba4',
         EMERALD: '#6ED37E',
@@ -257,7 +258,7 @@ const globalConfig = {
     },
     blur: {
       xs: '2px',
-    }
+    },
   },
   variants: {
     extend: {
