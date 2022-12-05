@@ -17,9 +17,9 @@
           :key="item.id"
           v-for="item in queue[position.value]"
           v-bind="item"
+          v-html="item.title"
           @close="removeItem(position.value, item.id)"
         >
-          {{ item.title }}
         </component>
       </YartuTransitions>
       <div>

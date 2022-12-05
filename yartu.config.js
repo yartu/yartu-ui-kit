@@ -1,6 +1,10 @@
 /* eslint-disable */
 const defaultTheme = require('tailwindcss/defaultTheme');
 
+const lineClamp = require('@tailwindcss/line-clamp');
+const tailwindTypography = require('@tailwindcss/typography');
+const scrollbarHide = require('tailwind-scrollbar-hide');
+
 const globalConfig = {
   mod: 'jit',
   content: [],
@@ -32,7 +36,6 @@ const globalConfig = {
         BLACKOVERLAY: '#394c6680',
         BLUE: '#3663f2ff',
         'BLUE-2': '#546a7b',
-        'BLUE-3': '#3663f21f',
         BUD: '#b1cf5f',
         'HOVER-BLUE': '#0E3DD3ff',
         'HOVER-BLUE-0.2': '#0E3DD333',
@@ -68,14 +71,12 @@ const globalConfig = {
         RED: '#eb6363ff',
         'RED-2': '#ff6542',
         'RED-3': '#E93F3F',
-        'RED-4': 'ffc3c81a',
         TEAL: '#2dd4bfff',
         KEPPEL: '#44bba4',
         EMERALD: '#6ED37E',
         VIOLET: '#8b5cf6ff',
         WHITE: '#ffffffff',
         YELLOW: '#f1ae04ff',
-        'BLACK-16': 'rgba(31, 41, 56, 0.2)',
         'BLUE-20': 'rgba(54, 99, 242, 0.2)',
         'RED-20': 'rgba(235, 99, 99, 0.2)',
         'GREEN-20': 'rgba(73, 171, 94, 0.2)',
@@ -98,19 +99,17 @@ const globalConfig = {
         22: '88px',
       },
       width: {
-        '1/2-gap-1': 'calc(50.00% - 0.25rem)',
-        '1/2-gap-2': 'calc(50.00% - 0.5rem)',
-        '1/2-gap-4': 'calc(50.00% - 1rem)',
-        '1/2-gap-6': 'calc(50.00% - 1.5rem)',
-        '1/4-gap-3': 'calc(25.00% - 0.75rem)',
-        '1/4-gap-4': 'calc(25.00% - 1rem)',
-        '1/3-gap-2': 'calc(33.3333333% - 0.5rem)',
-        '1/3-gap-3': 'calc(33.3333333% - 0.75rem)',
-        '1/3-gap-4': 'calc(33.3333333% - 1rem)',
-        '3/5-gap-4': 'calc(60.00% - 1rem)',
-        '2/5-gap-4': 'calc(40.00% - 1rem)',
-        '1/3-gap-8': 'calc(33.3333333% - 2rem)',
-        '2/3-gap-8': 'calc(66.6666667% - 2rem)',
+        '1/2-gap-1': 'calc(49.99% - 0.25rem)',
+        '1/2-gap-2': 'calc(49.99% - 0.5rem)',
+        '1/2-gap-4': 'calc(49.99% - 1rem)',
+        '1/2-gap-6': 'calc(49.99% - 1.5rem)',
+        '1/4-gap-3': 'calc(24.99% - 0.75rem)',
+        '1/3-gap-3': 'calc(32.99% - 0.75rem)',
+        '1/3-gap-4': 'calc(32.99% - 1rem)',
+        '3/5-gap-4': 'calc(59.99% - 1rem)',
+        '2/5-gap-4': 'calc(39.99% - 1rem)',
+        '1/3-gap-8': 'calc(32.99% - 2rem)',
+        '2/3-gap-8': 'calc(66.99% - 2rem)',
         46: '11.25rem',
         60: '3.75rem',
       },
@@ -188,19 +187,8 @@ const globalConfig = {
         2: '0.5rem',
         3: '0.75rem',
         4: '1rem',
-        32: '8rem',
-        42: '10rem',
-        44: '11rem',
-        54: '13.5rem',
-        60: '15rem',
-        62: '15.5rem',
-        64: '16rem',
         80: '20rem',
         96: '24rem',
-        112: '28rem',
-        128: '32rem',
-        140: '36rem',
-        156: '40rem',
       },
       maxWidth: {
         1: '0.25rem',
@@ -220,29 +208,17 @@ const globalConfig = {
         64: '16rem',
         80: '20rem',
         96: '24rem',
-        112: '28rem',
-        128: '32rem',
-        140: '36rem',
-        156: '40rem',
       },
       minHeight: {
         1: '0.25rem',
         2: '0.5rem',
         3: '0.75rem',
         4: '1rem',
-        32: '8rem',
-        42: '10rem',
-        44: '11rem',
-        54: '13.5rem',
         60: '15rem',
         62: '15.5rem',
         64: '16rem',
         80: '20rem',
         96: '24rem',
-        112: '28rem',
-        128: '32rem',
-        140: '36rem',
-        156: '40rem',
       },
       maxHeight: {
         1: '0.25rem',
@@ -258,10 +234,6 @@ const globalConfig = {
         64: '16rem',
         80: '20rem',
         96: '24rem',
-        112: '28rem',
-        128: '32rem',
-        140: '36rem',
-        156: '40rem',
       },
       backgroundSize: {
         16: '1rem',
@@ -282,9 +254,6 @@ const globalConfig = {
       lg: '1023.98px',
       xl: '1279.98px',
       '2xl': '1535.98px',
-    },
-    blur: {
-      xs: '2px',
     },
   },
   variants: {
@@ -311,10 +280,11 @@ const mergedConfig = { ...globalConfig, ...projectConfig };
 mergedConfig.content.push(
   './node_modules/@yartu/ui-kit/components/**/*.{vue,js,ts,jsx,tsx}',
 );
-mergedConfig.plugins.concat([
-  require('@tailwindcss/line-clamp'),
-  require('@tailwindcss/typography'),
-  require('tailwind-scrollbar-hide'),
+
+mergedConfig.plugins = mergedConfig.plugins.concat([
+  lineClamp,
+  tailwindTypography,
+  scrollbarHide,
 ]);
 
 module.exports = mergedConfig;
