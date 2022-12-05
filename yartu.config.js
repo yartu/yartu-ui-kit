@@ -28,7 +28,11 @@ const globalConfig = {
       animation: {
         loading: 'loading 1s ease-in-out infinite alternate',
         'loading-v2': 'loading-v2 1s ease-in-out infinite',
-
+      },
+      colors: {
+        'BLACK-1': '#1f2938ff',
+        'BLACK-2': '#394c66ff',
+        'BLACK-3': '#161d27ff',
         BLACKOVERLAY: '#394c6680',
         BLUE: '#3663f2ff',
         'BLUE-2': '#546a7b',
@@ -204,7 +208,19 @@ const globalConfig = {
       },
       maxWidth: {
         1: '0.25rem',
-
+        2: '0.5rem',
+        3: '0.75rem',
+        4: '1rem',
+        1: '0.25rem',
+        2: '0.5rem',
+        3: '0.75rem',
+        4: '1rem',
+        32: '8rem',
+        42: '10rem',
+        44: '11rem',
+        54: '13.5rem',
+        60: '15rem',
+        62: '15.5rem',
         64: '16rem',
         80: '20rem',
         96: '24rem',
@@ -234,7 +250,15 @@ const globalConfig = {
       },
       maxHeight: {
         1: '0.25rem',
-
+        2: '0.5rem',
+        3: '0.75rem',
+        4: '1rem',
+        32: '8rem',
+        42: '10rem',
+        44: '11rem',
+        54: '13.5rem',
+        60: '15rem',
+        62: '15.5rem',
         64: '16rem',
         80: '20rem',
         96: '24rem',
