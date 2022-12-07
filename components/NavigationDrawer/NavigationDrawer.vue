@@ -49,6 +49,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    rail: {
+      type: Boolean,
+      default: false,
+    },
     rounded: {
       type: [String, Boolean],
       default: false,
@@ -113,8 +117,11 @@ export default {
           'fixed left-0 right-0 bottom-0 border-t border-BORDER':
             this.fixed && this.bottom,
           // '!w-0 border-r-0 overflow-auto overscroll-contain': !this.open,
-          '-translate-x-full': !this.open && !this.right,
-          'translate-x-full': !this.open && this.right,
+          '-translate-x-full': !this.open && !this.right && !this.rail,
+          'translate-x-full': !this.open && this.right && !this.rail,
+          'navigation-drawer-rail-negative':
+            !this.open && !this.right && this.rail,
+          'navigation-drawer-rail': !this.open && this.right && this.rail,
           'rounded-lg': this.rounded,
         },
       ];
@@ -123,4 +130,12 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.navigation-drawer-rail {
+  transform: translateX(calc(100% - 3.5rem));
+}
+
+.navigation-drawer-rail-negative {
+  transform: translateX(calc(calc(100% * -1) + 3.5rem));
+}
+</style>

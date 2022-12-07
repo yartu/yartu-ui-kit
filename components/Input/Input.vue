@@ -1,6 +1,11 @@
 <template>
   <div :class="inputContainerClass">
-    <label :id="id" class="text-sm font-semibold" v-if="label">
+    <label
+      :id="id"
+      class="text-sm font-semibold"
+      :class="disabled ? 'text-GREY-1' : ''"
+      v-if="label"
+    >
       {{ label }}
     </label>
     <div :class="inputContentClass">
@@ -207,7 +212,7 @@ export default {
           'border-YELLOW focus:border-YELLOW': this.warning,
           'border-BLUE focus:border-BLUE': this.info,
           'rounded-full text-sm': this.rounded,
-          'border-BLUE focus:border-BLUE': this.focused
+          'border-BLUE focus:border-BLUE': this.focused,
         },
       ];
     },
@@ -223,6 +228,7 @@ export default {
           'p-1.5': this.dense,
           'p-3': !this.dense,
           'py-2 text-sm': this.rounded,
+          'bg-GREY-3 rounded-lg !text-GREY-1': this.disabled,
         },
       ];
     },

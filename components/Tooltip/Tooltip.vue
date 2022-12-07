@@ -111,11 +111,12 @@ const tooltipContent = computed(() => {
   return [
     'y-tooltip',
     'bg-BLACK-1',
-    'rounded',
+    'rounded-lg',
     'relative',
     'text-white text-center',
     'py-2 px-3',
     'w-max h-max',
+    'shadow-6',
     'after:absolute',
     'after:w-2 after:h-2',
     'after:bg-BLACK-1',

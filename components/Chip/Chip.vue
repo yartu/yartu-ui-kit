@@ -1,5 +1,5 @@
 <template>
-  <span tabindex="0" :class="chipContainerClass">
+  <div tabindex="0" :class="chipContainerClass">
     <slot></slot>
     <button v-if="close" :class="closeBtnClass" @click="$emit('close')">
       <svg
@@ -25,7 +25,7 @@
         />
       </svg>
     </button>
-  </span>
+  </div>
 </template>
 
 <script>
@@ -36,19 +36,31 @@ export default {
       type: Boolean,
       default: false,
     },
+    dense: {
+      type: Boolean,
+      default: false,
+    },
+    rounded: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     chipContainerClass() {
       return [
         'border border-BORDER',
-        'rounded-lg',
         'relative',
         'cursor-pointer',
-        'p-1',
-        'h-8',
         'inline-flex items-center',
         'text-BLACK-2',
         'bg-LIGHTBLUE-6',
+        'w-fit',
+        {
+          'rounded-full': this.rounded,
+          'rounded-lg': !this.rounded,
+          'px-2 py-1': !this.dense,
+          'px-2 py-0.5': this.dense,
+        },
       ];
     },
     closeBtnClass() {
