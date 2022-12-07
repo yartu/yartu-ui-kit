@@ -57,6 +57,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  size: {
+    type: String,
+    default: 'md',
+  },
   modelValue: {},
   inputValue: null,
 });
@@ -86,7 +90,6 @@ const checkboxClass = computed(() => {
     'y-checkbox',
     'appearance-none',
     'bg-white',
-    'w-4 h-4',
     'cursor-pointer',
     'rounded',
     'relative',
@@ -107,6 +110,8 @@ const checkboxClass = computed(() => {
         props.primary && !props.color && !props.error,
       'y-checkbox-custom-color indeterminate:disabled:opacity-50 indeterminate:disabled:hover:opacity-50':
         props.color,
+      'w-5 h-5': props.size === 'lg',
+      'w-4 h-4': props.size === 'md',
     },
   ];
 });
