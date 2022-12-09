@@ -5,7 +5,7 @@
     :style="
       backgroundColor !== 'none'
         ? `background-color: ${backgroundColor + '33'}`
-        : 'bg-LIGHTBLUE-6'
+        : ''
     "
   >
     <div class="flex items-center gap-1">
@@ -58,6 +58,7 @@ const chipContainerClass = computed(() => [
     'px-2 py-1': !props.dense,
     'px-2 py-0.5': props.dense,
     'border border-BORDER': props.outline,
+    'bg-LIGHTBLUE-6': props.backgroundColor === 'none',
   },
 ]);
 </script>
