@@ -1,5 +1,4 @@
 /* eslint-disable */
-const defaultTheme = require('tailwindcss/defaultTheme');
 
 const lineClamp = require('@tailwindcss/line-clamp');
 const tailwindTypography = require('@tailwindcss/typography');
@@ -239,6 +238,7 @@ const globalConfig = {
         2: '0.5rem',
         3: '0.75rem',
         4: '1rem',
+        8: '2rem',
         32: '8rem',
         42: '10rem',
         44: '11rem',
@@ -258,6 +258,7 @@ const globalConfig = {
         2: '0.5rem',
         3: '0.75rem',
         4: '1rem',
+        8: '2rem',
         32: '8rem',
         42: '10rem',
         44: '11rem',
@@ -284,13 +285,30 @@ const globalConfig = {
       },
     },
     screens: {
-      xs: '475px',
-      ...defaultTheme.screens,
-      sm: '639.98px',
-      md: '767.98px',
-      lg: '1023.98px',
-      xl: '1279.98px',
-      '2xl': '1535.98px',
+      '5xs': '360px',
+      // => @media (min-width: 360px) { ... }
+      '4xs': '475px',
+      // => @media (min-width: 475px) { ... }
+      '3xs': '576px',
+      // => @media (min-width: 576px) { ... }
+      '2xs': '640px',
+      // => @media (min-width: 640px) { ... }
+      xs: '768px',
+      // => @media (min-width: 768px) { ... }
+      sm: '960px',
+      // => @media (min-width: 960px) { ... }
+      md: '1024px',
+      // => @media (min-width: 1024px) { ... }
+      lg: '1280px',
+      // => @media (min-width: 1280px) { ... }
+      xl: '1440px',
+      // => @media (min-width: 1440px) { ... }
+      '2xl': '1600px',
+      // => @media (min-width: 1600px) { ... }
+      '3xl': '1920px',
+      // => @media (min-width: 1920px) { ... }
+      '4xl': '2560px',
+      // => @media (min-width: 2560px) { ... }
     },
     blur: {
       xs: '2px',
