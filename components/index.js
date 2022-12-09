@@ -1,5 +1,4 @@
 
-import Tag from './Tag';
 import Tab from './Tab';
 import Icon from './Icon';
 import Card from './Card';
@@ -60,7 +59,6 @@ import DropdownDrawerItem from './DropdownDrawerItem';
 import NavigationDrawerItem from './NavigationDrawerItem';
 
 export {
-  Tag,
   Tab,
   Icon,
   Chip,
