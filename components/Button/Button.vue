@@ -23,7 +23,12 @@
         />
       </svg>
     </span>
-    <i v-if="icon != ''" :class="icon" aria-hidden="true"></i>
+    <i
+      v-if="icon != ''"
+      :class="icon"
+      aria-hidden="true"
+      :style="iconColor !== 'none' ? `'color: ${iconColor};'` : ''"
+    ></i>
     <slot></slot>
   </button>
 </template>
@@ -96,6 +101,10 @@ export default {
       type: String,
       default: '#3663f2',
     },
+    iconColor: {
+      type: String,
+      default: 'none',
+    },
   },
   computed: {
     buttonClass() {
@@ -116,7 +125,7 @@ export default {
           'bg-GREEN text-white hover:bg-GREEN-2 disabled:opacity-50':
             this.success,
           'text-BLUE hover:underline disabled:text-GREY-3 !p-0': this.text,
-          
+
           'h-10 py-2 px-7': this.size == 'lg',
           'h-9 py-2 px-3': this.size == 'md',
           'h-8 py-1 px-3': this.size == 'sm',
