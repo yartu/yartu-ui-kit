@@ -101,6 +101,7 @@ const globalConfig = {
         22: '88px',
       },
       width: {
+        // TODO:: @aziz change calculations form to this -> calc((100.00% - 6rem) / 4)
         '1/2-gap-1': 'calc(50.00% - 0.25rem)',
         '1/2-gap-2': 'calc(50.00% - 0.5rem)',
         '1/3-gap-2': 'calc(33.3333333% - 0.5rem)',
