@@ -32,12 +32,8 @@
         />
       </label>
     </div>
-    <div v-if="loading">
-      Loading..
-    </div>
-    <SimpleTable
-      v-else
-    >
+    <div v-if="loading">Loading..</div>
+    <SimpleTable v-else>
       <template #thead>
         <tr class="text-BLACK-2">
           <th
@@ -118,7 +114,7 @@ const props = defineProps({
   },
   loading: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   items: {
     type: Array,

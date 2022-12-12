@@ -1,6 +1,11 @@
 <template>
-  <Teleport to="body">
-    <Transition name="fade">
+  <teleport to="body">
+    <transition
+      enter-from-class="opacity-0"
+      leave-to-class="opacity-0"
+      enter-active-class="transition duration-700"
+      leave-active-class="transition duration-700"
+    >
       <div v-if="modelValue" :class="containerClass">
         <div
           class="bg-white rounded-xl relative overflow-auto"
@@ -47,8 +52,8 @@
         </div>
         <div class="fixed inset-0 -z-1 bg-BLACKOVERLAY"></div>
       </div>
-    </Transition>
-  </Teleport>
+    </transition>
+  </teleport>
 </template>
 <script>
 export default {
@@ -89,7 +94,10 @@ export default {
       ];
     },
     sizeStyle() {
-      const sizes = [`min-width: ${this.minWidth};`, `max-width: ${this.maxWidth};`];
+      const sizes = [
+        `min-width: ${this.minWidth};`,
+        `max-width: ${this.maxWidth};`,
+      ];
       if (this.maxHeight && !this.fullScreen) {
         sizes.push(`max-height: ${this.maxHeight};`);
       }
@@ -98,15 +106,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>

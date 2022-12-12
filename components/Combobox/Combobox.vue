@@ -1,10 +1,7 @@
 <template>
   <div class="relative" ref="target">
     <div>
-      <p
-        v-if="label != ''"
-        :class="labelClass"
-      >
+      <p v-if="label != ''" :class="labelClass">
         {{ label }}
       </p>
       <button
@@ -34,12 +31,7 @@
               :close="removeItemByIndex"
             >
               <p class="w-full">
-                <Tag
-                  v-if="chip"
-                  tertiary
-                  outline
-                  class="text-xs"
-                >
+                <y-chip v-if="chip">
                   <template v-if="itemText">
                     {{ item[itemText] }}
                   </template>
@@ -72,7 +64,7 @@
                       </svg>
                     </button>
                   </div>
-                </Tag>
+                </y-chip>
                 <span v-else>
                   <template v-if="itemText">
                     {{ item[itemText] }}
@@ -88,7 +80,7 @@
             ref="comboboxInput"
             type="text"
             :class="[
-              (multiple && selected && selected.length < 1) ? 'pl-2' : 'pr-2',
+              multiple && selected && selected.length < 1 ? 'pl-2' : 'pr-2',
               inputContainerClass,
             ]"
             :placeholder="placeholder"
@@ -165,14 +157,14 @@
             :search="searchText"
             :select="enterSuggestRequest"
           >
-            <Tag
+            <y-chip
               tertiary
               outline
               class="text-xs mx-1"
               @click="enterSuggestRequest(searchText)"
             >
               {{ searchText }}
-            </Tag>
+            </y-chip>
           </slot>
           <button
             @click="choose(item)"
@@ -227,7 +219,6 @@ export default {
 </script>
 
 <script setup>
-
 import {
   ref,
   computed,
@@ -240,7 +231,7 @@ import {
 
 import { onClickOutside } from '@vueuse/core';
 import { validate } from '../FormItem/validations';
-import Tag from '../Tag/Tag.vue';
+import YChip from '../Chip/Chip.vue';
 
 const emit = defineEmits(['search', 'selected', 'update:modelValue']);
 const props = defineProps({
@@ -340,7 +331,11 @@ const props = defineProps({
   },
 });
 
-const componentId = ref(Math.random().toString(36).replace(/[^a-z]+/g, ''));
+const componentId = ref(
+  Math.random()
+    .toString(36)
+    .replace(/[^a-z]+/g, ''),
+);
 const optionContainer = ref(null);
 const target = ref(null);
 const comboboxBtn = ref(null);
@@ -385,7 +380,6 @@ onClickOutside(
 
 const initModels = () => {
   if (props.returnObject) {
-
     if (props.multiple) {
       let modelData = props.modelValue || [];
       if (!Array.isArray(modelData)) {
@@ -394,28 +388,33 @@ const initModels = () => {
 
       const firstItem = modelData[0];
       if (typeof firstItem !== 'object' && props.itemKey) {
-        const res = props.items.filter((f) => props.modelValue.includes(f[props.itemKey]));
+        const res = props.items.filter((f) =>
+          props.modelValue.includes(f[props.itemKey]),
+        );
         return ref(res);
       }
       return ref(modelData);
     } else {
-
       if (typeof props.modelValue !== 'object' && props.itemKey) {
-        const res = props.items.find((f) => f[props.itemKey] === props.modelValue);
+        const res = props.items.find(
+          (f) => f[props.itemKey] === props.modelValue,
+        );
         return ref(res);
       }
       return ref(props.modelValue);
     }
-
   } else if (props.itemKey) {
-
     let modelData = props.modelValue;
     if (modelData && typeof modelData !== 'object' && props.itemKey) {
       if (props.multiple) {
-        const res = props.items.filter((f) => props.modelValue.includes(f[props.itemKey]));
+        const res = props.items.filter((f) =>
+          props.modelValue.includes(f[props.itemKey]),
+        );
         return ref(res);
       } else {
-        const res = props.items.find((f) => f[props.itemKey] === props.modelValue);
+        const res = props.items.find(
+          (f) => f[props.itemKey] === props.modelValue,
+        );
         if (!res) {
           const lorem = {};
           lorem[props.itemKey] = props.modelValue;
@@ -429,7 +428,6 @@ const initModels = () => {
     } else {
       return ref(modelData);
     }
-
   }
   return ref(props.modelValue);
 };
@@ -439,12 +437,12 @@ const emitModel = () => {
   if (emitData) {
     if (!props.returnObject && props.itemKey) {
       if (props.multiple) {
-        emitData = selected.value.map((e) => e[props.itemKey])
+        emitData = selected.value.map((e) => e[props.itemKey]);
       } else {
         emitData = selected.value[props.itemKey];
       }
     }
-  
+
     if (!props.clearAfterSelect) {
       emit('update:modelValue', emitData);
       emit('selected', emitData);
@@ -548,7 +546,7 @@ const filter = async (value) => {
         let filterItem = data;
         if (typeof filterItem === 'object') {
           if (!props.itemKey) {
-            console.error('[YARTU] itemKey required key for this items')
+            console.error('[YARTU] itemKey required key for this items');
           }
           filterItem = filterItem[props.itemKey];
         }
@@ -567,7 +565,6 @@ const filter = async (value) => {
 };
 
 const choose = (item) => {
-
   if (props.multiple) {
     let index = -1;
     if (props.itemKey) {
@@ -589,7 +586,7 @@ const choose = (item) => {
   comboboxInput.value.value = '';
 
   filter('');
-  focusInput();  
+  focusInput();
   emitModel();
 
   if (props.closeAfterSelect) {

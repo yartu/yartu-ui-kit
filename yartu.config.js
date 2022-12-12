@@ -1,5 +1,8 @@
 /* eslint-disable */
-const defaultTheme = require('tailwindcss/defaultTheme');
+
+const lineClamp = require('@tailwindcss/line-clamp');
+const tailwindTypography = require('@tailwindcss/typography');
+const scrollbarHide = require('tailwind-scrollbar-hide');
 
 const globalConfig = {
   mod: 'jit',
@@ -98,17 +101,22 @@ const globalConfig = {
         22: '88px',
       },
       width: {
+        // TODO:: @aziz change calculations form to this -> calc((100.00% - 6rem) / 4)
         '1/2-gap-1': 'calc(50.00% - 0.25rem)',
         '1/2-gap-2': 'calc(50.00% - 0.5rem)',
-        '1/2-gap-4': 'calc(50.00% - 1rem)',
-        '1/2-gap-6': 'calc(50.00% - 1.5rem)',
-        '1/4-gap-3': 'calc(25.00% - 0.75rem)',
-        '1/4-gap-4': 'calc(25.00% - 1rem)',
         '1/3-gap-2': 'calc(33.3333333% - 0.5rem)',
+        '1/4-gap-3': 'calc(25.00% - 0.75rem)',
         '1/3-gap-3': 'calc(33.3333333% - 0.75rem)',
+        '1/2-gap-4': 'calc(50.00% - 1rem)',
+        '1/4-gap-4': 'calc(25.00% - 1rem)',
+        '1/3-gap-4': 'calc(33.3333333% - 1rem)',
         '1/3-gap-4': 'calc(33.3333333% - 1rem)',
         '3/5-gap-4': 'calc(60.00% - 1rem)',
         '2/5-gap-4': 'calc(40.00% - 1rem)',
+        '1/2-gap-6': 'calc(50.00% - 1.5rem)',
+        '1/3-gap-6': 'calc(33.3333333% - 1rem)',
+        '1/4-gap-6': 'calc(25.00% - 1.125rem)',
+        '1/5-gap-6': 'calc(20.00% - 1.5rem)',
         '1/3-gap-8': 'calc(33.3333333% - 2rem)',
         '2/3-gap-8': 'calc(66.6666667% - 2rem)',
         46: '11.25rem',
@@ -126,6 +134,7 @@ const globalConfig = {
         3: '0 20px 80px 0 rgba(13, 30, 91, 0.08)',
         4: '0 1px 2px 0 #00000033',
         5: '0 3px 8px rgba(0, 0, 0, 0.12)',
+        6: '0 16px 48px rgba(0, 0, 0, 0.22)',
       },
       borderWidth: {
         3: '3px',
@@ -230,6 +239,7 @@ const globalConfig = {
         2: '0.5rem',
         3: '0.75rem',
         4: '1rem',
+        8: '2rem',
         32: '8rem',
         42: '10rem',
         44: '11rem',
@@ -249,6 +259,7 @@ const globalConfig = {
         2: '0.5rem',
         3: '0.75rem',
         4: '1rem',
+        8: '2rem',
         32: '8rem',
         42: '10rem',
         44: '11rem',
@@ -275,13 +286,30 @@ const globalConfig = {
       },
     },
     screens: {
-      xs: '475px',
-      ...defaultTheme.screens,
-      sm: '639.98px',
-      md: '767.98px',
-      lg: '1023.98px',
-      xl: '1279.98px',
-      '2xl': '1535.98px',
+      '5xs': '360px',
+      // => @media (min-width: 360px) { ... }
+      '4xs': '475px',
+      // => @media (min-width: 475px) { ... }
+      '3xs': '576px',
+      // => @media (min-width: 576px) { ... }
+      '2xs': '640px',
+      // => @media (min-width: 640px) { ... }
+      xs: '768px',
+      // => @media (min-width: 768px) { ... }
+      sm: '960px',
+      // => @media (min-width: 960px) { ... }
+      md: '1024px',
+      // => @media (min-width: 1024px) { ... }
+      lg: '1280px',
+      // => @media (min-width: 1280px) { ... }
+      xl: '1440px',
+      // => @media (min-width: 1440px) { ... }
+      '2xl': '1600px',
+      // => @media (min-width: 1600px) { ... }
+      '3xl': '1920px',
+      // => @media (min-width: 1920px) { ... }
+      '4xl': '2560px',
+      // => @media (min-width: 2560px) { ... }
     },
     blur: {
       xs: '2px',
@@ -311,10 +339,11 @@ const mergedConfig = { ...globalConfig, ...projectConfig };
 mergedConfig.content.push(
   './node_modules/@yartu/ui-kit/components/**/*.{vue,js,ts,jsx,tsx}',
 );
-mergedConfig.plugins.concat([
-  require('@tailwindcss/line-clamp'),
-  require('@tailwindcss/typography'),
-  require('tailwind-scrollbar-hide'),
+
+mergedConfig.plugins = mergedConfig.plugins.concat([
+  lineClamp,
+  tailwindTypography,
+  scrollbarHide,
 ]);
 
 module.exports = mergedConfig;

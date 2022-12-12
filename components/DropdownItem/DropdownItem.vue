@@ -2,8 +2,7 @@
   <li :class="containerClass" role="button" :disabled="disabled">
     <i
       class="w-6 h-6 text-2xl leading-6"
-      v-if="prefix != ''"
-      :class="prefix"
+      :class="prefix != '' ? prefix : ''"
       aria-hidden="true"
     >
     </i>
@@ -12,8 +11,7 @@
     </div>
     <i
       class="w-6 h-6 !leading-6"
-      v-if="postfix != ''"
-      :class="postfix"
+      :class="suffix != '' ? suffix : ''"
       aria-hidden="true"
     >
     </i>
@@ -32,7 +30,7 @@ export default {
       type: String,
       default: '',
     },
-    postfix: {
+    suffix: {
       type: String,
       default: '',
     },

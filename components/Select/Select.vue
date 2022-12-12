@@ -1,8 +1,6 @@
 <template>
   <div class="relative" ref="target">
-    <label
-      :for="componentId"
-    >
+    <label :for="componentId">
       <p v-if="label" :class="labelClass">{{ label }}</p>
       <button
         type="button"
@@ -24,9 +22,7 @@
           >
             {{ placeholder }}
           </p>
-          <template v-if="isLoading">
-            Loading..
-          </template>
+          <template v-if="isLoading"> Loading.. </template>
           <template v-if="disabled && disabledText">
             {{ disabledText }}
           </template>
@@ -34,9 +30,9 @@
             <div v-for="(item, index) in selected" :key="index">
               <slot name="selection" :item="item">
                 <p class="w-full">
-                  <Tag v-if="chip" tertiary outline>
+                  <y-chip v-if="chip">
                     {{ itemText ? item[itemText] : item }}
-                  </Tag>
+                  </y-chip>
                   <span v-else-if="selected.length > 0">
                     {{ itemText ? item[itemText] : item }}
                   </span>
@@ -48,11 +44,11 @@
           <template v-else>
             <slot name="selection" :item="selected">
               <div v-if="selected" class="text-left truncate">
-                <Tag v-if="chip" tertiary outline>
+                <y-chip v-if="chip">
                   {{ selected }}
-                </Tag>
+                </y-chip>
                 <span v-else :class="!multiple ? 'truncate' : ''">
-                  {{ itemText ? selected[itemText] : selected }} 
+                  {{ itemText ? selected[itemText] : selected }}
                 </span>
               </div>
             </slot>
@@ -144,23 +140,15 @@ export default {
   computed: {
     hasError() {
       return this.errors && this.errors.length > 0;
-    }
-  }
+    },
+  },
 };
 </script>
 <script setup>
-
-import {
-  ref,
-  computed,
-  onMounted,
-  onUnmounted,
-  watch,
-  watchEffect,
-} from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch, watchEffect } from 'vue';
 
 import { onClickOutside } from '@vueuse/core';
-import Tag from '../Tag/Tag.vue';
+import YChip from '../Chip/Chip.vue';
 
 const emit = defineEmits(['update:modelValue', 'selected']);
 const props = defineProps({
@@ -255,7 +243,11 @@ const props = defineProps({
   },
 });
 
-const componentId = ref(Math.random().toString(36).replace(/[^a-z]+/g, ''));
+const componentId = ref(
+  Math.random()
+    .toString(36)
+    .replace(/[^a-z]+/g, ''),
+);
 const open = ref(false);
 const isLoading = ref(false);
 const target = ref(null);
@@ -275,7 +267,7 @@ watchEffect(async () => {
   if (items) {
     if (typeof items === 'function') {
       isLoading.value = true;
-      const res =  await items();
+      const res = await items();
       if (props.fetchResultKey) {
         itemsList.value = res[props.fetchResultKey];
       } else {
@@ -292,13 +284,11 @@ watchEffect(async () => {
 });
 
 const initModels = () => {
-
   if (isLoading.value) {
     return [];
   }
 
   if (props.returnObject) {
-
     if (props.multiple) {
       let modelData = props.modelValue || [];
       if (!Array.isArray(modelData)) {
@@ -307,36 +297,43 @@ const initModels = () => {
 
       const firstItem = modelData[0];
       if (typeof firstItem !== 'object' && props.itemKey) {
-        const res = itemsList.value.filter((f) => props.modelValue.includes(f[props.itemKey]));
+        const res = itemsList.value.filter((f) =>
+          props.modelValue.includes(f[props.itemKey]),
+        );
         return res;
       }
       return modelData;
     } else {
-
       if (typeof props.modelValue !== 'object' && props.itemKey) {
-        const res = itemsList.value.find((f) => f[props.itemKey] === props.modelValue);
+        const res = itemsList.value.find(
+          (f) => f[props.itemKey] === props.modelValue,
+        );
         return res;
       }
       return props.modelValue;
     }
-
   } else if (props.itemKey) {
     let modelData = props.modelValue;
     if (typeof modelData !== 'object' && props.itemKey) {
-
       if (!modelData) {
         return {};
       }
 
       if (props.multiple) {
-        const res = itemsList.value.filter((f) => props.modelValue.includes(f[props.itemKey]));
+        const res = itemsList.value.filter((f) =>
+          props.modelValue.includes(f[props.itemKey]),
+        );
         return res;
       } else {
-        const res = itemsList.value.find((f) => f[props.itemKey] === props.modelValue);
+        const res = itemsList.value.find(
+          (f) => f[props.itemKey] === props.modelValue,
+        );
         return res;
       }
     } else {
-      const res = itemsList.value.find((f) => f[props.itemKey] === modelData[props.itemKey]);
+      const res = itemsList.value.find(
+        (f) => f[props.itemKey] === modelData[props.itemKey],
+      );
       return res || {};
     }
   }
@@ -365,7 +362,7 @@ const emitModel = () => {
   let emitData = selected.value;
   if (!props.returnObject && props.itemKey) {
     if (props.multiple) {
-      emitData = selected.value.map((e) => e[props.itemKey])
+      emitData = selected.value.map((e) => e[props.itemKey]);
     } else {
       emitData = selected.value[props.itemKey];
     }
@@ -379,11 +376,10 @@ const emitModel = () => {
   }
 };
 
-
 onClickOutside(target, () => (open.value = false));
 
 function openOptions() {
-  if(!isLoading.value) {
+  if (!isLoading.value) {
     open.value = !open.value;
     calculatePosition();
   }
@@ -468,16 +464,9 @@ const selectedIsEmpty = computed(() => {
   return false;
 });
 
-
 const helperClass = computed(() => {
-  return [
-    'text-xs',
-    'mt-2',
-    'flex gap-1 items-center',
-    'text-RED',
-  ];
+  return ['text-xs', 'mt-2', 'flex gap-1 items-center', 'text-RED'];
 });
-
 
 const selectClass = computed(() => {
   return [
@@ -529,5 +518,4 @@ const optionClass = computed(() => {
     'hover:bg-LIGHTBLUE-6',
   ];
 });
-
 </script>

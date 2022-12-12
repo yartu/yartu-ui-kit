@@ -1,22 +1,26 @@
 <template>
-  <i :class="iconClass" aria-hidden="true"></i>
+  <i
+    :class="name"
+    aria-hidden="true"
+    :style="iconColor !== 'none' ? `color: ${iconColor}` : ''"
+  ></i>
 </template>
 
 <script>
 export default {
   name: 'y-icon',
-  props: {
-    name: {
-      type: [String, Array],
-      default: null,
-    },
-  },
-  computed: {
-    iconClass() {
-      return this.name;
-    },
-  },
 };
 </script>
 
-<style></style>
+<script setup>
+defineProps({
+  name: {
+    type: [String, Array],
+    default: null,
+  },
+  iconColor: {
+    type: String,
+    default: 'none',
+  },
+});
+</script>
