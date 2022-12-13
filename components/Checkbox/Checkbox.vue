@@ -49,6 +49,10 @@ const props = defineProps({
     type: String,
     default: null,
   },
+  outlineColor: {
+    type: String,
+    default: null,
+  },
   disabled: {
     type: Boolean,
     default: false,
@@ -66,6 +70,8 @@ const props = defineProps({
 });
 
 const color = ref(props.color);
+const outlineColor = ref(props.outlineColor);
+const colorHover = ref(`${props.outlineColor}` + 33);
 
 const model = computed({
   cache: false,
@@ -129,5 +135,17 @@ const checkboxClass = computed(() => {
 
 .y-checkbox-custom-color:checked {
   background-color: v-bind(color);
+}
+
+.y-checkbox-custom-color:hover {
+  background-color: v-bind(colorHover);
+}
+
+.y-checkbox-custom-color:checked:hover {
+  background-color: v-bind(color);
+}
+
+.y-checkbox-custom-color {
+  border-color: v-bind(outlineColor);
 }
 </style>
