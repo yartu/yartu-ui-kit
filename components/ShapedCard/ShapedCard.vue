@@ -15,7 +15,7 @@
       <slot name="shape"></slot>
     </div>
     <div :class="textClass">
-      <slot name="text"></slot>
+      <slot></slot>
     </div>
   </div>
 </template>
@@ -26,11 +26,11 @@ export default {
   props: {
     prefixBtn: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     postfixBtn: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     shape: {
       type: Boolean,
@@ -40,8 +40,7 @@ export default {
   computed: {
     containerClass() {
       return [
-        'max-h-56',
-        'min-w-[222px] max-w-[268px]',
+        'h-56',
         'relative',
         'rounded-md border border-BORDER',
         'flex',
@@ -62,7 +61,7 @@ export default {
         'px-2',
         'bottom-[70px]',
         'right-0',
-        'z-10',
+        'z-1',
         'shape-path',
       ];
     },
