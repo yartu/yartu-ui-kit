@@ -1,6 +1,5 @@
 import { useEventBus } from '@vueuse/core';
 import { inject, ref } from 'vue';
-import YartuNotify from './YartuNotify.vue';
 
 const bus = useEventBus('yartuNotify');
 
