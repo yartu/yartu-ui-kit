@@ -13,21 +13,21 @@
         :middle="position.middle"
       >
         <component
-          :is="item.component"
-          :key="item.id"
           v-for="item in queue[position.value]"
+          :key="item.id"
+          :is="item.component"
           v-bind="item"
-          v-html="item.title"
           @close="removeItem(position.value, item.id)"
         >
+          <h1 v-html="item.title"></h1>
         </component>
       </YartuTransitions>
       <div>
         <Modal
-          :closable="dialog.closable"
-          v-on="dialog.emits"
           v-for="(dialog, index) in dialogs"
+          :closable="dialog.closable"
           :key="index"
+          v-on="dialog.emits"
           v-model="dialog.open"
           max-width="32rem"
           min-width="32rem"
