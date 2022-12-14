@@ -43,7 +43,7 @@
           </template>
           <template v-else>
             <slot name="selection" :item="selected">
-              <div v-if="selected" class="text-left truncate">
+              <div v-if="!selectedIsEmpty" class="text-left truncate">
                 <y-chip v-if="chip">
                   {{ selected }}
                 </y-chip>
@@ -454,7 +454,7 @@ const isSelected = (item) => {
 };
 
 const selectedIsEmpty = computed(() => {
-  if (!selected.value) {
+  if (!selected.value === undefined || !selected.value === null) {
     return true;
   }
 
