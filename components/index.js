@@ -1,4 +1,3 @@
-
 import Tab from './Tab';
 import Icon from './Icon';
 import Card from './Card';
@@ -11,6 +10,7 @@ import Toast from './Toast';
 import Badge from './Badge';
 import Radio from './Radio';
 import Modal from './Modal';
+import Video from './Video';
 import Input from './Input';
 import Switch from './Switch';
 import Button from './Button';
@@ -27,6 +27,7 @@ import Snackbar from './Snackbar';
 import TextArea from './TextArea';
 import Combobox from './Combobox';
 import ListItem from './ListItem';
+import Timeline from './Timeline';
 import Calendar from './Calendar';
 import Skeleton from './Skeleton';
 import SmallCard from './SmallCard';
@@ -71,6 +72,7 @@ export {
   Toast,
   Radio,
   Modal,
+  Video,
   Input,
   Button,
   Switch,
@@ -81,6 +83,7 @@ export {
   Loading,
   ListBox,
   Dropdown,
+  Timeline,
   Calendar,
   ListItem,
   Checkbox,

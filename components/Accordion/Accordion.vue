@@ -13,7 +13,7 @@
         <i v-if="icon != ''" :class="icon" aria-hidden="true"></i>
       </button>
     </div>
-    <div :class="[contentClass, open ? 'max-h-screen' : 'max-h-0']">
+    <div :class="[contentClass]">
       <slot></slot>
     </div>
   </div>
@@ -51,10 +51,21 @@ export default {
   },
   computed: {
     containerClass() {
-      return ['overflow-hidden', 'w-full'];
+      return [
+        'w-full',
+        {
+          'overflow-hidden': !this.open,
+        },
+      ];
     },
     contentClass() {
-      return ['overflow-hidden', 'transition-all duration-300'];
+      return [
+        'transition-all duration-300',
+        {
+          'max-h-screen': this.open,
+          'max-h-0 overflow-hidden': !this.open,
+        },
+      ];
     },
     btnClass() {
       return [
