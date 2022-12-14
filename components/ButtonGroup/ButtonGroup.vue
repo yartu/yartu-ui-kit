@@ -14,11 +14,15 @@
         <input
           type="radio"
           :value="option[dataKey]"
+          v-model="model"
           @input="emitModelValue($event.target.value)"
           class="appearance-none checked:bg-white checked:shadow-5 rounded-full absolute inset-0 transition-all duration-300"
         />
         <slot name="option" :option="option" :index="index">
-          <span v-if="optionLabel" class="subtitle-4 text-BLACK-2 truncate relative z-1">
+          <span
+            v-if="optionLabel"
+            class="subtitle-4 text-BLACK-2 truncate relative z-1"
+          >
             {{ option[optionLabel] }}
           </span>
         </slot>
@@ -35,9 +39,10 @@ export default {
 </script>
 
 <script setup>
+import { computed } from 'vue';
 const emit = defineEmits(['update:modelValue', 'clicked']);
 
-defineProps({
+const props = defineProps({
   modelValue: null,
   optionLabel: {
     required: true,
@@ -55,4 +60,14 @@ const emitModelValue = (option) => {
   emit('update:modelValue', option);
   emit('clicked', option);
 };
+
+const model = computed({
+  cache: false,
+  get() {
+    return props.modelValue;
+  },
+  set(val) {
+    emitModelValue(val);
+  },
+});
 </script>
