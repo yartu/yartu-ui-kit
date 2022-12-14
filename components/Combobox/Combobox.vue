@@ -237,7 +237,7 @@ const emit = defineEmits(['search', 'selected', 'update:modelValue']);
 const props = defineProps({
   modelValue: {
     type: [Array, Object, String, Number],
-    required: true,
+    required: false,
   },
   itemKey: {
     type: String,
@@ -379,6 +379,11 @@ onClickOutside(
 );
 
 const initModels = () => {
+
+  if (!props.modelValue) {
+    return ref('');
+  }
+
   if (props.returnObject) {
     if (props.multiple) {
       let modelData = props.modelValue || [];
@@ -399,7 +404,9 @@ const initModels = () => {
         const res = props.items.find(
           (f) => f[props.itemKey] === props.modelValue,
         );
-        return ref(res);
+        if (res) {
+          return ref(res);
+        }
       }
       return ref(props.modelValue);
     }
@@ -442,12 +449,12 @@ const emitModel = () => {
         emitData = selected.value[props.itemKey];
       }
     }
-
     if (!props.clearAfterSelect) {
       emit('update:modelValue', emitData);
       emit('selected', emitData);
     } else {
       emit('selected', emitData);
+      selected.value = [];
     }
   }
 };
