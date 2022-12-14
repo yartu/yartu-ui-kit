@@ -22,6 +22,9 @@ const VALIDATIONS = {
   PASSWORD_CONFIRM: [
     (v) => !!v || 'Required',
   ],
+  VALID_NUMBER: [
+    (v) => Number.isInteger(v) || 'Not valid number',
+  ],
   IPv4: [
     (v) => !!v || 'Required',
     (v) =>
