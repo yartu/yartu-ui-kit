@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      v-if="search"
+      v-if="dataSearch"
       class="h-20 border-b border-BORDER flex flex-wrap justify-between items-center"
     >
       <h1 class="heading-4 text-BLACK-2">
@@ -133,7 +133,7 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
-  search: {
+  dataSearch: {
     type: Boolean,
     default: false,
   },
