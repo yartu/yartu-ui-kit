@@ -2,7 +2,11 @@
   <nav :class="containerClass">
     <ol :class="itemClass">
       <li v-for="(crumb, index) in crumbs" :key="index">
-        <button type="button" class="font-extrabold" @click="selected(crumb, index)">
+        <button
+          type="button"
+          class="font-extrabold"
+          @click="selected(crumb, index)"
+        >
           {{ crumb }}
         </button>
         <span
@@ -20,32 +24,51 @@
 <script>
 export default {
   name: 'y-breadcrumb',
-  props: {
-    crumbs: {
-      type: Array,
-      required: true,
-    },
-  },
-  methods: {
-    isLast(index) {
-      return index === this.crumbs.length - 1;
-    },
-    isSecondLast(index) {
-      return index === this.crumbs.length - 2;
-    },
-    selected(crumb, index) {
-      this.$emit('selected', { crumb, index });
-    },
-  },
-  computed: {
-    containerClass() {
-      return ['w-full min-h-[28px]', 'font-extrabold', 'text-xl'];
-    },
-    itemClass() {
-      return ['flex', 'gap-1', 'text-GREY-1', 'bread-crumb-items'];
-    },
-  },
 };
+</script>
+
+<script setup>
+import { computed } from 'vue';
+
+const emit = defineEmits(['selected']);
+const props = defineProps({
+  crumbs: {
+    type: Array,
+    required: true,
+  },
+  size: {
+    type: String,
+    default: 'md',
+  },
+});
+
+const isLast = (index) => {
+  return index === props.crumbs.length - 1;
+};
+const isSecondLast = (index) => {
+  return index === props.crumbs.length - 2;
+};
+const selected = (crumb, index) => {
+  emit('selected', { crumb, index });
+};
+
+const containerClass = computed(() => [
+  'w-full min-h-[28px]',
+  'font-extrabold',
+  {
+    'text-xl': props.size === 'xl',
+    'text-lg': props.size === 'lg',
+    'text-base': props.size === 'md',
+    'text-sm': props.size === 'sm',
+  },
+]);
+
+const itemClass = computed(() => [
+  'flex',
+  'gap-1',
+  'text-GREY-1',
+  'bread-crumb-items',
+]);
 </script>
 
 <style>
