@@ -103,7 +103,7 @@ const globalConfig = {
       width: {
         // TODO:: @aziz change calculations form to this -> calc((100.00% - 6rem) / 4)
         '1/2-gap-1': 'calc(50.00% - 0.25rem)',
-        '1/2-gap-2': 'calc(50.00% - 0.5rem)',
+        '1/2-gap-2': 'calc((100% - 0.5rem) / 2)',
         '1/3-gap-2': 'calc(33.3333333% - 0.5rem)',
         '2/3-gap-2': 'calc(66.6666667% - 0.5rem)',
         '1/4-gap-2': 'calc((100.00% - 0.5rem) / 4)',
@@ -111,7 +111,7 @@ const globalConfig = {
         '1/4-gap-3': 'calc(25.00% - 0.75rem)',
         '1/3-gap-3': 'calc(33.3333333% - 0.75rem)',
         '1/5-gap-3': 'calc(20.00% - 1.125rem)',
-        '1/2-gap-4': 'calc(50.00% - 1rem)',
+        '1/2-gap-4': 'calc((100.00% - 1rem) / 2)',
         '1/3-gap-4': 'calc((100% - 2rem) / 3)',
         '1/4-gap-4': 'calc((100.00% - 3rem) / 4)',
         '1/5-gap-4': 'calc((100.00% - 4rem) / 5)',
