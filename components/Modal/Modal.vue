@@ -3,8 +3,8 @@
     <transition
       enter-from-class="opacity-0"
       leave-to-class="opacity-0"
-      enter-active-class="transition duration-700"
-      leave-active-class="transition duration-700"
+      enter-active-class="transition-all duration-500"
+      leave-active-class="transition-all duration-500"
     >
       <div v-if="modelValue" :class="containerClass">
         <div
