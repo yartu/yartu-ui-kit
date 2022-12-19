@@ -117,6 +117,7 @@ const globalConfig = {
         '1/5-gap-4': 'calc((100.00% - 4rem) / 5)',
         '3/5-gap-4': 'calc(60.00% - 1rem)',
         '2/5-gap-4': 'calc(40.00% - 1rem)',
+        '1/2-gap-5': 'calc((100% - 1.25rem)  / 2)',
         '1/2-gap-6': 'calc(50.00% - 1.5rem)',
         '1/3-gap-6': 'calc(33.3333333% - 1rem)',
         '1/4-gap-6': 'calc((100.00% - 4.5rem) / 4)',
