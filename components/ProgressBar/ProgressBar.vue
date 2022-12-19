@@ -29,121 +29,123 @@
 <script>
 export default {
   name: 'y-progress-bar',
-  props: {
-    indeterminate: {
-      type: String,
-      default: '',
-    },
-    progress: {
-      type: Number,
-      default: 55,
-    },
-    split: {
-      type: Boolean,
-      default: false,
-    },
-    height: {
-      type: Number,
-      default: 4,
-    },
-    default: {
-      type: Boolean,
-      default: false,
-    },
-    success: {
-      type: Boolean,
-      default: false,
-    },
-    error: {
-      type: Boolean,
-      default: false,
-    },
-    cancel: {
-      type: Boolean,
-      default: false,
-    },
-    color: {
-      type: String,
-      default: '',
-    },
-  },
-  computed: {
-    containerClass() {
-      return [
-        'overflow-hidden',
-        'text-center',
-        'relative',
-        'text-xs',
-        'w-full',
-        'rounded-full',
-        {
-          'flex gap-2': this.split,
-          'bg-GREY-9': !this.split,
-        },
-      ];
-    },
-    progressClass() {
-      return [
-        'y-progress',
-        'transition-all duration-700',
-        'text-center',
-        'flex items-center justify-end',
-        'whitespace-nowrap',
-        'text-white',
-        {
-          'bg-BLUE': this.default,
-          'bg-GREEN': this.success,
-          'bg-RED': this.error,
-          'bg-GREY-1': this.cancel,
-        },
-      ];
-    },
-    animationType() {
-      return [
-        {
-          'animate-loading !w-1/2':
-            this.indeterminate.toLowerCase() === 'rider',
-          'animate-loading-v2 !w-1/2':
-            this.indeterminate.toLowerCase() === 'move',
-          'bg-gradient-to-r from-GREY-9 via-BLUE to-GREY-9':
-            this.indeterminate.toLowerCase() != '' && this.default,
-          'bg-gradient-to-r from-GREY-9 via-GREEN to-GREY-9':
-            this.indeterminate.toLowerCase() != '' && this.success,
-          'bg-gradient-to-r from-GREY-9 via-RED to-GREY-9':
-            this.indeterminate.toLowerCase() != '' && this.error,
-          'bg-gradient-to-r from-GREY-9 via-GREY-1 to-GREY-9':
-            this.indeterminate.toLowerCase() != '' && this.cancel,
-        },
-      ];
-    },
-    setWidth() {
-      let progress = this.progress;
-      if (progress > 100) {
-        progress = 100;
-      }
-      return 'width:' + progress + '%;';
-    },
-    setHeight() {
-      return 'height:' + this.height + 'px;';
-    },
-    setColorClass() {
-      let progress = this.progress;
-      if (progress <= 25) return 'bg-RED';
-      else if (progress <= 50) return 'bg-ORANGE';
-      else if (progress <= 75) return 'bg-YELLOW';
-      return 'bg-GREEN';
-    },
-  },
-  methods: {
-    setSplitWidth(e) {
-      let progress = this.progress;
-      let width = progress - (e - 1) * 25;
-      if (width >= 100) width = 100;
-      if (progress - (e - 1) * 25 < 0) return 'width: 0%;';
-      else return 'width: ' + width + '%;';
-    },
-  },
 };
+</script>
+
+<script setup>
+import { computed } from 'vue';
+
+const props = defineProps({
+  indeterminate: {
+    type: String,
+    default: '',
+  },
+  progress: {
+    type: Number,
+    default: 55,
+  },
+  split: {
+    type: Boolean,
+    default: false,
+  },
+  height: {
+    type: Number,
+    default: 4,
+  },
+  default: {
+    type: Boolean,
+    default: false,
+  },
+  success: {
+    type: Boolean,
+    default: false,
+  },
+  error: {
+    type: Boolean,
+    default: false,
+  },
+  cancel: {
+    type: Boolean,
+    default: false,
+  },
+  color: {
+    type: String,
+    default: '',
+  },
+  transparent: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const setSplitWidth = (e) => {
+  let progress = props.progress;
+  let width = progress - (e - 1) * 25;
+  if (width >= 100) width = 100;
+  if (progress - (e - 1) * 25 < 0) return 'width: 0%;';
+  return `width: ${width}%;`;
+};
+
+const containerClass = computed(() => [
+  'overflow-hidden',
+  'text-center',
+  'relative',
+  'text-xs',
+  'w-full',
+  'rounded-full',
+  {
+    'flex gap-2': props.split,
+    'bg-GREY-9': !props.split && !props.transparent,
+  },
+]);
+
+const progressClass = computed(() => [
+  'y-progress',
+  'transition-all duration-700',
+  'text-center',
+  'flex items-center justify-end',
+  'whitespace-nowrap',
+  'text-white',
+  {
+    'bg-BLUE': props.default,
+    'bg-GREEN': props.success,
+    'bg-RED': props.error,
+    'bg-GREY-1': props.cancel,
+  },
+]);
+
+const animationType = computed(() => [
+  {
+    'animate-loading !w-1/2': props.indeterminate.toLowerCase() === 'rider',
+    'animate-loading-v2 !w-1/2': props.indeterminate.toLowerCase() === 'move',
+    'bg-gradient-to-r from-GREY-9 via-BLUE to-GREY-9':
+      props.indeterminate.toLowerCase() != '' && props.default,
+    'bg-gradient-to-r from-GREY-9 via-GREEN to-GREY-9':
+      props.indeterminate.toLowerCase() != '' && props.success,
+    'bg-gradient-to-r from-GREY-9 via-RED to-GREY-9':
+      props.indeterminate.toLowerCase() != '' && props.error,
+    'bg-gradient-to-r from-GREY-9 via-GREY-1 to-GREY-9':
+      props.indeterminate.toLowerCase() != '' && props.cancel,
+  },
+]);
+
+const setWidth = computed(() => {
+  let progress = props.progress;
+  if (progress > 100) {
+    progress = 100;
+  }
+  return `width:${progress}%;`;
+});
+
+const setHeight = computed(() => `height:${props.height}px;`);
+
+const setColorClass = computed(() => {
+  let progress = props.progress;
+  if (progress <= 25) return 'bg-RED';
+  else if (progress <= 50) return 'bg-ORANGE';
+  else if (progress <= 75) return 'bg-YELLOW';
+  return 'bg-GREEN';
+});
 </script>
 
 <style>
