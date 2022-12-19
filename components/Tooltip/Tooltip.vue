@@ -1,10 +1,11 @@
 <template>
   <div
     ref="target"
-    class="tooltip-container relative inline-block"
+    class="tooltip-container relative inline-flex"
     @mouseover.native="tooltipOpen"
     @mouseleave.native="tooltipClose"
   >
+    <slot name="activator" :open="toggleTooltip"></slot>
     <slot></slot>
     <teleport to="body">
       <transition name="fade">
@@ -25,7 +26,6 @@ export default {
 </script>
 
 <script setup>
-// TODO:: add programmatically open
 import { ref, computed, onUnmounted, onMounted } from 'vue';
 
 const props = defineProps({
@@ -63,8 +63,13 @@ const tooltipOpen = () => {
   tooltipStatus.value = true;
   calculatePosition();
 };
+
 const tooltipClose = () => {
   tooltipStatus.value = false;
+};
+
+const toggleTooltip = () => {
+  return tooltipStatus.value ? tooltipClose() : tooltipOpen();
 };
 
 const calculatePosition = () => {
