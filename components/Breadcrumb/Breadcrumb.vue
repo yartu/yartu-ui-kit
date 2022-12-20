@@ -13,7 +13,7 @@
           v-if="!isLast(index)"
           :class="isSecondLast(index) ? 'text-BLACK-2' : ''"
         >
-          /
+          &#47;
         </span>
       </li>
       <li></li>
@@ -30,7 +30,7 @@ export default {
 <script setup>
 import { computed } from 'vue';
 
-const emit = defineEmits(['selected']);
+const emit = defineEmits(['selected-path']);
 const props = defineProps({
   crumbs: {
     type: Array,
@@ -49,17 +49,18 @@ const isSecondLast = (index) => {
   return index === props.crumbs.length - 2;
 };
 const selected = (crumb, index) => {
-  emit('selected', { crumb, index });
+  emit('selected-path', { crumb, index });
 };
 
 const containerClass = computed(() => [
-  'w-full min-h-[28px]',
+  'w-full',
   'font-extrabold',
   {
     'text-xl': props.size === 'xl',
     'text-lg': props.size === 'lg',
     'text-base': props.size === 'md',
     'text-sm': props.size === 'sm',
+    'text-xs': props.size === 'xs',
   },
 ]);
 
