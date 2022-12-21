@@ -27,7 +27,7 @@ export default {
       default: false,
     },
     prefix: {
-      type: String,
+      type: String || Array,
       default: '',
     },
     suffix: {
