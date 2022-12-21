@@ -230,7 +230,6 @@ const asc = (orderKey) => {
 };
 
 const dsc = () => {
-  console.log('dsc', tableItems.value);
   tableItems.value.reverse();
   sort.value = 'dsc';
 };
