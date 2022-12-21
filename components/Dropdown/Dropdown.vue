@@ -26,14 +26,21 @@ export default {
 </script>
 
 <script setup>
-import { computed, ref, onUnmounted, onMounted } from 'vue';
+import { computed, ref, onUnmounted, onMounted, shallowRef } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 
 const open = ref(false);
 const target = ref(null);
 const dropdownContent = ref(null);
 
-onClickOutside(target, () => (open.value = false));
+const setIgnore = () => {
+  if (props.ignoreClickOutside) {
+    return dropdownContent;
+  }
+  return shallowRef();
+};
+
+onClickOutside(target, () => (open.value = false), { ignore: setIgnore });
 
 const props = defineProps({
   show: {
@@ -56,17 +63,21 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  ignoreClickOutside: {
+    type: Boolean,
+    default: false,
+  },
   classes: {
     type: [Array, String],
   },
 });
 
-function openDropdown() {
+const openDropdown = () => {
   open.value = !open.value;
   calculatePosition();
-}
+};
 
-function openContextMenu(pos = undefined) {
+const openContextMenu = (pos = undefined) => {
   open.value = false;
   if (pos !== undefined) {
     calculatePosition(pos);
@@ -74,7 +85,7 @@ function openContextMenu(pos = undefined) {
     calculatePosition();
   }
   open.value = true;
-}
+};
 
 defineExpose({
   openContextMenu,
