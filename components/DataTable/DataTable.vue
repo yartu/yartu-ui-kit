@@ -51,7 +51,32 @@
             :key="header.value"
             class="p-2.5 text-GREY-1 text-xs whitespace-nowrap font-semibold"
           >
-            {{ header.text }}
+            <div class="flex items-center gap-2">
+              {{ header.text }}
+              <button
+                v-if="header.text !== ''"
+                type="button"
+                @click="sort === 'asc' ? dsc(header.value) : asc(header.value)"
+                class="w-4 h-4 rounded hover:bg-BORDER"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5 7L8 3L11 7L5 7Z"
+                    :fill="sort === 'asc' ? '#394C66' : '#9AA1B4'"
+                  />
+                  <path
+                    d="M5 9L8 13L11 9L5 9Z"
+                    :fill="sort === 'dsc' ? '#394C66' : '#9AA1B4'"
+                  />
+                </svg>
+              </button>
+            </div>
           </th>
         </tr>
       </template>
@@ -79,15 +104,18 @@
           <td
             v-for="header in headers"
             :key="header.value"
-            class="p-2.5 text-xs whitespace-nowrap font-semibold max-w-[10rem] truncate"
-            :class="{ 'text-right': header === 'actions' }"
+            class="p-2.5 text-xs whitespace-nowrap font-semibold truncate last:text-right"
           >
             <slot
               :name="`y-table-${header.value}`"
               :item="item"
               :isActive="isActive"
             >
-              {{ item[header.value] || '-' }}
+              {{
+                item[header.value] || item[header.value] === 0
+                  ? item[header.value]
+                  : '' || '-'
+              }}
             </slot>
           </td>
         </tr>
@@ -152,6 +180,7 @@ const emit = defineEmits(['selected', 'choose']);
 const selectedList = ref([]);
 const allChecked = ref(false);
 const filteredItems = ref([]);
+const sort = ref('asc');
 
 const indeterminate = computed(() => {
   const selectedLength = selectedList.value.length;
@@ -189,5 +218,19 @@ const search = (query) => {
   if (props.filter) {
     props.filter(query);
   }
+};
+
+const asc = (orderKey) => {
+  tableItems.value.sort(
+    (a, b) =>
+      a[orderKey].toString().localeCompare(b[orderKey], { numeric: true }) ||
+      b[orderKey] - a[orderKey],
+  );
+  sort.value = 'asc';
+};
+
+const dsc = () => {
+  tableItems.value.reverse();
+  sort.value = 'dsc';
 };
 </script>
