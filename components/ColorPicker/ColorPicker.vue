@@ -103,6 +103,7 @@ const containerClass = computed(() => {
   return [
     "flex flex-wrap",
     {
+      "gap-2": props.size === "xs",
       "gap-x-2.5 gap-y-2": props.size === "sm",
       "gap-x-3 gap-y-2": props.size === "md",
       "gap-x-4 gap-y-2": props.size === "lg",
@@ -115,6 +116,7 @@ const swatchClass = computed(() => {
     "relative",
     "rounded-full",
     {
+      "w-4 h-4": props.size === "xs",
       "w-6 h-6": props.size === "sm",
       "w-7 h-7": props.size === "md",
       "w-8 h-8": props.size === "lg",
