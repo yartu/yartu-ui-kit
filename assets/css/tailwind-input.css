@@ -19,6 +19,10 @@
   ::-webkit-scrollbar-thumb {
     border: .25em solid #9aa1b4;
   }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    border: .25em solid #727886;
+  }
 
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {
