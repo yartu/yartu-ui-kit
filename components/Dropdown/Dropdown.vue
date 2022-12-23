@@ -37,10 +37,9 @@ const setIgnore = () => {
   if (props.ignoreClickOutside) {
     return dropdownContent;
   }
-  return shallowRef();
 };
 
-onClickOutside(target, () => (open.value = false), { ignore: setIgnore });
+onClickOutside(target, () => (open.value = false), { ignore: [setIgnore()] });
 
 const props = defineProps({
   show: {

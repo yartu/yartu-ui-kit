@@ -23,7 +23,7 @@
   "dependencies": {
     "@tailwindcss/line-clamp": "^0.4.2",
     "@tailwindcss/typography": "^0.5.8",
-    "@vueuse/core": "^9.6.0",
+    "@vueuse/core": "^9.8.1",
     "core-js": "^3.26.1",
     "dayjs": "^1.11.6",
     "postcss": "^8.4.19",
