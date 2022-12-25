@@ -31,7 +31,7 @@ export default {
       default: '',
     },
     suffix: {
-      type: String,
+      type: [String, Array],
       default: '',
     },
     disabled: {

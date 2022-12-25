@@ -24,7 +24,7 @@ export default {
     },
     color: {
       type: String,
-      default: 'red',
+      default: 'blue',
     },
   },
   computed: {
@@ -34,6 +34,7 @@ export default {
         'flex',
         'items-center',
         {
+          'y-avatar-group-xs': this.size == 'xs',
           'y-avatar-group-sm': this.size == 'sm',
         },
       ];
@@ -83,6 +84,10 @@ export default {
 
 .y-avatar-group-sm > .y-avatar + .y-avatar {
   margin-left: -0.5rem;
+}
+
+.y-avatar-group-xs > .y-avatar + .y-avatar {
+  margin-left: -0.25rem;
 }
 
 .y-avatar-group > .y-avatar {
