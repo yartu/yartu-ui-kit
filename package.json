@@ -24,7 +24,7 @@
     "@tailwindcss/line-clamp": "^0.4.2",
     "@tailwindcss/typography": "^0.5.8",
     "@vueuse/core": "^9.9.0",
-    "core-js": "^3.26.1",
+    "core-js": "^3.27.0",
     "dayjs": "^1.11.7",
     "postcss": "^8.4.20",
     "tailwind-scrollbar-hide": "^1.1.7",
