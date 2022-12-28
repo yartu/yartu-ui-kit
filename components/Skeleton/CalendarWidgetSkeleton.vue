@@ -1,7 +1,7 @@
 <template>
   <div role="status" class="w-full h-full rounded animate-pulse">
     <div
-      class="flex gap-5 py-2.5 px-3 justify-between items-center"
+      class="flex gap-5 py-2.5 justify-between items-center"
       v-for="i in skeletonCount"
       :key="i"
     >

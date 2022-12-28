@@ -1,6 +1,6 @@
 <template>
-  <div role="status" class="w-full h-full rounded animate-pulse">
-    <div class="flex gap-3 py-2.5 px-3 items-center flex-col">
+  <div role="status" class="w-full h-full rounded animate-pulse p-5">
+    <div class="flex gap-3 items-center flex-col">
       <div class="w-full flex gap-3 items-center">
         <div class="w-44 h-32 bg-BORDER rounded-lg"></div>
         <div class="w-44 h-32 bg-BORDER rounded-lg"></div>
