@@ -1,45 +1,50 @@
 <template>
   <div class="relative">
-    <div :class="inputContainerClass">
+    <div ref="target" :class="inputContainerClass">
       <label :id="label" class="text-sm font-semibold" v-if="label">
         {{ label }}
       </label>
-      <label
-        ref="target"
+      <slot
         v-if="!inline"
-        class="flex flex-1 items-center px-4 py-2 border border-BORDER rounded-lg"
-        :class="{ '!border-BLUE': showPicker }"
-        :id="label"
+        name="activator"
+        :open="open"
+        :value="showDateWithFormat"
       >
-        <input
-          type="text"
-          class="outline-none subtitle-5 text-BLACK-2 flex-1"
-          aria-autocomplete="none"
-          aria-haspopup="dialog"
-          aria-expanded="true"
-          inputmode="none"
-          tabindex="0"
-          :value="showDateWithFormat"
-          :placeholder="placeholder"
-          @click="open"
-        />
-        <button type="button" @click="open">
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M7 2C7.55228 2 8 2.44772 8 3V4H16V3C16 2.44772 16.4477 2 17 2C17.5523 2 18 2.44772 18 3V4C20.2091 4 22 5.79086 22 8V17C22 19.2091 20.2091 21 18 21H6C3.79086 21 2 19.2091 2 17V8C2 5.79086 3.79086 4 6 4V3C6 2.44772 6.44772 2 7 2ZM18 6C19.1046 6 20 6.89543 20 8H4C4 6.89543 4.89543 6 6 6H18ZM4 10V17C4 18.1046 4.89543 19 6 19H18C19.1046 19 20 18.1046 20 17V10H4Z"
-              fill="#9AA1B4"
-            />
-          </svg>
-        </button>
-      </label>
+        <label
+          class="flex flex-1 items-center px-4 py-2 border border-BORDER rounded-lg"
+          :class="{ '!border-BLUE': showPicker }"
+          :id="label"
+        >
+          <input
+            type="text"
+            class="outline-none subtitle-5 text-BLACK-2 flex-1"
+            aria-autocomplete="none"
+            aria-haspopup="dialog"
+            aria-expanded="true"
+            inputmode="none"
+            tabindex="0"
+            :value="showDateWithFormat"
+            :placeholder="placeholder"
+            @click="open"
+          />
+          <button type="button" @click="open">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M7 2C7.55228 2 8 2.44772 8 3V4H16V3C16 2.44772 16.4477 2 17 2C17.5523 2 18 2.44772 18 3V4C20.2091 4 22 5.79086 22 8V17C22 19.2091 20.2091 21 18 21H6C3.79086 21 2 19.2091 2 17V8C2 5.79086 3.79086 4 6 4V3C6 2.44772 6.44772 2 7 2ZM18 6C19.1046 6 20 6.89543 20 8H4C4 6.89543 4.89543 6 6 6H18ZM4 10V17C4 18.1046 4.89543 19 6 19H18C19.1046 19 20 18.1046 20 17V10H4Z"
+                fill="#9AA1B4"
+              />
+            </svg>
+          </button>
+        </label>
+      </slot>
     </div>
     <transition name="fade">
       <teleport v-if="!inline" to="body">
@@ -68,7 +73,10 @@
               dense
             ></y-time-picker>
           </div>
-          <div v-if="!inline && buttons" class="w-full flex flex-wrap gap-3 justify-end">
+          <div
+            v-if="!inline && buttons"
+            class="w-full flex flex-wrap gap-3 justify-end"
+          >
             <button
               @click="clear"
               class="border border-BORDER rounded-lg px-2 py-1 hover:bg-GREY-3 h-fit"
@@ -134,7 +142,12 @@ import { onClickOutside } from '@vueuse/core';
 
 import dayjs from 'dayjs';
 
-const emit = defineEmits(['update', 'update:modelValue', 'monthChange', 'close']);
+const emit = defineEmits([
+  'update',
+  'update:modelValue',
+  'monthChange',
+  'close',
+]);
 const props = defineProps({
   modelValue: {
     type: [Object, String, Date],
@@ -149,6 +162,10 @@ const props = defineProps({
     default: '',
   },
   dense: {
+    type: Boolean,
+    default: false,
+  },
+  top: {
     type: Boolean,
     default: false,
   },
@@ -228,7 +245,9 @@ const clear = () => {
 
 const emitSelected = () => {
   if (props.time && selectedTime.value) {
-    selectedDate.value = selectedDate.value.set('hour', selectedTime.value.hour()).set('minute', selectedTime.value.minute());
+    selectedDate.value = selectedDate.value
+      .set('hour', selectedTime.value.hour())
+      .set('minute', selectedTime.value.minute());
   }
   emit('update', selectedDate.value);
   emit('update:modelValue', selectedDate.value);
@@ -275,6 +294,7 @@ const pickerClass = computed(() => {
       'absolute z-50': !props.inline,
       'p-4': !props.dense,
       'p-2': props.dense,
+      '-translate-y-full': props.top,
     },
   ];
 });

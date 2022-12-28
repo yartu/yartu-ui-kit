@@ -16,6 +16,7 @@ import Switch from './Switch';
 import Button from './Button';
 import Avatar from './Avatar';
 import Select from './Select';
+import Select2 from './Select2';
 import Dialog from './Dialog';
 import ListBox from './ListBox';
 import Tooltip from './Tooltip';
@@ -77,6 +78,7 @@ export {
   Button,
   Switch,
   Select,
+  Select2,
   Avatar,
   Dialog,
   Tooltip,

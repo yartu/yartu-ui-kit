@@ -1,20 +1,24 @@
 <template>
   <li :class="containerClass" role="button" :disabled="disabled">
-    <i
-      class="w-6 h-6 text-2xl leading-6"
-      :class="prefix != '' ? prefix : ''"
-      aria-hidden="true"
-    >
-    </i>
+    <slot name="prefix">
+      <i
+        class="w-6 h-6 text-2xl leading-6"
+        :class="prefix != '' ? prefix : ''"
+        aria-hidden="true"
+      >
+      </i>
+    </slot>
     <div class="flex-1">
       <slot />
     </div>
-    <i
-      class="w-6 h-6 !leading-6"
-      :class="suffix != '' ? suffix : ''"
-      aria-hidden="true"
-    >
-    </i>
+    <slot name="postfix">
+      <i
+        class="w-6 h-6 !leading-6"
+        :class="suffix != '' ? suffix : ''"
+        aria-hidden="true"
+      >
+      </i>
+    </slot>
   </li>
 </template>
 
