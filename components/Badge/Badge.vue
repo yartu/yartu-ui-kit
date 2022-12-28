@@ -4,7 +4,7 @@
     <div :class="badgeClass" :style="setStyle">
       <div v-if="ping" :class="indicatorClass" :style="setStyle"></div>
       <slot name="icon">
-        {{value}}
+        {{ value }}
       </slot>
     </div>
   </div>
@@ -22,7 +22,7 @@ export default {
     value: {
       default: '',
     },
-    border: {
+    outline: {
       type: Boolean,
       default: false,
     },
@@ -61,23 +61,24 @@ export default {
   },
   computed: {
     badgeContainerClass() {
-      return ['relative', 'inline-flex flex-wrap'];
+      return ['relative', 'inline-flex flex-wrap', 'select-none'];
     },
     badgeClass() {
       return [
         'items-center justify-center',
         'rounded-full',
+        'pointer-events-none',
         'text-2xs',
         {
           'inline-flex': this.visible,
-          'hidden': !this.visible,
-          'absolute': !this.relative,
-          'relative': this.relative,
+          hidden: !this.visible,
+          absolute: !this.relative,
+          relative: this.relative,
           'top-0 right-0': !this.left && !this.bottom,
           'top-0 left-0': this.left && !this.bottom,
           'bottom-0 right-0': this.bottom && !this.left,
           'bottom-0 left-0': this.bottom && this.left,
-          'border': this.border,
+          border: this.outline,
           'px-1': this.value !== '',
           'min-w-4 min-h-4': this.size == 'base',
           'min-w-3 min-h-3': this.size == 'sm',
