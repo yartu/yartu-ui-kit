@@ -153,7 +153,7 @@ export default function useOptions (props, context, dep)
     if (isOpen.value) {
       return { items: iv.value, more: -1 };
     } else {
-      const selected = iv.value?.filter((i, index) => index < 2);
+      const selected = iv.value?.filter((i, index) => index < 4);
       const more = iv.value.length - selected.length;
       return { items: selected, more,};
     }

@@ -28,7 +28,7 @@ export default function useClasses(props, context, dependencies) {
     containerActive: 'is-active border-BLUE',
     wrapper:
       'multiselect-wrapper relative mx-auto w-full flex items-center justify-end box-border cursor-pointer outline-none px-4 py-2.5',
-    labelClass: 'subtitle-4 text-BLACK-2',
+    labelClass: 'subtitle-4 text-BLACK-2 mb-2',
     singleLabel:
       'multiselect-single-label flex items-center h-full max-w-full absolute left-0 top-0 pointer-events-none bg-transparent body-1 pl-3.5 pr-16 box-border rtl:left-auto rtl:right-0 rtl:pl-0 rtl:pr-3.5',
     singleLabelText: 'multiselect-single-label-text block truncate w-full',
@@ -36,35 +36,35 @@ export default function useClasses(props, context, dependencies) {
       'multiselect-multiple-label flex items-center h-full absolute left-0 top-0 pointer-events-none bg-transparent body-1 pl-3.5 rtl:left-auto rtl:right-0 rtl:pl-0 rtl:pr-3.5',
     search:
       'multiselect-search w-full absolute inset-0 outline-none focus:ring-0 appearance-none box-border border-0 text-base bg-white rounded-lg pl-3.5 rtl:pl-0 rtl:pr-3.5',
-    tags: 'multiselect-tags flex-grow flex-shrink flex flex-wrap items-center mt-1 pl-2 rtl:pl-0 rtl:pr-2',
-    tag: 'multiselect-tag bg-LIGHTBLUE-6 text-GREY-1 subtitle-5 border border-BORDER py-0.5 px-2 rounded-xl mr-1 mb-1 flex items-center truncate max-w-full rtl:pl-0 rtl:pr-2 rtl:mr-0 rtl:ml-1',
+    tags: 'multiselect-tags flex-grow flex-shrink flex flex-wrap items-center gap-2',
+    tag: 'multiselect-tag bg-LIGHTBLUE-6 text-GREY-1 subtitle-5 border border-BORDER py-0.5 px-2 rounded-xl mr-1 mb-1 flex items-center truncate max-w-full  ',
     tagDisabled: 'is-disabled',
     tagRemove: 'multiselect-tag-remove ml-1',
     tagRemoveIcon: 'multiselect-tag-remove-icon',
     tagsSearchWrapper:
       'multiselect-tags-search-wrapper inline-block relative w-full flex-grow flex-shrink h-full',
     tagsSearch:
-      'multiselect-tags-search absolute inset-0 border-0 outline-none focus:ring-0 appearance-none p-0 text-base w-full',
+      'multiselect-tags-search absolute inset-0 border-0 outline-none focus:ring-0 appearance-none p-0 subtitle-4 text-GREY-1 w-full',
     tagsSearchCopy:
       'multiselect-tags-search-copy invisible whitespace-pre-wrap inline-block h-px',
     placeholder:
-      'multiselect-placeholder flex items-center h-full absolute left-0 top-0 pointer-events-none bg-transparent body-1 pl-3.5 rtl:left-auto rtl:right-0 rtl:pl-0 rtl:pr-3.5',
+      'multiselect-placeholder flex items-center h-full absolute left-0 top-0 pointer-events-none bg-transparent body-1 text-GREY-1 pl-3.5 rtl:left-auto rtl:right-0 rtl:pl-0 rtl:pr-3.5',
     simpleMultiple:
-      'text-BLACK-2 subtitle-5 py-0.5 px-2 rounded-xl mr-1 mb-1 flex items-center truncate max-w-full rtl:pl-0 rtl:pr-2 rtl:mr-0 rtl:ml-1',
+      'text-BLACK-2 subtitle-5 py-0.5 px-2 rounded-xl mr-1 mb-1 flex items-center truncate max-w-full',
     caret:
-      'multiselect-caret bg-multiselect-caret w-6 h-6 ml-auto box-content relative z-10 opacity-40 flex-shrink-0 flex-grow-0 transition-transform transform pointer-events-none rtl:mr-0',
+      'multiselect-caret bg-multiselect-caret w-6 h-6 ml-auto box-content relative z-10 flex-shrink-0 flex-grow-0 transition-transform transform pointer-events-none',
     caretOpen: 'is-open rotate-180 pointer-events-auto',
     clear:
-      'multiselect-clear pr-3.5 relative z-10 opacity-40 transition duration-300 flex-shrink-0 flex-grow-0 flex hover:opacity-80 rtl:pr-0 rtl:pl-3.5',
+      'multiselect-clear relative z-10 rounded-full transition duration-300 flex-shrink-0 flex-grow-0 flex hover:bg-BORDER p-1',
     clearIcon:
-      'multiselect-clear-icon bg-multiselect-remove bg-center bg-no-repeat w-2.5 h-4 py-px box-content inline-block',
+      'multiselect-clear-icon bg-multiselect-remove bg-center bg-no-repeat w-6 h-6 py-px box-content inline-block',
     spinner:
-      'multiselect-spinner bg-multiselect-spinner bg-center bg-no-repeat w-4 h-4 z-10 animate-spin flex-shrink-0 flex-grow-0',
+      'multiselect-spinner bg-multiselect-spinner bg-center bg-no-repeat w-6 h-6 z-10 animate-spin flex-shrink-0 flex-grow-0',
     inifinite: 'multiselect-inifite flex items-center justify-center w-full',
     inifiniteSpinner:
-      'multiselect-inifite-spinner bg-multiselect-spinner bg-center bg-no-repeat w-4 h-4 z-10 animate-spin flex-shrink-0 flex-grow-0',
+      'multiselect-inifite-spinner bg-multiselect-spinner bg-center bg-no-repeat w-6 h-6 z-10 animate-spin flex-shrink-0 flex-grow-0',
     dropdown:
-      'multiselect-dropdown max-h-60 fixed transform border border-BORDER rounded-lg overflow-y-auto z-1001 bg-white flex flex-col py-3',
+      'multiselect-dropdown max-h-60 fixed transform border border-BORDER rounded-lg overflow-y-auto z-1001 bg-white flex flex-col py-3 shadow-1',
     dropdownTop: 'is-top -translate-y-full top-px bottom-auto',
     dropdownHidden: 'is-hidden hidden',
     options: 'multiselect-options flex flex-col p-0 m-0',
@@ -88,8 +88,8 @@ export default function useClasses(props, context, dependencies) {
       'is-selected is-pointed text-white bg-LIGHTBLUE-6 opacity-80',
     optionSelectedDisabled:
       'is-selected is-disabled cursor-not-allowed opacity-80 cursor-not-allowed',
-    noOptions: 'multiselect-no-options py-2 px-3',
-    noResults: 'multiselect-no-results py-2 px-3',
+    noOptions: 'multiselect-no-options py-2 px-3 text-BLACK-2 body-1',
+    noResults: 'multiselect-no-results py-2 px-3 text-BLACK-2 body-1',
     fakeInput:
       'multiselect-fake-input bg-transparent absolute left-0 right-0 -bottom-px w-full h-px border-0 p-0 appearance-none outline-none text-transparent',
     assist:
