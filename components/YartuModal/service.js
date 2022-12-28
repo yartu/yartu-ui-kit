@@ -9,7 +9,7 @@ const busFunctions = {
     bus.emit('open', { instance, options, callBack });
   },
   clear: () => {
-    bus.emit('clear');
+    bus.emit('clear', {});
   }
 };
 
