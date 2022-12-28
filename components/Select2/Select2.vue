@@ -111,6 +111,22 @@
                 </y-button>
               </span>
             </slot>
+            <slot
+              v-if="
+                activeListed.more && activeListed.items.length >= 2 && !isOpen
+              "
+              name="tag-more"
+              :count="activeListed.more"
+            >
+              <span
+                :class="classList.tag"
+                tabindex="-1"
+                :key="key"
+                :aria-label="activeListed.more"
+              >
+                <p class="truncate">+ {{ activeListed.more }}</p>
+              </span>
+            </slot>
 
             <div :class="classList.tagsSearchWrapper" ref="tags">
               <!-- Used for measuring search width -->
@@ -144,7 +160,7 @@
           </div>
         </template>
         <!-- Single label -->
-        
+
         <template v-if="mode == 'single' && hasSelected && !search && iv">
           <slot name="selected-item" :value="iv">
             <div :class="classList.singleLabel">
@@ -154,10 +170,10 @@
             </div>
           </slot>
         </template>
-        
+
         <!-- Multiple label -->
 
-        <template v-if="mode == 'multiple' && hasSelected && !search ">
+        <template v-if="mode == 'multiple' && hasSelected && !search">
           <div :class="classList.as" v-html="multipleLabelText"></div>
           <div :class="classList.tags" v-if="false">
             <slot
@@ -204,6 +220,7 @@
         <slot v-if="loading || resolving" name="spinner">
           <span :class="classList.spinner" aria-hidden="true">
             <svg
+              class="animate-spin h-5 w-5"
               width="24"
               height="24"
               viewBox="0 0 24 24"
@@ -211,18 +228,19 @@
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                fill="#9aa1b4"
+                :fill="spinnerBg"
                 fill-rule="evenodd"
                 clip-rule="evenodd"
                 d="M12 5.25C8.24672 5.25 5.25 8.24672 5.25 12C5.25 15.7533 8.24672 18.75 12 18.75C15.7533 18.75 18.75 15.7533 18.75 12C18.75 8.24672 15.7533 5.25 12 5.25ZM3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z"
               />
               <path
-                fill="#3663f2"
+                :fill="spinnerColor"
                 fill-rule="evenodd"
                 clip-rule="evenodd"
                 d="M18.75 12C18.75 8.27208 15.7279 5.25 12 5.25V3C16.9706 3 21 7.02944 21 12H18.75Z"
-              /></svg
-          ></span>
+              />
+            </svg>
+          </span>
         </slot>
 
         <!-- Clear -->
@@ -240,8 +258,28 @@
             :class="classList.clear"
             @click="clear"
             @keyup.enter="clear"
-            ><span :class="classList.clearIcon"></span
-          ></span>
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M6.46967 6.46967C6.76256 6.17678 7.23744 6.17678 7.53033 6.46967L17.5303 16.4697C17.8232 16.7626 17.8232 17.2374 17.5303 17.5303C17.2374 17.8232 16.7626 17.8232 16.4697 17.5303L6.46967 7.53033C6.17678 7.23744 6.17678 6.76256 6.46967 6.46967Z"
+                fill="#9AA1B4"
+              />
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M17.5303 6.46967C17.8232 6.76256 17.8232 7.23744 17.5303 7.53033L7.53033 17.5303C7.23744 17.8232 6.76256 17.8232 6.46967 17.5303C6.17678 17.2374 6.17678 16.7626 6.46967 16.4697L16.4697 6.46967C16.7626 6.17678 17.2374 6.17678 17.5303 6.46967Z"
+                fill="#9AA1B4"
+              />
+            </svg>
+          </span>
         </slot>
 
         <!-- Caret -->
@@ -477,6 +515,14 @@ export default {
       type: Boolean,
       required: false,
       default: false,
+    },
+    spinnerBg: {
+      type: String,
+      default: '#f8fafd',
+    },
+    spinnerColor: {
+      type: String,
+      default: '#3663f2',
     },
     top: {
       type: Boolean,
