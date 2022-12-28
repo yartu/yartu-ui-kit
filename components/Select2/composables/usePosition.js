@@ -1,5 +1,5 @@
-import { watch, toRefs } from "vue";
-import { onClickOutside } from "@vueuse/core";
+import { watch, toRefs } from 'vue';
+import { onClickOutside } from '@vueuse/core';
 
 export default function useDropdown(props, context, dep) {
   const { disabled, top, left } = toRefs(props);
@@ -28,28 +28,26 @@ export default function useDropdown(props, context, dep) {
     let dropdownContainer = multiselect.value.getBoundingClientRect();
 
     if (props.top) {
-      optionContainer.value.style.top = dropdownContainer.top - 12 + "px";
+      optionContainer.value.style.top = dropdownContainer.top - 12 + 'px';
     } else {
       optionContainer.value.style.top =
-        dropdownContainer.top + dropdownContainer.height + 12 + "px";
+        dropdownContainer.top + dropdownContainer.height + 12 + 'px';
     }
     if (props.left)
-      optionContainer.value.style.left = dropdownContainer.right + "px";
+      optionContainer.value.style.left = dropdownContainer.right + 'px';
     else {
-      optionContainer.value.style.left = dropdownContainer.left + "px";
+      optionContainer.value.style.left = dropdownContainer.left + 'px';
     }
     optionContainer.value.style.minWidth =
-      dropdownContainer.right - dropdownContainer.left + "px";
+      dropdownContainer.right - dropdownContainer.left + 'px';
+    optionContainer.value.style.maxWidth =
+      dropdownContainer.right - dropdownContainer.left + 'px';
 
     if (window.innerHeight - dropdownContainer.bottom < 224) {
       setTimeout(() => {
-        optionContainer.value.classList.add("force-to-top");
+        optionContainer.value.classList.add('force-to-top');
       }, 50);
     }
-    console.log(
-      "optionContainer.value.style.left",
-      optionContainer.value.style.top,
-    );
   };
 
   watch(
@@ -60,7 +58,7 @@ export default function useDropdown(props, context, dep) {
       }, 1);
     },
   );
-  
+
   watch(
     () => iv.value,
     () => {

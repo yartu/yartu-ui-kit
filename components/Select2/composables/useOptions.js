@@ -160,15 +160,15 @@ export default function useOptions (props, context, dep)
   });
 
   const multipleLabelText = computed(() => {
-
+    
     if (multipleLabel !== undefined && multipleLabel.value !== undefined) {
       return multipleLabel.value(iv.value, $this);
     }
-
+    
     if (iv.value && iv.value.length > 1) {
       return `${iv.value.length} options selected`;
     }
-
+    
     return `1 option selected`;
     
   })

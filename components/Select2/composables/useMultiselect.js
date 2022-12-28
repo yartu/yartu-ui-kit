@@ -1,4 +1,4 @@
-import { ref, toRefs, computed, nextTick } from "vue";
+import { ref, toRefs, computed, nextTick } from 'vue';
 
 export default function useMultiselect(props, context, dep) {
   const { searchable, disabled, clearOnBlur } = toRefs(props);
@@ -16,7 +16,7 @@ export default function useMultiselect(props, context, dep) {
   const multiselect = ref(null);
 
   const optionContainer = ref(null);
-  
+
   const wrapper = ref(null);
 
   const tags = ref(null);
@@ -24,9 +24,9 @@ export default function useMultiselect(props, context, dep) {
   const isActive = ref(false);
 
   const mouseClicked = ref(false);
-  
+
   // ============== COMPUTED ==============
-  
+
   const tabindex = computed(() => {
     return searchable.value || disabled.value ? -1 : 0;
   });
@@ -75,8 +75,8 @@ export default function useMultiselect(props, context, dep) {
 
   const handleFocusIn = (e) => {
     if (
-      (e.target.closest("[data-tags]") && e.target.nodeName !== "INPUT") ||
-      e.target.closest("[data-clear]")
+      (e.target.closest('[data-tags]') && e.target.nodeName !== 'INPUT') ||
+      e.target.closest('[data-clear]')
     ) {
       return;
     }
@@ -85,7 +85,7 @@ export default function useMultiselect(props, context, dep) {
   };
 
   const handleFocusOut = (e, x) => {
-    if (e.target.nodeName === "SPAN" || e.target.nodeName === "IMPUT") {
+    if (e.target.nodeName === 'SPAN' || e.target.nodeName === 'INPUT') {
       return;
     }
     deactivate();
@@ -99,7 +99,6 @@ export default function useMultiselect(props, context, dep) {
   /* istanbul ignore next */
   const handleMousedown = (e) => {
     mouseClicked.value = true;
-    
     if (
       isOpen.value &&
       (e.target.isEqualNode(wrapper.value) || e.target.isEqualNode(tags.value))
