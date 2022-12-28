@@ -224,11 +224,10 @@ export default {
         'focus:outline-none',
         'w-full',
         'mr-[0.063rem]',
-        'font-semibold',
         'bg-transparent',
         {
           'p-2 text-xs': this.dense,
-          'p-3 text-sm': !this.dense,
+          'p-3 body-1': !this.dense,
           'py-2': this.rounded,
           'bg-GREY-3 rounded-lg !text-GREY-1': this.disabled,
         },
