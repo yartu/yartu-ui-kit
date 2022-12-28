@@ -1,5 +1,6 @@
 <!-- ref: https://github.com/vueform/multiselect/ -->
 <!-- MIT Licence -->
+
 <template>
   <div>
     <label>
@@ -10,11 +11,17 @@
     <div ref="multiselect" :class="classList.container" :id="searchable ? undefined : id" :dir="rtl ? 'rtl' : undefined"
       @keyup="handleKeyup" @keydown="handleKeydown" @focusin="handleFocusIn"
     >
-      <div :class="classList.wrapper" @mousedown="handleMousedown" ref="wrapper" :tabindex="tabindex"
+      <div
+        ref="wrapper"
+        @mousedown="handleMousedown"
+        :class="classList.wrapper"
+        :tabindex="tabindex"
         :aria-controls="!searchable ? ariaControls : undefined"
-        :aria-placeholder="!searchable ? ariaPlaceholder : undefined" :aria-expanded="!searchable ? isOpen : undefined"
+        :aria-placeholder="!searchable ? ariaPlaceholder : undefined"
+        :aria-expanded="!searchable ? isOpen : undefined"
         :aria-activedescendant="!searchable ? ariaActiveDescendant : undefined"
-        :aria-multiselectable="!searchable ? ariaMultiselectable : undefined" :role="!searchable ? 'combobox' : undefined"
+        :aria-multiselectable="!searchable ? ariaMultiselectable : undefined"
+        :role="!searchable ? 'combobox' : undefined"
         v-bind="!searchable ? arias : {}"
       >
         <!-- Search -->
