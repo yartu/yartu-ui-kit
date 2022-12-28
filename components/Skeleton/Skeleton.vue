@@ -136,7 +136,7 @@ export default {
 import { computed } from 'vue';
 
 // TODO : Add more template @aziz
-const porps = defineProps({
+const props = defineProps({
   type: {
     type: String,
     required: true,
@@ -144,8 +144,8 @@ const porps = defineProps({
 });
 
 const skeletonCount = computed(() => {
-  if (porps.type.includes(':')) {
-    const count = porps.type.split(':')[1];
+  if (props.type.includes(':')) {
+    const count = props.type.split(':')[1];
     return parseInt(count, 10);
   }
   return 1;
