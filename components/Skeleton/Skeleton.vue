@@ -1,4 +1,20 @@
 <template>
+  <yartu-card-skeleton
+    v-if="type.includes('yartu-card')"
+    :skeletonCount="skeletonCount"
+  ></yartu-card-skeleton>
+  <repo-folder-skeleton
+    v-if="type.includes('repo-folder')"
+    :skeletonCount="skeletonCount"
+  ></repo-folder-skeleton>
+  <drive-client-skeleton
+    v-if="type.includes('drive-client')"
+    :skeletonCount="skeletonCount"
+  ></drive-client-skeleton>
+  <table-item-skeleton
+    v-if="type.includes('table-item')"
+    :skeletonCount="skeletonCount"
+  ></table-item-skeleton>
   <title-skeleton
     v-if="type.includes('title')"
     :skeletonCount="skeletonCount"
@@ -42,6 +58,11 @@
   <weather-widget-skeleton 
     v-else-if="type === 'weather-widget'">
   </weather-widget-skeleton>
+  <navbar-search-skeleton 
+    v-else-if="type.includes('navbar-search')"
+    :skeletonCount="skeletonCount"
+    >
+  </navbar-search-skeleton>
 </template>
 
 <script>
@@ -52,6 +73,9 @@ export default {
 
 <script setup>
 import { computed } from "vue";
+import YartuCardSkeleton from "./YartuCardSkeleton.vue";
+import RepoFolderSkeleton from "./RepoFolderSkeleton.vue";
+import TableItemSkeleton from "./TableItemSkeleton.vue";
 import TitleSkeleton from "./TitleSkeleton.vue";
 import EmailContentSkeleton from "./EmailContentSkeleton.vue";
 import EmailListSkeleton from "./EmailListSkeleton.vue";
@@ -63,6 +87,8 @@ import CalendarWidgetSkeleton from "./CalendarWidgetSkeleton.vue";
 import ConferenceWidgetSkeleton from "./ConferenceWidgetSkeleton.vue";
 import ContactWidgetSkeleton from "./ContactWidgetSkeleton.vue";
 import WeatherWidgetSkeleton from "./WeatherWidgetSkeleton.vue";
+import NavbarSearchSkeleton from "./NavbarSearchSkeleton.vue";
+import DriveClientSkeleton from "./DriveClientSkeleton.vue";
 
 // TODO : Add more template @aziz
 const props = defineProps({
