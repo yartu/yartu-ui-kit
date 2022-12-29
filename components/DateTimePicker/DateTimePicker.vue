@@ -267,8 +267,16 @@ const showDateWithFormat = computed(() => {
 const calculatePosition = () => {
   let container = target.value.getBoundingClientRect();
   let pickerContainerStyle = pickerContainer.value.style;
-  pickerContainerStyle.top = container.bottom + 16 + 'px';
-  pickerContainerStyle.left = container.left + 'px';
+  
+  if (props.top) {
+    pickerContainerStyle.top = container.top - 16 + 'px';
+  } else {
+    pickerContainerStyle.top = container.bottom + 16 + 'px';
+  }
+  if (props.left) pickerContainerStyle.left = container.right + 'px';
+  else {
+    pickerContainerStyle.left = container.left + 'px';
+  }
 };
 
 onMounted(() => {
