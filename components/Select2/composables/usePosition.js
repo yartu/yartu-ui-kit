@@ -27,17 +27,14 @@ export default function useDropdown(props, context, dep) {
     // improve this @aziz
     let dropdownContainer = multiselect.value.getBoundingClientRect();
 
-    if (openDirection === 'top') {
+    if (openDirection.value === 'top') {
       optionContainer.value.style.top =
         dropdownContainer.top - dropdownContainer.height - 12 + 'px';
     } else {
       optionContainer.value.style.top =
         dropdownContainer.top + dropdownContainer.height + 12 + 'px';
     }
-    if (left) optionContainer.value.style.left = dropdownContainer.right + 'px';
-    else {
-      optionContainer.value.style.left = dropdownContainer.left + 'px';
-    }
+    optionContainer.value.style.left = dropdownContainer.left + 'px';
     optionContainer.value.style.minWidth =
       dropdownContainer.right - dropdownContainer.left + 'px';
     optionContainer.value.style.maxWidth =
