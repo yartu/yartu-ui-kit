@@ -6,6 +6,7 @@ export default function useClasses(props, context, dependencies) {
     disabled,
     openDirection,
     showOptions,
+    outline,
   } = toRefs(props);
 
   // ============ DEPENDENCIES ============
@@ -21,7 +22,7 @@ export default function useClasses(props, context, dependencies) {
 
   const classes = computed(() => ({
     container:
-      'multiselect relative mx-auto w-full flex items-center justify-end box-border cursor-pointer border border-BORDER rounded-lg bg-white body-1 outline-none',
+      'multiselect relative mx-auto w-full flex items-center justify-end box-border cursor-pointer border-BORDER rounded-lg bg-white body-1 outline-none',
     containerDisabled: 'is-disabled cursor-default bg-GREY-1',
     containerOpen: 'is-open',
     containerOpenTop: 'is-open-top',
@@ -65,7 +66,7 @@ export default function useClasses(props, context, dependencies) {
       'multiselect-inifite-spinner bg-multiselect-spinner bg-center bg-no-repeat w-6 h-6 z-10 animate-spin flex-shrink-0 flex-grow-0',
     dropdown:
       'multiselect-dropdown max-h-60 fixed transform border border-BORDER rounded-lg overflow-y-auto z-1001 bg-white flex flex-col py-3 shadow-1',
-    dropdownTop: 'is-top -translate-y-full top-px bottom-auto',
+    dropdownTop: 'is-top -translate-y-full',
     dropdownHidden: 'is-hidden hidden',
     options: 'multiselect-options flex flex-col p-0 m-0',
     optionsTop: 'is-top',
@@ -124,6 +125,7 @@ export default function useClasses(props, context, dependencies) {
             ? c.containerOpen
             : [],
         )
+        .concat(outline.value ? 'border' : '')
         .concat(isActive.value ? c.containerActive : []),
       wrapper: c.wrapper,
       labelClass: c.labelClass,

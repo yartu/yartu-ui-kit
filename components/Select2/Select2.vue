@@ -524,11 +524,6 @@ export default {
       type: String,
       default: '#3663f2',
     },
-    top: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
     left: {
       type: Boolean,
       required: false,
@@ -553,6 +548,11 @@ export default {
       type: String,
       required: false,
       default: null,
+    },
+    outline: {
+      type: Boolean,
+      required: false,
+      default: true,
     },
     mode: {
       type: String,

@@ -2,7 +2,7 @@ import { watch, toRefs } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 
 export default function useDropdown(props, context, dep) {
-  const { disabled, top, left } = toRefs(props);
+  const { disabled, openDirection, left } = toRefs(props);
 
   // ================ DATA ================
 
@@ -27,14 +27,14 @@ export default function useDropdown(props, context, dep) {
     // improve this @aziz
     let dropdownContainer = multiselect.value.getBoundingClientRect();
 
-    if (props.top) {
-      optionContainer.value.style.top = dropdownContainer.top - 12 + 'px';
+    if (openDirection === 'top') {
+      optionContainer.value.style.top =
+        dropdownContainer.top - dropdownContainer.height - 12 + 'px';
     } else {
       optionContainer.value.style.top =
         dropdownContainer.top + dropdownContainer.height + 12 + 'px';
     }
-    if (props.left)
-      optionContainer.value.style.left = dropdownContainer.right + 'px';
+    if (left) optionContainer.value.style.left = dropdownContainer.right + 'px';
     else {
       optionContainer.value.style.left = dropdownContainer.left + 'px';
     }
