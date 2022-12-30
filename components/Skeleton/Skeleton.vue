@@ -63,6 +63,11 @@
     :skeletonCount="skeletonCount"
     >
   </navbar-search-skeleton>
+  <conference-card-skeleton 
+    v-else-if="type.includes('conference-card')"
+    :skeletonCount="skeletonCount"
+    >
+  </conference-card-skeleton>
 </template>
 
 <script>
@@ -89,6 +94,7 @@ import ContactWidgetSkeleton from "./ContactWidgetSkeleton.vue";
 import WeatherWidgetSkeleton from "./WeatherWidgetSkeleton.vue";
 import NavbarSearchSkeleton from "./NavbarSearchSkeleton.vue";
 import DriveClientSkeleton from "./DriveClientSkeleton.vue";
+import ConferenceCardSkeleton from "./ConferenceCardSkeleton.vue";
 
 // TODO : Add more template @aziz
 const props = defineProps({
