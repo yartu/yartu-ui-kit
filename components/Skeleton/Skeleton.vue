@@ -44,6 +44,11 @@
     :skeletonCount="skeletonCount"
   >
   </note-widget-skeleton>
+  <sticky-note-skeleton
+    v-else-if="type.includes('sticky-note')"
+    :skeletonCount="skeletonCount"
+  >
+  </sticky-note-skeleton>
   <calendar-widget-skeleton
     v-else-if="type.includes('calendar-widget')"
     :skeletonCount="skeletonCount"
@@ -88,6 +93,7 @@ import ListItemSkeleton from "./ListItemSkeleton.vue";
 import ProfileContentSkeleton from "./ProfileContentSkeleton.vue";
 import EmailWidgetSkeleton from "./EmailWidgetSkeleton.vue";
 import NoteWidgetSkeleton from "./NoteWidgetSkeleton.vue";
+import StickyNoteSkeleton from "./StickyNoteSkeleton.vue";
 import CalendarWidgetSkeleton from "./CalendarWidgetSkeleton.vue";
 import ConferenceWidgetSkeleton from "./ConferenceWidgetSkeleton.vue";
 import ContactWidgetSkeleton from "./ContactWidgetSkeleton.vue";
