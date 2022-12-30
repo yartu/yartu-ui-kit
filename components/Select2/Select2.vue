@@ -10,7 +10,7 @@
     </label>
     <div
       ref="multiselect"
-      :class="classList.container"
+      :class="[classList.container, hasError ? '!border-RED' : '' ]"
       :id="searchable ? undefined : id"
       :dir="rtl ? 'rtl' : undefined"
       @keyup="handleKeyup"
@@ -165,7 +165,7 @@
           <slot name="selected-item" :value="iv">
             <div :class="classList.singleLabel">
               <span :class="classList.singleLabelText">
-                AA {{ iv[label] }}
+                {{ iv[label] }}
               </span>
             </div>
           </slot>
@@ -242,64 +242,65 @@
             </svg>
           </span>
         </slot>
-
-        <!-- Clear -->
-        <slot
-          v-if="hasSelected && !disabled && canClear && !busy"
-          name="clear"
-          :clear="clear"
-        >
-          <span
-            aria-hidden="true"
-            tabindex="0"
-            role="button"
-            data-clear
-            aria-roledescription="❎"
-            :class="classList.clear"
-            @click="clear"
-            @keyup.enter="clear"
+        <div class="ml-auto flex items-center justify-center">
+          <!-- Clear -->
+          <slot
+            v-if="hasSelected && !disabled && canClear && !busy"
+            name="clear"
+            :clear="clear"
           >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+            <span
+              aria-hidden="true"
+              tabindex="0"
+              role="button"
+              data-clear
+              aria-roledescription="❎"
+              :class="classList.clear"
+              @click="clear"
+              @keyup.enter="clear"
             >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M6.46967 6.46967C6.76256 6.17678 7.23744 6.17678 7.53033 6.46967L17.5303 16.4697C17.8232 16.7626 17.8232 17.2374 17.5303 17.5303C17.2374 17.8232 16.7626 17.8232 16.4697 17.5303L6.46967 7.53033C6.17678 7.23744 6.17678 6.76256 6.46967 6.46967Z"
-                fill="#9AA1B4"
-              />
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M17.5303 6.46967C17.8232 6.76256 17.8232 7.23744 17.5303 7.53033L7.53033 17.5303C7.23744 17.8232 6.76256 17.8232 6.46967 17.5303C6.17678 17.2374 6.17678 16.7626 6.46967 16.4697L16.4697 6.46967C16.7626 6.17678 17.2374 6.17678 17.5303 6.46967Z"
-                fill="#9AA1B4"
-              />
-            </svg>
-          </span>
-        </slot>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M6.46967 6.46967C6.76256 6.17678 7.23744 6.17678 7.53033 6.46967L17.5303 16.4697C17.8232 16.7626 17.8232 17.2374 17.5303 17.5303C17.2374 17.8232 16.7626 17.8232 16.4697 17.5303L6.46967 7.53033C6.17678 7.23744 6.17678 6.76256 6.46967 6.46967Z"
+                  fill="#9AA1B4"
+                />
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M17.5303 6.46967C17.8232 6.76256 17.8232 7.23744 17.5303 7.53033L7.53033 17.5303C7.23744 17.8232 6.76256 17.8232 6.46967 17.5303C6.17678 17.2374 6.17678 16.7626 6.46967 16.4697L16.4697 6.46967C16.7626 6.17678 17.2374 6.17678 17.5303 6.46967Z"
+                  fill="#9AA1B4"
+                />
+              </svg>
+            </span>
+          </slot>
 
-        <!-- Caret -->
-        <slot v-if="caret && showOptions" name="caret">
-          <span
-            :class="classList.caret"
-            @click.stop="handleCaretClick"
-            aria-hidden="true"
-          >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+          <!-- Caret -->
+          <slot v-if="caret && showOptions" name="caret">
+            <span
+              :class="classList.caret"
+              @click.stop="handleCaretClick"
+              aria-hidden="true"
             >
-              <path d="M6 10.5L12 16.5L18 10.5L6 10.5Z" fill="#9AA1B4" />
-            </svg>
-          </span>
-        </slot>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M6 10.5L12 16.5L18 10.5L6 10.5Z" fill="#9AA1B4" />
+              </svg>
+            </span>
+          </slot>
+        </div>
       </div>
 
       <!-- Options -->

@@ -31,7 +31,7 @@ export default function useClasses(props, context, dependencies) {
       'multiselect-wrapper relative mx-auto w-full flex items-center justify-end box-border cursor-pointer outline-none px-4 py-2.5',
     labelClass: 'subtitle-4 text-BLACK-2 mb-2',
     singleLabel:
-      'multiselect-single-label flex items-center h-full max-w-full absolute left-0 top-0 pointer-events-none bg-transparent body-1 pl-3.5 pr-16 box-border rtl:left-auto rtl:right-0 rtl:pl-0 rtl:pr-3.5',
+      'multiselect-single-label flex w-full items-center h-full max-w-full absolute left-0 top-0 pointer-events-none bg-transparent body-1 pl-3.5 pr-16 box-border rtl:left-auto rtl:right-0 rtl:pl-0 rtl:pr-3.5',
     singleLabelText: 'multiselect-single-label-text block truncate w-full',
     multipleLabel:
       'multiselect-multiple-label flex items-center h-full absolute left-0 top-0 pointer-events-none bg-transparent body-1 pl-3.5 rtl:left-auto rtl:right-0 rtl:pl-0 rtl:pr-3.5',
@@ -83,7 +83,7 @@ export default function useClasses(props, context, dependencies) {
     option:
       'multiselect-option flex items-center truncate justify-start box-border text-left cursor-pointer text-BLACK-2 subtitle-4 py-2 px-3 hover:bg-LIGHTBLUE-6 w-full',
     optionPointed: 'is-pointed bg-LIGHTBLUE-6',
-    optionSelected: 'is-selected text-white bg-LIGHTBLUE-6',
+    optionSelected: 'is-selected bg-LIGHTBLUE-6',
     optionDisabled: 'is-disabled cursor-not-allowed',
     optionSelectedPointed:
       'is-selected is-pointed text-white bg-LIGHTBLUE-6 opacity-80',
