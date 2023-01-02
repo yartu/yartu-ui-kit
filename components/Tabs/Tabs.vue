@@ -50,7 +50,7 @@ const selectedTab = computed({
   set: (val) => val,
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'changed']);
 const props = defineProps({
   sticky: {
     type: Boolean,
@@ -67,6 +67,7 @@ const changeTab = (tab, index) => {
   selectedTab.value = tab;
   const value = tab.value || index;
   emit('update:modelValue', value);
+  emit('changed', value);
 };
 
 const tabsClass = computed(() => {
