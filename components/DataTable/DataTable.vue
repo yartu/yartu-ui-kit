@@ -47,11 +47,14 @@
             ></Checkbox>
           </th>
           <th
-            v-for="header in headers"
+            v-for="(header, index) in headers"
             :key="header.value"
             class="p-2.5 text-GREY-1 text-xs whitespace-nowrap font-semibold"
           >
-            <div class="flex items-center gap-2">
+            <div
+              class="flex items-center gap-2"
+              :class="index === headers.length - 1 ? 'justify-end' : ''"
+            >
               {{ header.text }}
               <button
                 v-if="header.text !== ''"
@@ -114,7 +117,7 @@
               {{
                 item[header.value] || item[header.value] === 0
                   ? item[header.value]
-                  : '' || '-'
+                  : "" || "-"
               }}
             </slot>
           </td>
@@ -126,14 +129,14 @@
 
 <script>
 export default {
-  name: 'y-data-table',
+  name: "y-data-table",
 };
 </script>
 
 <script setup>
-import { ref, computed } from 'vue';
-import { SimpleTable } from '../SimpleTable';
-import { Checkbox } from '../Checkbox';
+import { ref, computed } from "vue";
+import { SimpleTable } from "../SimpleTable";
+import { Checkbox } from "../Checkbox";
 
 const props = defineProps({
   selectable: {
@@ -155,7 +158,7 @@ const props = defineProps({
   },
   inputValue: {
     type: String,
-    default: 'id',
+    default: "id",
   },
   passive: {
     type: Boolean,
@@ -175,17 +178,17 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['selected', 'choose']);
+const emit = defineEmits(["selected", "choose"]);
 
 const selectedList = ref([]);
 const allChecked = ref(false);
 const filteredItems = ref([]);
-const sort = ref('asc');
+const sort = ref("asc");
 
 const indeterminate = computed(() => {
   const selectedLength = selectedList.value.length;
   const totalLength = props.items.length;
-  emit('selected', selectedList.value);
+  emit("selected", selectedList.value);
   return selectedLength > 0 && selectedLength !== totalLength;
 });
 
@@ -194,7 +197,7 @@ const isActive = (item) => {
 };
 
 const openDetail = (item) => {
-  emit('choose', item);
+  emit("choose", item);
 };
 
 const selectAll = () => {
@@ -204,7 +207,7 @@ const selectAll = () => {
   } else {
     selectedList.value = [];
   }
-  emit('selected', selectedList.value);
+  emit("selected", selectedList.value);
 };
 
 const tableItems = computed(() => {
@@ -224,13 +227,13 @@ const asc = (orderKey) => {
   tableItems.value.sort(
     (a, b) =>
       a[orderKey].toString().localeCompare(b[orderKey], { numeric: true }) ||
-      b[orderKey] - a[orderKey],
+      b[orderKey] - a[orderKey]
   );
-  sort.value = 'asc';
+  sort.value = "asc";
 };
 
 const dsc = () => {
   tableItems.value.reverse();
-  sort.value = 'dsc';
+  sort.value = "dsc";
 };
 </script>
