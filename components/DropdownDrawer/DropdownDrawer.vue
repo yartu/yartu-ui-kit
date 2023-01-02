@@ -21,7 +21,7 @@
           aria-hidden="true"
         ></i>
         <slot name="title">
-          <p :class="titleClass">
+          <p :class="titleClass" style="width: calc(100% - 1rem)">
             {{ title }}
           </p>
         </slot>
@@ -107,6 +107,7 @@ export default {
     titleClass() {
       return [
         'ml-2',
+        'truncate',
         'text-sm font-semibold text-BLACK-2 capitalize',
         {
           'text-BLUE': this.active,
