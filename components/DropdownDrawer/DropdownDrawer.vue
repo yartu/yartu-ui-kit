@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <button @click="open = !open" :class="headerClass">
+    <div @click="open = !open" :class="headerClass">
       <span class="flex items-center text-xs">
         <i
           v-if="toggleIcon != ''"
@@ -14,7 +14,7 @@
         >
         </i>
       </span>
-      <span class="flex items-center text-GREY-1">
+      <div class="flex items-center text-GREY-1 flex-1">
         <i
           v-if="prefix != ''"
           :class="[prefix, prefixClass]"
@@ -25,11 +25,11 @@
             {{ title }}
           </p>
         </slot>
-      </span>
+      </div>
       <div class="ml-auto pr-6 flex items-center">
         <slot name="postfix"></slot>
       </div>
-    </button>
+    </div>
     <div
       :class="[
         contentClass,
@@ -79,6 +79,7 @@ export default {
         'flex items-center',
         'relative',
         'w-full',
+        'cursor-pointer',
         'pl-1 py-2',
         'text-BLACK-2',
         'hover:bg-GREY-3',
