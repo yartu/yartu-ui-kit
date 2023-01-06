@@ -19,7 +19,7 @@
 
 <script setup>
 import { useEventBus } from '@vueuse/core';
-import { markRaw, ref, onMounted } from 'vue';
+import { toRaw, ref, onMounted } from 'vue';
 import { Modal } from '../Modal';
 
 const modals = ref([]);
@@ -29,7 +29,7 @@ const listener = (type, { instance, options, callBack }) => {
   if (type === 'open') {
     const modal = {
       options,
-      dynamicComponent: markRaw(instance),
+      dynamicComponent: toRaw(instance),
       openModal: true,
       callBack,
     };
@@ -44,8 +44,8 @@ const listener = (type, { instance, options, callBack }) => {
 const closeModal = (modal, index, x) => {
   modal.openModal = false;
   modals.value.splice(index, 1);
-  if (modal.options.callBack) {
-    modal.options.callBack();
+  if (modal.callBack) {
+    modal.callBack(modal);
   }
 };
 
