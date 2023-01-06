@@ -162,7 +162,7 @@
         <!-- Single label -->
 
         <template v-if="mode == 'single' && hasSelected && !search && iv">
-          <slot name="selected-item" :value="iv">
+          <slot name="selected-item" :value="iv" :option="iv">
             <div :class="classList.singleLabel">
               <span :class="classList.singleLabelText">
                 {{ iv[label] }}
