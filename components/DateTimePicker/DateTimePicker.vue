@@ -226,6 +226,9 @@ const selectedTime = ref(dayjs(props.modelValue));
 onClickOutside(
   target,
   () => {
+    if (showPicker.value) {
+      emit('close');
+    }
     showPicker.value = false;
   },
   { ignore: [pickerContainer] },
