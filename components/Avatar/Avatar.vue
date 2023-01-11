@@ -1,13 +1,13 @@
 <template>
   <div :class="containerClass" :style="setBackgrounColor">
     <slot>
-      <span v-if="label">{{ label }}</span>
       <img
-        :class="imageClass"
+        v-if="image"
         :src="image"
-        v-else-if="image"
+        :class="imageClass"
         alt="avatar-image"
       />
+      <span v-else-if="label">{{ label }}</span>
     </slot>
   </div>
 </template>

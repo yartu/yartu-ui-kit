@@ -19,7 +19,7 @@
 
 <script setup>
 import { useEventBus } from '@vueuse/core';
-import { toRaw, ref, onMounted } from 'vue';
+import { shallowRef, ref, onMounted } from 'vue';
 import { Modal } from '../Modal';
 
 const modals = ref([]);
@@ -29,7 +29,7 @@ const listener = (type, { instance, options, callBack }) => {
   if (type === 'open') {
     const modal = {
       options,
-      dynamicComponent: toRaw(instance),
+      dynamicComponent: shallowRef(instance),
       openModal: true,
       callBack,
     };

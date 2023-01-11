@@ -10,7 +10,7 @@
     </label>
     <div
       ref="multiselect"
-      :class="[classList.container, hasError ? '!border-RED' : '' ]"
+      :class="[classList.container, hasError ? '!border-RED' : '']"
       :id="searchable ? undefined : id"
       :dir="rtl ? 'rtl' : undefined"
       @keyup="handleKeyup"
@@ -672,7 +672,7 @@ export default {
     canClear: {
       type: Boolean,
       required: false,
-      default: true,
+      default: false,
     },
     max: {
       type: Number,

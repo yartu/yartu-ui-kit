@@ -75,7 +75,7 @@ export default function useClasses(props, context, dependencies) {
       'multiselect-group-label flex text-sm box-border items-center justify-start text-left py-1 px-3 font-semibold bg-GREY-1 cursor-default leading-normal',
     groupLabelPointable: 'is-pointable cursor-pointer',
     groupLabelPointed: 'is-pointed bg-GREY-1 ',
-    groupLabelSelected: 'is-selected bg-LIGHTBLUE-6 text-white',
+    groupLabelSelected: 'is-selected bg-LIGHTBLUE-6',
     groupLabelDisabled: 'is-disabled bg-GREY-1 cursor-not-allowed',
     groupLabelSelectedPointed: 'is-selected is-pointed',
     groupLabelSelectedDisabled: 'is-selected is-disabled',
@@ -85,8 +85,7 @@ export default function useClasses(props, context, dependencies) {
     optionPointed: 'is-pointed bg-LIGHTBLUE-6',
     optionSelected: 'is-selected bg-LIGHTBLUE-6',
     optionDisabled: 'is-disabled cursor-not-allowed',
-    optionSelectedPointed:
-      'is-selected is-pointed text-white bg-LIGHTBLUE-6 opacity-80',
+    optionSelectedPointed: 'is-selected is-pointed bg-LIGHTBLUE-6 opacity-80',
     optionSelectedDisabled:
       'is-selected is-disabled cursor-not-allowed opacity-80 cursor-not-allowed',
     noOptions: 'multiselect-no-options py-2 px-3 text-BLACK-2 body-1',

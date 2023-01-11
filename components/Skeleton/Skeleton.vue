@@ -44,6 +44,11 @@
     :skeletonCount="skeletonCount"
   >
   </note-widget-skeleton>
+  <sticky-note-skeleton
+    v-else-if="type.includes('sticky-note')"
+    :skeletonCount="skeletonCount"
+  >
+  </sticky-note-skeleton>
   <calendar-widget-skeleton
     v-else-if="type.includes('calendar-widget')"
     :skeletonCount="skeletonCount"
@@ -63,6 +68,16 @@
     :skeletonCount="skeletonCount"
     >
   </navbar-search-skeleton>
+  <conference-card-skeleton 
+    v-else-if="type.includes('conference-card')"
+    :skeletonCount="skeletonCount"
+    >
+  </conference-card-skeleton>
+  <note-content-skeleton 
+    v-else-if="type.includes('note-content')"
+    :skeletonCount="skeletonCount"
+    >
+  </note-content-skeleton>
 </template>
 
 <script>
@@ -83,12 +98,15 @@ import ListItemSkeleton from "./ListItemSkeleton.vue";
 import ProfileContentSkeleton from "./ProfileContentSkeleton.vue";
 import EmailWidgetSkeleton from "./EmailWidgetSkeleton.vue";
 import NoteWidgetSkeleton from "./NoteWidgetSkeleton.vue";
+import StickyNoteSkeleton from "./StickyNoteSkeleton.vue";
 import CalendarWidgetSkeleton from "./CalendarWidgetSkeleton.vue";
 import ConferenceWidgetSkeleton from "./ConferenceWidgetSkeleton.vue";
 import ContactWidgetSkeleton from "./ContactWidgetSkeleton.vue";
 import WeatherWidgetSkeleton from "./WeatherWidgetSkeleton.vue";
 import NavbarSearchSkeleton from "./NavbarSearchSkeleton.vue";
 import DriveClientSkeleton from "./DriveClientSkeleton.vue";
+import ConferenceCardSkeleton from "./ConferenceCardSkeleton.vue";
+import NoteContentSkeleton from "./NoteContentSkeleton.vue";
 
 // TODO : Add more template @aziz
 const props = defineProps({

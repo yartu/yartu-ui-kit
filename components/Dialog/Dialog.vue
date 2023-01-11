@@ -8,7 +8,7 @@
       <p v-html="subtitle">
       </p>
       <y-form v-if="form" ref="yartuDialogForm" name="dialog-form" class="flex flex-col gap-5 mt-2">
-        <y-input helper v-model="form.model" :label="form.label" :placeholder="form.placeholder" :rules="form.rules"></y-input>
+        <y-input ref="yartuDialogFormInput" helper v-model="form.model" :label="form.label" :placeholder="form.placeholder" :rules="form.rules"></y-input>
       </y-form>
     </div>
     <div
@@ -137,6 +137,11 @@ export default {
         handler();
         this.$emit('close');
       }
+    }
+  },
+  mounted() {
+    if (this.$refs.yartuDialogFormInput && this.$refs.yartuDialogFormInput !== null) {
+      this.$refs.yartuDialogFormInput.focus();
     }
   },
   components: {

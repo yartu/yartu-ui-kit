@@ -220,8 +220,12 @@ const props = defineProps({
 const target = ref(null);
 const pickerContainer = ref(null);
 const showPicker = ref(false);
-const selectedDate = ref(dayjs(props.modelValue));
-const selectedTime = ref(dayjs(props.modelValue));
+const now =
+  props.modelValue && !isNaN(props.modelValue.$D)
+    ? dayjs(props.modelValue, props.formatDate)
+    : dayjs();
+const selectedDate = ref(props.modelValue ? props.modelValue : now);
+const selectedTime = ref(props.modelValue ? props.modelValue : now);
 
 onClickOutside(
   target,
@@ -270,7 +274,7 @@ const showDateWithFormat = computed(() => {
 const calculatePosition = () => {
   let container = target.value.getBoundingClientRect();
   let pickerContainerStyle = pickerContainer.value.style;
-  
+
   if (props.top) {
     pickerContainerStyle.top = container.top - 16 + 'px';
   } else {

@@ -112,7 +112,12 @@ export default {
 import { ref, watch, computed } from 'vue';
 import dayjs from 'dayjs';
 
-const emit = defineEmits(['update', 'update:modelValue', 'monthChange', 'close']);
+const emit = defineEmits([
+  'update',
+  'update:modelValue',
+  'monthChange',
+  'close',
+]);
 
 const props = defineProps({
   modelValue: {
@@ -166,9 +171,10 @@ const months = ref([
   'December',
 ]);
 
-const now = props.modelValue
-  ? dayjs(props.modelValue, props.formatDate)
-  : dayjs();
+const now =
+  props.modelValue && !isNaN(props.modelValue.$D)
+    ? dayjs(props.modelValue, props.formatDate)
+    : dayjs();
 
 const selectedDate = ref(props.modelValue ? props.modelValue : now);
 
@@ -263,7 +269,7 @@ const changeMonth = (inc, month = null) => {
     date: newDayjs.date(),
   };
   monthSelect.value = false;
-  emit('monthChange', newDayjs)
+  emit('monthChange', newDayjs);
 };
 
 const emitSelected = () => {
@@ -274,7 +280,10 @@ const emitSelected = () => {
 
 const chooseDate = (date) => {
   if (!date.disabled) {
-    selectedDate.value = selectedDate.value.set('date', date.date()).set('year', date.year()).set('month', date.month());
+    selectedDate.value = selectedDate.value
+      .set('date', date.date())
+      .set('year', date.year())
+      .set('month', date.month());
     emitSelected();
     emit('close');
   }
