@@ -1,5 +1,5 @@
 <template>
-  <button :class="containerClass">
+  <button :class="containerClass" :disabled="disabled">
     <i
       v-if="prefix != ''"
       :class="[prefix, prefixClass]"
@@ -21,6 +21,10 @@ export default {
       type: String,
       default: '',
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    }
   },
   computed: {
     containerClass() {
@@ -35,6 +39,7 @@ export default {
         {
           'before:absolute before:left-0 before:w-[3px] before:h-[36px] before:bg-BLUE before:rounded-r-md !text-BLUE bg-GREY-3':
             this.active,
+          'cursor-not-allowed': this.disabled,
         },
       ];
     },
