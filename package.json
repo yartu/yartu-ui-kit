@@ -1,7 +1,7 @@
 {
   "name": "@yartu/ui-kit",
   "description": "Yartu UI Kit for Developers w/ Vue3+Tailwind",
-  "version": "1.0.0-beta.87",
+  "version": "1.0.0-beta.88",
   "author": "Yartu Information Technologies AS <info@yartu.io> (https://www.yartu.io)",
   "bugs": {
     "url": "https://github.com/yartu/yartu-ui-kit/issues",
@@ -22,17 +22,17 @@
   },
   "dependencies": {
     "@tailwindcss/line-clamp": "^0.4.2",
-    "@tailwindcss/typography": "^0.5.8",
-    "@vueuse/core": "^9.9.0",
+    "@tailwindcss/typography": "^0.5.9",
+    "@vueuse/core": "^9.10.0",
     "core-js": "^3.27.1",
     "dayjs": "^1.11.7",
-    "postcss": "^8.4.20",
+    "postcss": "^8.4.21",
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss": "^3.2.4",
     "vue": "^3.2.13"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.7",
+    "@babel/core": "^7.20.12",
     "@babel/eslint-parser": "^7.19.1",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
