@@ -230,6 +230,9 @@ const selectedTime = ref(props.modelValue ? props.modelValue : now);
 onClickOutside(
   target,
   () => {
+    if (showPicker.value) {
+      emit('close');
+    }
     showPicker.value = false;
   },
   { ignore: [pickerContainer] },
