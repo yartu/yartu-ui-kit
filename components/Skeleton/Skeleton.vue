@@ -78,6 +78,26 @@
     :skeletonCount="skeletonCount"
     >
   </note-content-skeleton>
+  <project-task-card-skeleton 
+    v-else-if="type.includes('project-task-card')"
+    :skeletonCount="skeletonCount"
+    >
+  </project-task-card-skeleton>
+  <project-task-detail-skeleton 
+  v-else-if="type === 'project-task-detail-skeleton'">
+    :skeletonCount="skeletonCount"
+    >
+  </project-task-detail-skeleton>
+  <activity-skeleton 
+    v-else-if="type.includes('activity-skeleton')"
+    :skeletonCount="skeletonCount"
+    >
+  </activity-skeleton>
+  <comment-skeleton 
+    v-else-if="type.includes('comment-skeleton')"
+    :skeletonCount="skeletonCount"
+    >
+  </comment-skeleton>
 </template>
 
 <script>
@@ -107,6 +127,10 @@ import NavbarSearchSkeleton from "./NavbarSearchSkeleton.vue";
 import DriveClientSkeleton from "./DriveClientSkeleton.vue";
 import ConferenceCardSkeleton from "./ConferenceCardSkeleton.vue";
 import NoteContentSkeleton from "./NoteContentSkeleton.vue";
+import ProjectTaskCardSkeleton from "./ProjectTaskCardSkeleton.vue";
+import ProjectTaskDetailSkeleton from "./ProjectTaskDetailSkeleton.vue";
+import ActivitySkeleton from "./ActivitySkeleton.vue";
+import CommentSkeleton from "./CommentSkeleton.vue";
 
 // TODO : Add more template @aziz
 const props = defineProps({
