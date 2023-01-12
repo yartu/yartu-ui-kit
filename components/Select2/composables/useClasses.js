@@ -7,6 +7,7 @@ export default function useClasses(props, context, dependencies) {
     openDirection,
     showOptions,
     outline,
+    dense,
   } = toRefs(props);
 
   // ============ DEPENDENCIES ============
@@ -28,7 +29,7 @@ export default function useClasses(props, context, dependencies) {
     containerOpenTop: 'is-open-top',
     containerActive: 'is-active border-BLUE',
     wrapper:
-      'multiselect-wrapper relative mx-auto w-full flex items-center justify-end box-border cursor-pointer outline-none px-4 py-2.5',
+      'multiselect-wrapper relative mx-auto w-full flex items-center justify-end box-border cursor-pointer outline-none',
     labelClass: 'subtitle-4 text-BLACK-2 mb-2',
     singleLabel:
       'multiselect-single-label flex w-full items-center h-full max-w-full absolute left-0 top-0 pointer-events-none bg-transparent body-1 pl-3.5 pr-16 box-border rtl:left-auto rtl:right-0 rtl:pl-0 rtl:pr-3.5',
@@ -65,7 +66,7 @@ export default function useClasses(props, context, dependencies) {
     inifiniteSpinner:
       'multiselect-inifite-spinner bg-multiselect-spinner bg-center bg-no-repeat w-6 h-6 z-10 animate-spin flex-shrink-0 flex-grow-0',
     dropdown:
-      'multiselect-dropdown max-h-60 fixed transform border border-BORDER rounded-lg overflow-y-auto z-1001 bg-white flex flex-col py-3 shadow-1',
+      'multiselect-dropdown max-h-60 absolute border border-BORDER rounded-lg overflow-y-auto z-1001 bg-white flex flex-col py-3 shadow-1',
     dropdownTop: 'is-top -translate-y-full',
     dropdownHidden: 'is-hidden hidden',
     options: 'multiselect-options flex flex-col p-0 m-0',
@@ -94,7 +95,7 @@ export default function useClasses(props, context, dependencies) {
       'multiselect-fake-input bg-transparent absolute left-0 right-0 -bottom-px w-full h-px border-0 p-0 appearance-none outline-none text-transparent',
     assist:
       'multiselect-assistive-text absolute -m-px w-px h-px overflow-hidden',
-    spacer: 'multiselect-spacer h-9 py-px box-content',
+    spacer: 'multiselect-spacer py-px box-content',
     ...classes_.value,
   }));
 
@@ -126,7 +127,7 @@ export default function useClasses(props, context, dependencies) {
         )
         .concat(outline.value ? 'border' : '')
         .concat(isActive.value ? c.containerActive : []),
-      wrapper: c.wrapper,
+      wrapper: [c.wrapper].concat(dense.value ? 'px-4 py-1.5' : 'px-4 py-2.5'),
       labelClass: c.labelClass,
       spacer: c.spacer,
       singleLabel: c.singleLabel,
