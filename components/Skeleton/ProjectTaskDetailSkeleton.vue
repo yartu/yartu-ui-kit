@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-7 gap-6 w-full h-full">
+  <div class="flex flex-col gap-7 gap-6 w-full h-full animete-pulse">
     <div class="w-3/5 h-6 bg-BORDER rounded-full"></div>
     <div class="flex items-center gap-10">
       <div class="flex flex-col gap-3">
