@@ -43,7 +43,7 @@ export default function useClasses(props, context, dependencies) {
     tagRemove: 'multiselect-tag-remove ml-1',
     tagRemoveIcon: 'multiselect-tag-remove-icon',
     tagsSearchWrapper:
-      'multiselect-tags-search-wrapper inline-block relative w-full flex-grow flex-shrink h-full',
+      'multiselect-tags-search-wrapper inline-block relative flex-grow flex-shrink h-full',
     tagsSearch:
       'multiselect-tags-search absolute inset-0 border-0 outline-none focus:ring-0 appearance-none p-0 subtitle-4 text-GREY-1 w-full',
     tagsSearchCopy:
