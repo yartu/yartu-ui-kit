@@ -25,8 +25,6 @@ export default {
 </script>
 
 <script setup>
-import { ref } from 'vue';
-
 import TreeNode from './TreeNode/TreeNode.vue';
 
 const props = defineProps({
@@ -55,6 +53,5 @@ const updateModelValue = (e) => {
     emit('update:modelValue', e.id);
     emit('onSelect', e.id);
   }
-  // selected.value = e;
 };
 </script>
