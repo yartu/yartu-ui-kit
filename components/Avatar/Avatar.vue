@@ -61,6 +61,7 @@ const containerClass = computed(() => {
     {
       'bg-transparent': props.image != null,
       'rounded-full': props.shape === 'circle',
+      'w-5 h-5 text-2xs': props.size === '2xs',
       'w-6 h-6 text-2xs': props.size === 'xs',
       'w-8 h-8 text-sm': props.size === 'sm',
       'w-9 h-9 text-base': props.size === 'md',

@@ -28,8 +28,7 @@ export default function useDropdown(props, context, dep) {
     let dropdownContainer = multiselect.value.getBoundingClientRect();
 
     if (openDirection.value === 'top') {
-      optionContainer.value.style.top =
-        dropdownContainer.top - dropdownContainer.height - 12 + 'px';
+      optionContainer.value.style.top = dropdownContainer.top - 12 + 'px';
     } else {
       optionContainer.value.style.top =
         dropdownContainer.top + dropdownContainer.height + 12 + 'px';
@@ -48,11 +47,20 @@ export default function useDropdown(props, context, dep) {
   };
 
   watch(
-    () => isOpen.value || isActive.value,
+    () => isActive.value,
     () => {
       setTimeout(() => {
         calculatePosition();
-      }, 1);
+      }, 0);
+    },
+  );
+
+  watch(
+    () => isOpen.value,
+    () => {
+      setTimeout(() => {
+        calculatePosition();
+      }, 0);
     },
   );
 
@@ -61,7 +69,7 @@ export default function useDropdown(props, context, dep) {
     () => {
       setTimeout(() => {
         calculatePosition();
-      }, 1);
+      }, 0);
     },
     { deep: true },
   );
