@@ -47,11 +47,20 @@ export default function useDropdown(props, context, dep) {
   };
 
   watch(
-    () => isOpen.value || isActive.value,
+    () => isActive.value,
     () => {
       setTimeout(() => {
         calculatePosition();
-      }, 1);
+      }, 0);
+    },
+  );
+
+  watch(
+    () => isOpen.value,
+    () => {
+      setTimeout(() => {
+        calculatePosition();
+      }, 0);
     },
   );
 
@@ -60,7 +69,7 @@ export default function useDropdown(props, context, dep) {
     () => {
       setTimeout(() => {
         calculatePosition();
-      }, 1);
+      }, 0);
     },
     { deep: true },
   );
