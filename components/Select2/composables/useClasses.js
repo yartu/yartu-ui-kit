@@ -127,7 +127,7 @@ export default function useClasses(props, context, dependencies) {
         )
         .concat(outline.value ? 'border' : '')
         .concat(isActive.value ? c.containerActive : []),
-      wrapper: [c.wrapper].concat(dense.value ? 'px-4 py-1.5' : 'px-4 py-2.5'),
+      wrapper: [c.wrapper].concat(dense.value ? 'px-4 py-1' : 'px-4 py-2'),
       labelClass: c.labelClass,
       spacer: c.spacer,
       singleLabel: c.singleLabel,
