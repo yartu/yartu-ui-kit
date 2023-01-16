@@ -1,7 +1,7 @@
 <template>
   <div :class="paginationClass">
     <div :class="paginationTitleClass">
-      {{ pageRange }}-{{ perPage }} of {{ total }}
+      {{ viewRangeStart }}-{{ viewRangeEnd }} of {{ total }}
     </div>
     <div v-if="!simple" class="flex gap-1 items-center">
       <div class="mr-4">
@@ -29,6 +29,7 @@
         </button>
       </div>
       <button
+        v-if="!pages.includes(1)"
         @click.prevent="changePage(1)"
         :class="[
           current === 1 ? 'bg-BLUE text-WHITE border-none hover:bg-BLUE' : '',
@@ -53,6 +54,7 @@
       </button>
       <span class="px-3 text-GREY-1" v-if="hasLast()">...</span>
       <button
+        v-if="!pages.includes(totalPages)"
         @click.prevent="changePage(totalPages)"
         :class="[
           current === totalPages
@@ -174,8 +176,8 @@ export default {
   computed: {
     pages() {
       let pages = [];
-      for (let i = this.rangeStart + 1; i <= this.rangeEnd; i++) {
-        if (i != this.totalPages) {
+      for (let i = this.rangeStart; i <= this.rangeEnd; i++) {
+        if (i !== this.totalPages) {
           pages.push(i);
         }
       }
@@ -188,6 +190,14 @@ export default {
     rangeEnd() {
       let end = this.current + this.pageRange;
       return end < this.totalPages ? end : this.totalPages;
+    },
+    viewRangeStart() {
+      let start = ((this.current - 1) * this.perPage) + 1;
+      return start > 0 ? start : 1;
+    },
+    viewRangeEnd() {
+      let end = this.current * this.perPage;
+      return end < this.total ? end : this.total;
     },
     totalPages() {
       return Math.ceil(this.total / this.perPage);
