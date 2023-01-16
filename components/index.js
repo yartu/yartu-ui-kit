@@ -22,6 +22,7 @@ import ListBox from './ListBox';
 import Tooltip from './Tooltip';
 import Loading from './Loading';
 import Checkbox from './Checkbox';
+import Carousel from './Carousel';
 import Dropdown from './Dropdown';
 import NoteCard from './NoteCard';
 import Snackbar from './Snackbar';
@@ -89,6 +90,7 @@ export {
   Calendar,
   ListItem,
   Checkbox,
+  Carousel,
   Combobox,
   NoteCard,
   TextArea,
