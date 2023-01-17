@@ -1,21 +1,7 @@
 <template>
   <div :class="snackbarContainer">
-    <div>
-      <img
-        v-if="type === 'success'"
-        src="../../assets/images/svgs/icon-success-dark.svg"
-        alt="success"
-      />
-      <img
-        v-if="type === 'danger'"
-        src="../../assets/images/svgs/icon-close-dark.svg"
-        alt="error"
-      />
-      <img
-        v-if="type === 'warning'"
-        src="../../assets/images/svgs/icon-warning-dark.svg"
-        alt="error"
-      />
+    <div class="shrink-0">
+      <img v-if="type !== ''" :src="getIconUrl" :alt="type" />
     </div>
     <slot></slot>
     <div class="flex flex-wrap gap-2 ml-auto min-w-fit">
@@ -121,6 +107,17 @@ setTimeout(() => {
 const close = () => {
   emit('close', this);
 };
+
+const getIconUrl = computed(() => {
+  if (props.type === 'danger') {
+    return require('../../assets/images/svgs/icon-close-dark.svg');
+  } else if (props.type === 'success') {
+    return require('../../assets/images/svgs/icon-success-dark.svg');
+  } else if (props.type === 'warning') {
+    return require('../../assets/images/svgs/icon-warning-dark.svg');
+  }
+  return require('../../assets/images/svgs/icon-close-dark.svg');
+});
 
 const snackbarContainer = computed(() => [
   'flex',

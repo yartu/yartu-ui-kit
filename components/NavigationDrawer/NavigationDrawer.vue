@@ -84,7 +84,7 @@ const bottomGapStyle = computed(() => `bottom: ${props.bottomGap};`);
 
 const overlayClass = computed(() => [
   'opacity-50',
-  'inset-0 z-5',
+  'inset-0 z-30',
   'bg-BLACK-2 ',
   'transition-all duration-300',
   {
@@ -100,7 +100,7 @@ const containerClass = computed(() => [
   'transition-all duration-300',
   'overflow-auto',
   'overscroll-contain',
-  'z-10',
+  'z-30',
   {
     'absolute left-0 bottom-0 top-0 border-r border-BORDER':
       props.absolute && !props.right,
