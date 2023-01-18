@@ -199,7 +199,7 @@ export default {
     },
 
     inputContainerClass() {
-      return ['text-BLACK-2', 'flex flex-col gap-2'];
+      return ['text-BLACK-2', 'flex flex-col gap-2', 'relative'];
     },
 
     inputContentClass() {

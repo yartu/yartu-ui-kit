@@ -33,6 +33,7 @@ export default {
         'w-full',
         'flex items-center ',
         'text-xs',
+        'text-left',
         'text-BLACK-2',
         'font-semibold',
         'hover:bg-GREY-3',
