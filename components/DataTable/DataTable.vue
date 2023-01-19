@@ -101,7 +101,7 @@
             <y-checkbox
               @click.native.stop=""
               v-model="selectedList"
-              :input-value="item[inputValue]"
+              :input-value="object ? item : item[inputValue]"
             ></y-checkbox>
           </td>
           <td
@@ -156,6 +156,11 @@ const props = defineProps({
     required: false,
     default: () => [],
   },
+  object: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
   inputValue: {
     type: String,
     default: "id",
@@ -203,7 +208,11 @@ const openDetail = (item) => {
 const selectAll = () => {
   allChecked.value = !allChecked.value;
   if (allChecked.value) {
-    selectedList.value = props.items.map((i) => i[props.inputValue]);
+    if (props.object) {
+      selectedList.value = props.items;
+    } else {
+      selectedList.value = props.items.map((i) => i[props.inputValue]);
+    }
   } else {
     selectedList.value = [];
   }
