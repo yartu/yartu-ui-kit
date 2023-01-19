@@ -11,7 +11,7 @@
     <div class="flex-1">
       <slot />
     </div>
-    <slot name="postfix">
+    <slot name="suffix">
       <i
         class="w-6 h-6 !leading-6"
         :class="suffix != '' ? suffix : ''"
