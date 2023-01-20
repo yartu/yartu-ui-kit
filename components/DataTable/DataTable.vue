@@ -96,6 +96,7 @@
         >
           <td
             v-if="selectable"
+            @click.stop.prevent
             class="p-2.5 text-xs w-6 whitespace-nowrap font-semibold"
           >
             <y-checkbox
