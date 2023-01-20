@@ -1,10 +1,10 @@
 <template>
-  <div :class="paginationClass">
+  <div v-if="pages.length > 0" :class="paginationClass">
     <div :class="paginationTitleClass">
       {{ viewRangeStart }}-{{ viewRangeEnd }} of {{ total }}
     </div>
     <div v-if="!simple" class="flex gap-1 items-center">
-      <div class="mr-4">
+      <div :class="leftArrowClass">
         <button
           :class="paginationItemClass"
           @click.prevent="changePage(current - 1)"
@@ -38,7 +38,7 @@
       >
         1
       </button>
-      <span class="px-3 text-GREY-1" v-if="hasFirst()">...</span>
+      <span :class="dotsClass" v-if="hasFirst()">...</span>
       <button
         @click.prevent="changePage(item)"
         v-for="(item, index) in pages"
@@ -52,7 +52,7 @@
       >
         {{ item }}
       </button>
-      <span class="px-3 text-GREY-1" v-if="hasLast()">...</span>
+      <span :class="dotsClass" v-if="hasLast()">...</span>
       <button
         v-if="!pages.includes(totalPages)"
         @click.prevent="changePage(totalPages)"
@@ -65,7 +65,7 @@
       >
         {{ totalPages }}
       </button>
-      <div class="ml-4">
+      <div :class="rightArrowClass">
         <button
           :class="paginationItemClass"
           @click.prevent="changePage(current + 1)"
@@ -115,117 +115,162 @@
 </template>
 
 <script>
-import Button from '../Button/Button.vue';
 export default {
   name: 'y-pagination',
-  data() {
-    return {
-      current: this.page,
-    };
-  },
-  props: {
-    total: {
-      type: Number,
-      default: 10,
-    },
-    perPage: {
-      type: Number,
-      default: 2,
-    },
-    pageRange: {
-      type: Number,
-      default: 2,
-    },
-    simple: {
-      type: Boolean,
-      default: false,
-    },
-    page: {
-      type: Number,
-      required: false,
-    },
-  },
-  components: {
-    'y-button': Button,
-  },
-  methods: {
-    hasFirst() {
-      return this.rangeStart !== 1;
-    },
-    hasLast() {
-      return this.rangeEnd < this.totalPages;
-    },
-    hasPrev() {
-      return this.current > 1;
-    },
-    hasNext() {
-      return this.current < this.totalPages;
-    },
-    changePage(page) {
-      if (page > 0 && page <= this.totalPages) {
-        this.current = page;
-        this.$emit('page-changed', page);
-      }
-    },
-  },
-  watch: {
-    page(newVal) {
-      this.current = newVal;
-    },
-  },
-  computed: {
-    pages() {
-      let pages = [];
-      for (let i = this.rangeStart; i <= this.rangeEnd; i++) {
-        if (i !== this.totalPages) {
-          pages.push(i);
-        }
-      }
-      return pages;
-    },
-    rangeStart() {
-      let start = this.current - this.pageRange;
-      return start > 0 ? start : 1;
-    },
-    rangeEnd() {
-      let end = this.current + this.pageRange;
-      return end < this.totalPages ? end : this.totalPages;
-    },
-    viewRangeStart() {
-      let start = ((this.current - 1) * this.perPage) + 1;
-      return start > 0 ? start : 1;
-    },
-    viewRangeEnd() {
-      let end = this.current * this.perPage;
-      return end < this.total ? end : this.total;
-    },
-    totalPages() {
-      return Math.ceil(this.total / this.perPage);
-    },
-    paginationClass() {
-      return ['flex', 'gap-1', 'items-center'];
-    },
-    paginationItemClass() {
-      return [
-        'w-9 h-9',
-        'border border-BORDER rounded-full',
-        'text-sm font-semibold text-BLACK-2',
-        'inline-flex items-center justify-center',
-        'hover:bg-GREY-3',
-        'transition-all duration-300',
-      ];
-    },
-    paginationTitleClass() {
-      return [
-        'text-sm',
-        'font-semibold',
-        'text-BLACK-2',
-        {
-          'mr-2': this.$props.simple,
-          'mr-6': !this.$props.simple,
-        },
-      ];
-    },
-  },
 };
+</script>
+<script setup>
+import { ref, computed, watch } from 'vue';
+
+const emit = defineEmits(['pageChanged']);
+const props = defineProps({
+  size: {
+    type: String,
+    default: 'md',
+  },
+  total: {
+    type: Number,
+    default: 10,
+  },
+  pageRange: {
+    type: Number,
+    default: 1,
+  },
+  perPage: {
+    type: Number,
+    default: 20,
+  },
+  simple: {
+    type: Boolean,
+    default: false,
+  },
+  orientation: {
+    type: String,
+  },
+  page: {
+    type: Number,
+    required: false,
+  },
+});
+
+const current = ref(props.page);
+
+const hasFirst = () => {
+  return rangeStart.value !== 1;
+};
+
+const hasLast = () => {
+  return rangeEnd.value < totalPages.value;
+};
+
+const hasPrev = () => {
+  return current.value > 1;
+};
+
+const hasNext = () => {
+  return current.value < totalPages.value;
+};
+
+const changePage = (page) => {
+  if (page > 0 && page <= totalPages.value) {
+    current.value = page;
+    emit('pageChanged', page);
+  }
+};
+
+const paginationItemClass = computed(() => [
+  'border border-BORDER rounded-full',
+  'font-semibold text-BLACK-2',
+  'inline-flex items-center justify-center',
+  'hover:bg-GREY-3',
+  'transition-all duration-300',
+  {
+    'w-9 h-9 text-sm': props.size == 'md',
+    'w-7 h-7 text-xs': props.size == 'sm',
+    'w-5 h-5 text-xs': props.size == 'xs',
+  },
+]);
+
+const paginationTitleClass = computed(() => [
+  'text-sm',
+  'font-semibold',
+  'text-BLACK-2',
+  {
+    'mr-2': props.simple,
+    'mr-6': !props.simple,
+    '!mr-0': props.orientation === 'col',
+  },
+]);
+
+const paginationClass = computed(() => [
+  'flex',
+  'gap-1',
+  'items-center',
+  {
+    'flex-col !items-end': props.orientation === 'col',
+  },
+]);
+
+const leftArrowClass = computed(() => [
+  {
+    'mr-4': props.size == 'md',
+    'mr-2': props.size == 'sm',
+    'mr-1': props.size == 'xs',
+  },
+]);
+const rightArrowClass = computed(() => [
+  {
+    'ml-4': props.size == 'md',
+    'ml-2': props.size == 'sm',
+    'ml-1': props.size == 'xs',
+  },
+]);
+
+const dotsClass = computed(() => [
+  'text-GREY-1',
+  {
+    'px-3': props.size == 'md',
+    'px-2': props.size == 'sm',
+    'px-1': props.size == 'xs',
+  },
+]);
+
+const totalPages = computed(() => Math.ceil(props.total / props.perPage));
+
+const viewRangeEnd = computed(() => {
+  let end = current.value * props.perPage;
+  return end < props.total ? end : props.total;
+});
+
+const viewRangeStart = computed(() => {
+  let start = (current.value - 1) * props.perPage + 1;
+  return start > 0 ? start : 1;
+});
+
+const rangeStart = computed(() => {
+  let start = current.value - props.pageRange;
+  return start > 0 ? start : 1;
+});
+
+const rangeEnd = computed(() => {
+  let end = current.value + props.pageRange;
+  return end < totalPages.value ? end : totalPages.value;
+});
+
+const pages = computed(() => {
+  let pages = [];
+  for (let i = rangeStart.value; i <= rangeEnd.value; i++) {
+    if (i !== totalPages.value) {
+      pages.push(i);
+    }
+  }
+  return pages;
+});
+
+watch(
+  () => props.page,
+  (newVal) => {
+    current.value = newVal;
+  },
+);
 </script>
