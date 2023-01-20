@@ -1,6 +1,6 @@
 <template>
   <i
-    :class="name"
+    :class="[name, 'select-none pointer-events-none']"
     aria-hidden="true"
     :style="iconColor !== 'none' ? `color: ${iconColor}` : ''"
   ></i>
