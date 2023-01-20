@@ -27,18 +27,13 @@
       :class="!isFolder ? 'pl-6' : ''"
       class="relative z-2 flex flex-wrap items-center justify-center"
     >
-      <slot name="prefix"></slot>
+      <slot name="prefix" :item="item"></slot>
     </span>
     <h1 class="truncate relative z-2" :title="item.name">
       {{ item.name }}
     </h1>
     <div class="ml-auto relative z-2 pr-4">
-      <h1
-        v-if="item.unreadcount && item.unreadcount > 0"
-        class="text-BLACK-2 text-2xs font-semibold"
-      >
-        {{ item.unreadcount }}
-      </h1>
+      <slot name="suffix" :item="item"></slot>
     </div>
   </div>
   <div v-show="isOpen || expanded" v-if="isFolder" class="ml-6">
@@ -54,8 +49,11 @@
       :folderKey="folderKey"
       :depth="depth + 1"
     >
-      <template #prefix>
-        <slot name="prefix"></slot>
+      <template #prefix="{ item }">
+        <slot name="prefix" :item="item"></slot>
+      </template>
+      <template #suffix="{ item }">
+        <slot name="suffix" :item="item"></slot>
       </template>
     </TreeNode>
   </div>

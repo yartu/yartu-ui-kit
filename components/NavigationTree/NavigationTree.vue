@@ -11,8 +11,11 @@
         :folderKey="folderKey"
         :itemKey="itemKey"
       >
-        <template #prefix>
-          <slot name="prefix"></slot>
+        <template #prefix="{ item }">
+          <slot name="prefix" :item="item"></slot>
+        </template>
+        <template #suffix="{ item }">
+          <slot name="suffix" :item="item"></slot>
         </template>
       </TreeNode>
     </div>

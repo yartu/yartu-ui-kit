@@ -27,7 +27,7 @@
         </slot>
       </div>
       <div class="ml-auto pr-6 flex items-center">
-        <slot name="postfix"></slot>
+        <slot name="suffix"></slot>
       </div>
     </div>
     <div
