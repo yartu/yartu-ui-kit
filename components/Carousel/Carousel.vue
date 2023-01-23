@@ -61,17 +61,15 @@ const childSize = ref();
 
 onMounted(() => {
   childSize.value =
-    carouselContainerRef.value.children[0].getBoundingClientRect();
+    carouselContainerRef.value?.children[0]?.getBoundingClientRect();
 });
 
 const scroll = (direction) => {
-  if (
-    direction === 'left' &&
-    carouselContainerRef.value.scrollLeft >= childSize.value.width
-  ) {
-    carouselContainerRef.value.scrollLeft -= childSize.value.width / 2 + 10;
-  } else if (direction === 'right') {
-    carouselContainerRef.value.scrollLeft += childSize.value.width / 2 + 10;
+  const scrollLeft = carouselContainerRef.value.scrollLeft;
+  if (direction === 'left' && scrollLeft >= childSize.value.width) {
+    scrollLeft -= childSize.value.width / 2 + 10;
+  } else if (childSize.value.length > 0 && direction === 'right') {
+    scrollLeft += childSize.value.width / 2 + 10;
   }
   return;
 };
