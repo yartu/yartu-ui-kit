@@ -38,6 +38,7 @@
       </div>
     </div>
     <div class="flex w-full gap-2">
+      <!-- TODO:: add indicator -->
       <div class=""></div>
     </div>
   </div>
@@ -60,16 +61,25 @@ const carouselContainerRef = ref();
 const childSize = ref();
 
 onMounted(() => {
-  childSize.value =
-    carouselContainerRef.value?.children[0]?.getBoundingClientRect();
+  setTimeout(() => {
+    if (
+      carouselContainerRef.value &&
+      carouselContainerRef.value.children.length > 0
+    ) {
+      childSize.value =
+        carouselContainerRef.value.children[0].getBoundingClientRect();
+    }
+  }, 0);
 });
 
 const scroll = (direction) => {
-  const scrollLeft = carouselContainerRef.value.scrollLeft;
-  if (direction === 'left' && scrollLeft >= childSize.value.width) {
-    scrollLeft -= childSize.value.width / 2 + 10;
-  } else if (childSize.value.length > 0 && direction === 'right') {
-    scrollLeft += childSize.value.width / 2 + 10;
+  if (
+    direction === 'left' &&
+    carouselContainerRef.value.scrollLeft >= childSize.value.width
+  ) {
+    carouselContainerRef.value.scrollLeft -= childSize.value.width / 2 + 10;
+  } else if (childSize.value.left && direction === 'right') {
+    carouselContainerRef.value.scrollLeft += childSize.value.width / 2 + 10;
   }
   return;
 };
