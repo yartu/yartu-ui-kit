@@ -82,6 +82,7 @@ export default {
           'px-1': this.value !== '',
           'min-w-4 min-h-4': this.size == 'base',
           'min-w-3 min-h-3': this.size == 'sm',
+          'min-w-2 min-h-2': this.size == 'xs',
         },
       ];
     },
