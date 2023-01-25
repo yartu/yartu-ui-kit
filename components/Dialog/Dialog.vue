@@ -14,7 +14,7 @@
     <div
       class="absolute bottom-0 z-1 inset-x-0 bg-LIGHTBLUE-9 flex flex-wrap items-center justify-end gap-4 px-7 py-4 rounded-b-lg"
     >
-      <y-button v-if="showCancelButton" secondary size="lg" @click="$emit('close')">
+      <y-button :loading="isLoading" :disabled="isLoading" v-if="showCancelButton" secondary size="lg" @click="$emit('close')">
         {{ cancelButton }}
       </y-button>
       <y-button
@@ -24,6 +24,8 @@
         @click="clickAction(action.handler)"
         primary
         size="lg"
+        :loading="isLoading"
+        :disabled="isLoading"
       >
         {{ action.text }}
       </y-button>
@@ -91,7 +93,15 @@ export default {
       type: Boolean,
       default: () => true,
     },
+    autoClose: {
+      type: Boolean,
+      required: false,
+      default: () => true,
+    }
   },
+  data: () => ({
+    isLoading: false,
+  }),
   computed: {
     dialogIcon() {
       if (this.icon) {
@@ -127,15 +137,25 @@ export default {
     },
   },
   methods: {
+    closeDialog() {
+      this.$emit('close');
+    },
+    loadingStatus(status) {
+      this.isLoading = status;
+    },
     clickAction(handler) {
       if (this.form) {
         if (this.$refs.yartuDialogForm.validate()) {
-          handler(this.form.model);
-          this.$emit('close');
+          handler(this.form.model, this.closeDialog, this.loadingStatus);
+          if (this.autoClose) {
+            this.$emit('close');
+          }
         }
       } else {
-        handler();
-        this.$emit('close');
+        handler(this.closeDialog);
+        if (this.autoClose) {
+          this.$emit('close');
+        }
       }
     }
   },
