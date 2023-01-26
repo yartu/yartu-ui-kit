@@ -40,11 +40,13 @@
             v-if="selectable"
             class="p-2.5 text-xs whitespace-nowrap font-semibold"
           >
-            <Checkbox
-              @click="selectAll"
-              :checked="allChecked"
-              :indeterminate="indeterminate"
-            ></Checkbox>
+            <slot name="all-selection">
+              <Checkbox
+                @click="selectAll"
+                :checked="allChecked"
+                :indeterminate="indeterminate"
+              ></Checkbox>
+            </slot>
           </th>
           <th
             v-for="(header, index) in headers"
@@ -86,6 +88,7 @@
       <template #tbody>
         <tr
           @click.stop="openDetail(item)"
+          @contextmenu.prevent="contextMenu($event, item)"
           class="border-y border-BORDER text-BLACK-2 hover:bg-LIGHTBLUE-4 cursor-pointer"
           :class="{
             'bg-LIGHTBLUE-4': isActive(item),
@@ -99,11 +102,13 @@
             @click.stop.prevent
             class="p-2.5 text-xs w-6 whitespace-nowrap font-semibold"
           >
-            <y-checkbox
-              @click.native.stop=""
-              v-model="selectedList"
-              :input-value="object ? item : item[inputValue]"
-            ></y-checkbox>
+            <slot name="item-selection" :item="item">
+              <y-checkbox
+                @click.native.stop=""
+                v-model="selectedList"
+                :input-value="object ? item : item[inputValue]"
+              ></y-checkbox>
+            </slot>
           </td>
           <td
             v-for="header in headers"
@@ -184,7 +189,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["selected", "choose"]);
+const emit = defineEmits(['selected', 'choose', 'context']);
 
 const selectedList = ref([]);
 const allChecked = ref(false);
@@ -204,6 +209,10 @@ const isActive = (item) => {
 
 const openDetail = (item) => {
   emit("choose", item);
+};
+
+const contextMenu = (event, item) => {
+  emit('context', { event, item });
 };
 
 const selectAll = () => {
