@@ -57,7 +57,7 @@
         </template>
 
         <!-- Tags (with search) -->
-        <template v-if="mode == 'tags'">
+        <template v-if="mode === 'tags' && !hideSelected">
           <div
             :class="classList.tags"
             style="width: calc(100% - 4rem)"
@@ -573,7 +573,7 @@ export default {
     hideSelected: {
       type: Boolean,
       required: false,
-      default: true,
+      default: false,
     },
     createTag: {
       type: Boolean,
