@@ -57,13 +57,14 @@
         </template>
 
         <!-- Tags (with search) -->
-        <template v-if="mode === 'tags' && !hideSelected">
+        <template v-if="mode === 'tags'">
           <div
             :class="classList.tags"
             style="width: calc(100% - 4rem)"
             data-tags
           >
             <slot
+              v-if="!hideSelected"
               v-for="(option, i, key) in activeListed.items"
               name="tag"
               :option="option"
@@ -208,7 +209,7 @@
         </template>
 
         <!-- Placeholder -->
-        <template v-if="placeholder && hideSelected || placeholder && !hasSelected && !search">
+        <template v-if="placeholder && !search && (!hasSelected || hideSelected)">
           <slot name="placeholder">
             <div :class="classList.placeholder" aria-hidden="true">
               {{ placeholder }}

@@ -629,7 +629,11 @@ export default function useOptions (props, context, dep)
 
           iv.value[i][label.value] = newLabel
 
-          if (object.value) {
+          if (ev !== undefined && object.value) {
+            ev.value[i][label.value] = newLabel
+          }else {
+            // TODO :: @ahmet check this logic & fix if buggy.
+            ev.value = [];
             ev.value[i][label.value] = newLabel
           }
         }
