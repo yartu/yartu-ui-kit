@@ -6,7 +6,7 @@ import arraysEqual from './../utils/arraysEqual'
 
 export default function useOptions (props, context, dep)
 {
-  const { 
+  const {
     options, mode, trackBy: trackBy_, limit, hideSelected, createTag, createOption: createOption_, label,
     appendNewTag, appendNewOption: appendNewOption_, multipleLabel, object, loading, delay, resolveOnLoad,
     minChars, filterResults, clearOnSearch, clearOnSelect, valueProp,
@@ -30,7 +30,7 @@ export default function useOptions (props, context, dep)
   const close = dep.close
   const isOpen = dep.isOpen;
   const isActive = dep.isActive;
-  
+
   // ================ DATA ================
 
   // no export
@@ -160,17 +160,17 @@ export default function useOptions (props, context, dep)
   });
 
   const multipleLabelText = computed(() => {
-    
+
     if (multipleLabel !== undefined && multipleLabel.value !== undefined) {
       return multipleLabel.value(iv.value, $this);
     }
-    
+
     if (iv.value && iv.value.length > 1) {
       return `${iv.value.length} options selected`;
     }
-    
+
     return `1 option selected`;
-    
+
   })
 
   const noOptions = computed(() => {
@@ -219,7 +219,7 @@ export default function useOptions (props, context, dep)
   // =============== METHODS ==============
 
   /**
-   * @param {array|object|string|number} option 
+   * @param {array|object|string|number} option
    */
   const select = (option) => {
     if (typeof option !== 'object') {
@@ -253,8 +253,8 @@ export default function useOptions (props, context, dep)
       case 'tags':
       case 'multiple':
         update(Array.isArray(option)
-          ? iv.value.filter(v => option.map(o => o[valueProp.value]).indexOf(v[valueProp.value]) === -1)
-          : iv.value.filter(v => v[valueProp.value] != option[valueProp.value]))
+            ? iv.value.filter(v => option.map(o => o[valueProp.value]).indexOf(v[valueProp.value]) === -1)
+            : iv.value.filter(v => v[valueProp.value] != option[valueProp.value]))
         break
     }
 
@@ -307,7 +307,7 @@ export default function useOptions (props, context, dep)
     if (max === undefined || max.value === -1 || (!hasSelected.value && max.value > 0)) {
       return false
     }
-    
+
     return iv.value.length >= max.value
   }
 
@@ -322,7 +322,7 @@ export default function useOptions (props, context, dep)
       delete option.__CREATE__
 
       option = onCreate.value(option, $this)
-      
+
       if (option instanceof Promise) {
         resolving.value = true
         option.then((result) => {
@@ -331,7 +331,7 @@ export default function useOptions (props, context, dep)
         })
 
         return
-      } 
+      }
     }
 
     handleOptionSelect(option)
@@ -342,7 +342,7 @@ export default function useOptions (props, context, dep)
       option = { ...option }
       delete option.__CREATE__
     }
-    
+
     switch (mode.value) {
       case 'single':
         if (option && isSelected(option)) {
@@ -450,9 +450,9 @@ export default function useOptions (props, context, dep)
           deselect(group[groupOptions.value])
         } else {
           select(group[groupOptions.value]
-            .filter(o => iv.value.map(v => v[valueProp.value]).indexOf(o[valueProp.value]) === -1)
-            .filter(o => !o[disabledProp.value])
-            .filter((o, k) => iv.value.length + 1 + k <= max.value || max.value === -1)
+              .filter(o => iv.value.map(v => v[valueProp.value]).indexOf(o[valueProp.value]) === -1)
+              .filter(o => !o[disabledProp.value])
+              .filter((o, k) => iv.value.length + 1 + k <= max.value || max.value === -1)
           )
         }
         break
@@ -501,7 +501,7 @@ export default function useOptions (props, context, dep)
   // no export
   const getOptionByTrackBy = (val, norm = true) => {
     return eo.value.map(o => parseInt(o[trackBy.value]) == o[trackBy.value] ? parseInt(o[trackBy.value]) : o[trackBy.value]).indexOf(
-      parseInt(val) == val ? parseInt(val) : val
+        parseInt(val) == val ? parseInt(val) : val
     )
   }
 
@@ -522,22 +522,22 @@ export default function useOptions (props, context, dep)
     // displaying groups which technically have options
     // based on search but that option is already selected.
     return groupHideEmpty.value
-      ? groups.filter(g => search.value
-          ? g.__VISIBLE__.length
-          : g[groupOptions.value].length
+        ? groups.filter(g => search.value
+            ? g.__VISIBLE__.length
+            : g[groupOptions.value].length
         )
-      : groups.filter(g => search.value ? g.__VISIBLE__.length : true)
+        : groups.filter(g => search.value ? g.__VISIBLE__.length : true)
   }
 
   // no export
   const filterOptions = (options, excludeHideSelected = true) => {
     let fo = options
-    
+
     if (search.value && filterResults.value) {
       fo = fo.filter((option) => {
         return searchStart.value
-          ? normalize(option[trackBy.value], strict.value).startsWith(normalize(search.value, strict.value))
-          : normalize(option[trackBy.value], strict.value).indexOf(normalize(search.value, strict.value)) !== -1
+            ? normalize(option[trackBy.value], strict.value).startsWith(normalize(search.value, strict.value))
+            : normalize(option[trackBy.value], strict.value).indexOf(normalize(search.value, strict.value)) !== -1
       })
     }
 
@@ -551,7 +551,7 @@ export default function useOptions (props, context, dep)
   // no export
   const optionsToArray = (options) => {
     let uo = options
-    
+
     // Transforming an object to an array of objects
     if (isObject(uo)) {
       uo = Object.keys(uo).map((key) => {
@@ -629,12 +629,10 @@ export default function useOptions (props, context, dep)
 
           iv.value[i][label.value] = newLabel
 
-          if (ev !== undefined && object.value) {
+          if (object.value && ev.value) {
             ev.value[i][label.value] = newLabel
-          }else {
-            // TODO :: @ahmet check this logic & fix if buggy.
-            ev.value = [];
-            ev.value[i][label.value] = newLabel
+          } else {
+            console.error('yartu-ui-kit: ev.value is not acceptable. something might be broken.');
           }
         }
       })
@@ -709,7 +707,7 @@ export default function useOptions (props, context, dep)
 
     initInternalValue()
   }
-  
+
   // ============== WATCHERS ==============
 
   if (delay.value > -1) {
