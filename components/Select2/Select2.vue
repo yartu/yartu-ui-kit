@@ -114,7 +114,7 @@
             </slot>
             <slot
               v-if="
-                activeListed.more && activeListed.items.length >= 2 && !isOpen
+                !hideSelected && activeListed.more && activeListed.items.length >= 2 && !isOpen
               "
               name="tag-more"
               :count="activeListed.more"
