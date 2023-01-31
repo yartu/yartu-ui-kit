@@ -46,6 +46,12 @@ const VALIDATIONS = {
       "Name is not valid, don't accept special chracrer (.,!?*, etc)",
     (v) => !/  +/g.test(v) || "This field don't aceept repeated space",
   ],
+  FOLDER_FILE_NAME: [
+    (v) => (v && v[0] !== ' ') || 'Not start with space',
+    (v) =>
+      !/[*':"\\|<>\/?]+/.test(v) ||
+      "Name is not valid, don't accept special chracrer (<,>,:,',!,?,*, etc)",
+  ],
 };
 
 const validate = (rules, value) => {
