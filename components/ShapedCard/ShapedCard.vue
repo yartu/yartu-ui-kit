@@ -5,11 +5,11 @@
         <span v-if="prefixBtn" :class="buttonClass">
           <slot name="prefixBtn"></slot>
         </span>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1">
+          <slot name="postfixBtn"></slot>
           <span v-if="suffixBtn" :class="buttonClass">
             <slot name="suffixBtn"></slot>
           </span>
-          <slot name="postfixBtn"></slot>
         </div>
       </div>
       <slot name="content"></slot>
