@@ -98,6 +98,11 @@
     :skeletonCount="skeletonCount"
     >
   </comment-skeleton>
+  <navigation-drawer-skeleton 
+    v-else-if="type.includes('navigation-drawer')"
+    :skeletonCount="skeletonCount"
+    >
+  </navigation-drawer-skeleton>
 </template>
 
 <script>
@@ -131,6 +136,7 @@ import ProjectTaskCardSkeleton from "./ProjectTaskCardSkeleton.vue";
 import ProjectTaskDetailSkeleton from "./ProjectTaskDetailSkeleton.vue";
 import ActivitySkeleton from "./ActivitySkeleton.vue";
 import CommentSkeleton from "./CommentSkeleton.vue";
+import NavigationDrawerSkeleton from "./NavigationDrawerSkeleton.vue";
 
 // TODO : Add more template @aziz
 const props = defineProps({

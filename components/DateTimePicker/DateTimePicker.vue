@@ -169,6 +169,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  left: {
+    type: Boolean,
+    default: false,
+  },
   time: {
     type: Boolean,
     required: false,
@@ -224,6 +228,7 @@ const now =
   props.modelValue && !isNaN(props.modelValue.$D)
     ? dayjs(props.modelValue, props.formatDate)
     : dayjs();
+emit('update:modelValue', now);
 const selectedDate = ref(props.modelValue ? props.modelValue : now);
 const selectedTime = ref(props.modelValue ? props.modelValue : now);
 
@@ -274,15 +279,15 @@ const showDateWithFormat = computed(() => {
 const calculatePosition = () => {
   let container = target.value.getBoundingClientRect();
   let pickerContainerStyle = pickerContainer.value.style;
-
+  let containerWidth = props.time ? 340: 220;
   if (props.top) {
     pickerContainerStyle.top = container.top - 16 + 'px';
   } else {
     pickerContainerStyle.top = container.bottom + 16 + 'px';
   }
-  if (props.left) pickerContainerStyle.left = container.right + 'px';
+  if (props.left) pickerContainerStyle.left = container.left - containerWidth + 'px';
   else {
-    pickerContainerStyle.left = container.left + 'px';
+    pickerContainerStyle.left = container.right + 'px';
   }
 };
 

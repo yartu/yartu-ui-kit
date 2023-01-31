@@ -57,13 +57,14 @@
         </template>
 
         <!-- Tags (with search) -->
-        <template v-if="mode == 'tags'">
+        <template v-if="mode === 'tags'">
           <div
             :class="classList.tags"
             style="width: calc(100% - 4rem)"
             data-tags
           >
             <slot
+              v-if="!hideSelected"
               v-for="(option, i, key) in activeListed.items"
               name="tag"
               :option="option"
@@ -113,7 +114,7 @@
             </slot>
             <slot
               v-if="
-                activeListed.more && activeListed.items.length >= 2 && !isOpen
+                !hideSelected && activeListed.more && activeListed.items.length >= 2 && !isOpen
               "
               name="tag-more"
               :count="activeListed.more"
@@ -208,7 +209,7 @@
         </template>
 
         <!-- Placeholder -->
-        <template v-if="placeholder && !hasSelected && !search">
+        <template v-if="placeholder && !search && (!hasSelected || hideSelected)">
           <slot name="placeholder">
             <div :class="classList.placeholder" aria-hidden="true">
               {{ placeholder }}
@@ -573,7 +574,7 @@ export default {
     hideSelected: {
       type: Boolean,
       required: false,
-      default: true,
+      default: false,
     },
     createTag: {
       type: Boolean,
