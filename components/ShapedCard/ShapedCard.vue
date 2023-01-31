@@ -1,15 +1,12 @@
 <template>
   <div :class="containerClass">
     <div :class="contentClass">
-      <div v-if="suffixBtn || prefixBtn" :class="actionsClass">
-        <span v-if="prefixBtn" :class="buttonClass">
+      <div v-if="postfixBtn || prefixBtn" :class="actionsClass">
+        <div v-if="prefixBtn" class="flex items-center gap-1">
           <slot name="prefixBtn"></slot>
-        </span>
-        <div class="flex items-center gap-1">
+        </div>
+        <div v-if="postfixBtn" class="flex items-center gap-1">
           <slot name="postfixBtn"></slot>
-          <span v-if="suffixBtn" :class="buttonClass">
-            <slot name="suffixBtn"></slot>
-          </span>
         </div>
       </div>
       <slot name="content"></slot>
@@ -33,7 +30,7 @@ export default {
 import { computed } from "vue";
 
 const props = defineProps({
-  suffixBtn: {
+  postfixBtn: {
     type: Boolean,
     default: true,
   },
@@ -88,32 +85,23 @@ const textClass = computed(() => [
   "p-4",
   "rounded-b-md",
 ]);
-const buttonClass = computed(() => [
-  "drive-card-buttons",
 
-  "w-8 h-8",
-  "flex flex-wrap",
-  "items-center justify-center",
-  "rounded-full",
+const actionsClass = computed(() => [
+  "drive-card-actions",
+  "w-full h-8",
+  "absolute",
   "transition duration-500 ease-in-out",
-  "text-center",
-  "overflow-hidden",
+  "z-1",
+  "flex justify-between",
   {
     "opacity-0": !props.showActions,
     "opacity-1": props.showActions,
   },
 ]);
-
-const actionsClass = computed(() => [
-  "w-full h-8",
-  "absolute",
-  "z-1",
-  "flex justify-between",
-]);
 </script>
 
 <style>
-.drive-card:hover .drive-card-buttons {
+.drive-card:hover .drive-card-actions {
   opacity: 1;
 }
 
