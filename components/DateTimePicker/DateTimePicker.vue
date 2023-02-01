@@ -228,20 +228,8 @@ const now =
   props.modelValue && !isNaN(props.modelValue.$D)
     ? dayjs(props.modelValue, props.formatDate)
     : dayjs();
-emit('update:modelValue', now);
 const selectedDate = ref(props.modelValue ? props.modelValue : now);
 const selectedTime = ref(props.modelValue ? props.modelValue : now);
-
-onClickOutside(
-  target,
-  () => {
-    if (showPicker.value) {
-      emit('close');
-    }
-    showPicker.value = false;
-  },
-  { ignore: [pickerContainer] },
-);
 
 const open = () => {
   showPicker.value = true;
@@ -291,6 +279,18 @@ const calculatePosition = () => {
     pickerContainerStyle.left = container.right + 'px';
   }
 };
+
+onClickOutside(
+    target,
+    () => {
+      if (showPicker.value) {
+        emitSelected();
+        emit('close');
+      }
+      showPicker.value = false;
+    },
+    { ignore: [pickerContainer] },
+);
 
 onMounted(() => {
   window.addEventListener('resize', calculatePosition);
