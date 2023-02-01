@@ -46,6 +46,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  selected: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const contentClass = computed(() => ["h-52", "w-full", "relative"]);
@@ -54,7 +58,11 @@ const containerClass = computed(() => [
   "drive-card",
   "h-56",
   "relative",
-  "rounded-md border border-BORDER",
+  "rounded-md border",
+  {
+    "border-BLUE bg-BLUE-3": props.selected,
+    "border-BORDER": !props.selected,
+  },
   "flex",
   "hover:shadow-1",
   "cursor-pointer",
@@ -76,7 +84,10 @@ const bottomShapeClass = computed(() => [
 ]);
 
 const textClass = computed(() => [
-  "bg-white",
+  {
+    "bg-white": !props.selected,
+    "bg-BLUE-3": props.selected,
+  },
   "flex flex-row gap-3",
   "absolute",
   "bottom-0 left-0 right-0",
