@@ -121,7 +121,7 @@ const emit = defineEmits([
 
 const props = defineProps({
   modelValue: {
-    type: [Object, String],
+    type: [Object, String, null],
     required: false,
   },
   dense: {
