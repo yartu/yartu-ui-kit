@@ -280,14 +280,15 @@ const calculatePosition = () => {
   let container = target.value.getBoundingClientRect();
   let pickerContainerStyle = pickerContainer.value.style;
   let containerWidth = props.time ? 340: 220;
+  
   if (props.top) {
     pickerContainerStyle.top = container.top - 16 + 'px';
   } else {
-    pickerContainerStyle.top = container.bottom + 16 + 'px';
+    pickerContainerStyle.top = container.bottom + 'px';
   }
-  if (props.left) pickerContainerStyle.left = container.left - containerWidth + 'px';
+  if (props.left) pickerContainerStyle.left = container.left + 'px';
   else {
-    pickerContainerStyle.left = container.right + 'px';
+    pickerContainerStyle.left = container.right - containerWidth + 'px';
   }
 };
 
