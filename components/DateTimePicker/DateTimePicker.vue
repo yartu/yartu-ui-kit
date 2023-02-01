@@ -176,7 +176,7 @@ const props = defineProps({
   time: {
     type: Boolean,
     required: false,
-    default: () => false,
+    default: false,
   },
   firstDay: {
     type: Number,
@@ -200,11 +200,11 @@ const props = defineProps({
   inline: {
     type: Boolean,
     required: false,
-    default: () => true,
+    default: true,
   },
   time24h: {
     type: Boolean,
-    default: () => false,
+    default: false,
   },
   min: {
     type: [Date, Object],
@@ -217,7 +217,7 @@ const props = defineProps({
   buttons: {
     type: Boolean,
     required: false,
-    default: () => false,
+    default: false,
   },
 });
 
@@ -252,7 +252,7 @@ const clear = () => {
   emit('update', '');
   emit('update:modelValue', '');
   showPicker.value = false;
-  selectedDate.value = '';
+  selectedDate.value = null;
 };
 
 const emitSelected = () => {
@@ -267,13 +267,14 @@ const emitSelected = () => {
 
 const showDateWithFormat = computed(() => {
   let value = '';
-  if (selectedDate.value) {
+  if (typeof selectedDate.value !== 'string') {
     value = selectedDate.value.format(props.formatDate);
     if (selectedTime && props.time) {
       value = `${value} ${selectedTime.value.format(props.formatTime)}`;
     }
+    return value;
   }
-  return value;
+  return selectedDate.value;
 });
 
 const calculatePosition = () => {
