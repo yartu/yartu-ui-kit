@@ -233,6 +233,8 @@ const selectedTime = ref(props.modelValue ? props.modelValue : now);
 
 const open = () => {
   showPicker.value = true;
+  selectedDate.value = props.modelValue ? props.modelValue : now;
+  selectedTime.value = props.modelValue ? props.modelValue : now;
   calculatePosition();
 };
 
