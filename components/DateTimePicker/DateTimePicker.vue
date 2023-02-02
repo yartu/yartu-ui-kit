@@ -51,7 +51,7 @@
         <div ref="pickerContainer" v-show="showPicker" :class="pickerClass">
           <div class="flex gap-3 flex-wrap">
             <y-calendar
-              @update="emitSelected"
+              @update="emitSelected($event, false)"
               @monthChange="$emit('monthChange')"
               :firstDay="firstDay"
               :formatDate="formatDate"
@@ -66,7 +66,7 @@
             ></y-calendar>
             <y-time-picker
               v-if="time"
-              @update="emitSelected"
+              @update="emitSelected($event, false)"
               v-model="selectedTime"
               :outline="false"
               inline
@@ -105,7 +105,7 @@
               </svg>
             </button>
             <button
-              @click="emitSelected"
+              @click="emitSelected(null, true)"
               class="border border-BORDER rounded-lg px-2 py-1 hover:bg-GREY-3 h-fit"
             >
               <svg
@@ -245,7 +245,7 @@ const clear = () => {
   selectedDate.value = null;
 };
 
-const emitSelected = () => {
+const emitSelected = (event, closePicker = false) => {
   if (props.time && selectedTime.value) {
     selectedDate.value = selectedDate.value
       .set('hour', selectedTime.value.hour())
@@ -253,6 +253,9 @@ const emitSelected = () => {
   }
   emit('update', selectedDate.value);
   emit('update:modelValue', selectedDate.value);
+  if(closePicker === true) {
+    showPicker.value = false;
+  }
 };
 
 const showDateWithFormat = computed(() => {
@@ -287,7 +290,7 @@ onClickOutside(
     target,
     () => {
       if (showPicker.value) {
-        emitSelected();
+        emitSelected(null, false);
         emit('close');
       }
       showPicker.value = false;
