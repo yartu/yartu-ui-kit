@@ -232,9 +232,17 @@ const selectedDate = ref(props.modelValue ? props.modelValue : now);
 const selectedTime = ref(props.modelValue ? props.modelValue : now);
 
 const open = () => {
+  if (typeof props.modelValue === 'string' && props.modelValue) {
+    selectedTime.value = dayjs(props.modelValue);
+    selectedDate.value = dayjs(props.modelValue);
+  } else if (typeof props.modelValue === 'object' && props.modelValue) {
+    selectedTime.value = props.modelValue;
+    selectedDate.value = props.modelValue;
+  } else {
+    selectedTime.value = now;
+    selectedDate.value = now;
+  }
   showPicker.value = true;
-  selectedDate.value = props.modelValue ? props.modelValue : now;
-  selectedTime.value = props.modelValue ? props.modelValue : now;
   calculatePosition();
 };
 
