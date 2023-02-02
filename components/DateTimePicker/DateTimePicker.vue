@@ -239,8 +239,8 @@ const open = () => {
 };
 
 const clear = () => {
-  emit('update', '');
-  emit('update:modelValue', '');
+  emit('update', null);
+  emit('update:modelValue', null);
   showPicker.value = false;
   selectedDate.value = null;
 };
