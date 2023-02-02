@@ -255,7 +255,7 @@ const emitSelected = () => {
 
 const showDateWithFormat = computed(() => {
   let value = '';
-  if (props.modelValue == null) return ''
+  if (!props.modelValue) return ''
   if (typeof selectedDate.value !== 'string') {
     value = selectedDate.value.format(props.formatDate);
     if (selectedTime && props.time) {
