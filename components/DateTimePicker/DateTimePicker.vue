@@ -49,6 +49,49 @@
     <transition name="fade">
       <teleport v-if="!inline" to="body">
         <div ref="pickerContainer" v-show="showPicker" :class="pickerClass">
+          <div v-if="preset" class="flex flex-col gap-2 mb-4">
+            <p class="text-sm text-GREY-1 font-semibold pb-1">PRESET</p>
+            <div class="flex items-center gap-2">
+              <button
+                @click="emitPreset(presetList.tomorrow)"
+                class="flex flex-col relative px-4 py-2 border border-BORDER rounded-lg flex cursor-pointer w-36"
+              >
+                <p class="text-sm text-BLACK-2 font-semibold">Tomorrow</p>
+                <p class="text-sm text-GREY-1">
+                  {{ presetList.tomorrow.format("DD MMM HH:mm") }}
+                </p>
+              </button>
+              <button
+                @click="emitPreset(presetList.twoDayAfter)"
+                class="flex flex-col relative px-4 py-2 border border-BORDER rounded-lg flex cursor-pointer w-36"
+              >
+                <p class="text-sm text-BLACK-2 font-semibold">2 day after</p>
+                <p class="text-sm text-GREY-1">
+                  {{ presetList.twoDayAfter.format("DD MMM HH:mm") }}
+                </p>
+              </button>
+            </div>
+            <div class="flex items-center gap-2">
+              <button
+                @click="emitPreset(presetList.fourDayAfter)"
+                class="flex flex-col relative px-4 py-2 border border-BORDER rounded-lg flex cursor-pointer w-36"
+              >
+                <p class="text-sm text-BLACK-2 font-semibold">4 day after</p>
+                <p class="text-sm text-GREY-1">
+                  {{ presetList.fourDayAfter.format("DD MMM HH:mm") }}
+                </p>
+              </button>
+              <button
+                @click="emitPreset(presetList.oneWeekAfter)"
+                class="flex flex-col relative px-4 py-2 border border-BORDER rounded-lg flex cursor-pointer w-36"
+              >
+                <p class="text-sm text-BLACK-2 font-semibold">1 week after</p>
+                <p class="text-sm text-GREY-1">
+                  {{ presetList.oneWeekAfter.format("DD MMM HH:mm") }}
+                </p>
+              </button>
+            </div>
+          </div>
           <div class="flex gap-3 flex-wrap">
             <y-calendar
               @update="emitSelected($event, false)"
@@ -178,6 +221,11 @@ const props = defineProps({
     required: false,
     default: false,
   },
+  preset: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
   firstDay: {
     type: Number,
     default: 0, // Sunday
@@ -230,6 +278,12 @@ const now =
     : dayjs();
 const selectedDate = ref(props.modelValue ? props.modelValue : now);
 const selectedTime = ref(props.modelValue ? props.modelValue : now);
+const presetList = ref({
+  tomorrow: now.add(1, "day"),
+  twoDayAfter: now.add(2, "day"),
+  fourDayAfter: now.add(4, "day"),
+  oneWeekAfter: now.add(1, "week"),
+});
 
 const open = () => {
   showPicker.value = true;
@@ -243,6 +297,12 @@ const clear = () => {
   emit('update:modelValue', null);
   showPicker.value = false;
   selectedDate.value = null;
+};
+
+const emitPreset = (preset) => {
+  emit("update", preset);
+  emit("update:modelValue", preset);
+  showPicker.value = false;
 };
 
 const emitSelected = (event, closePicker = false) => {
@@ -259,9 +319,9 @@ const emitSelected = (event, closePicker = false) => {
 };
 
 const showDateWithFormat = computed(() => {
-  let value = '';
-  if (!props.modelValue) return ''
-  if (typeof selectedDate.value !== 'string') {
+  let value = "";
+  if (!props.modelValue) return "";
+  if (typeof selectedDate.value !== "string") {
     value = selectedDate.value.format(props.formatDate);
     if (selectedTime && props.time) {
       value = `${value} ${selectedTime.value.format(props.formatTime)}`;
@@ -274,8 +334,8 @@ const showDateWithFormat = computed(() => {
 const calculatePosition = () => {
   let container = target.value.getBoundingClientRect();
   let pickerContainerStyle = pickerContainer.value.style;
-  let containerWidth = props.time ? 340: 220;
-  
+  let containerWidth = props.time ? 340 : 220;
+
   if (props.top) {
     pickerContainerStyle.top = container.top - 16 + 'px';
   } else {
