@@ -51,7 +51,7 @@
         <div ref="pickerContainer" v-show="showPicker" :class="pickerClass">
           <div class="flex gap-3 flex-wrap">
             <y-calendar
-              @update="emitSelected"
+              @update="emitSelected($event, false)"
               @monthChange="$emit('monthChange')"
               :firstDay="firstDay"
               :formatDate="formatDate"
@@ -66,7 +66,7 @@
             ></y-calendar>
             <y-time-picker
               v-if="time"
-              @update="emitSelected"
+              @update="emitSelected($event, false)"
               v-model="selectedTime"
               :outline="false"
               inline
@@ -105,7 +105,7 @@
               </svg>
             </button>
             <button
-              @click="emitSelected"
+              @click="emitSelected(null, true)"
               class="border border-BORDER rounded-lg px-2 py-1 hover:bg-GREY-3 h-fit"
             >
               <svg
@@ -232,18 +232,28 @@ const selectedDate = ref(props.modelValue ? props.modelValue : now);
 const selectedTime = ref(props.modelValue ? props.modelValue : now);
 
 const open = () => {
+  if (typeof props.modelValue === 'string' && props.modelValue) {
+    selectedTime.value = dayjs(props.modelValue);
+    selectedDate.value = dayjs(props.modelValue);
+  } else if (typeof props.modelValue === 'object' && props.modelValue) {
+    selectedTime.value = props.modelValue;
+    selectedDate.value = props.modelValue;
+  } else {
+    selectedTime.value = now;
+    selectedDate.value = now;
+  }
   showPicker.value = true;
   calculatePosition();
 };
 
 const clear = () => {
-  emit('update', '');
-  emit('update:modelValue', '');
+  emit('update', null);
+  emit('update:modelValue', null);
   showPicker.value = false;
   selectedDate.value = null;
 };
 
-const emitSelected = () => {
+const emitSelected = (event, closePicker = false) => {
   if (props.time && selectedTime.value) {
     selectedDate.value = selectedDate.value
       .set('hour', selectedTime.value.hour())
@@ -251,11 +261,14 @@ const emitSelected = () => {
   }
   emit('update', selectedDate.value);
   emit('update:modelValue', selectedDate.value);
+  if(closePicker === true) {
+    showPicker.value = false;
+  }
 };
 
 const showDateWithFormat = computed(() => {
   let value = '';
-  if (props.modelValue == null) return ''
+  if (!props.modelValue) return ''
   if (typeof selectedDate.value !== 'string') {
     value = selectedDate.value.format(props.formatDate);
     if (selectedTime && props.time) {
@@ -286,7 +299,7 @@ onClickOutside(
     target,
     () => {
       if (showPicker.value) {
-        emitSelected();
+        emitSelected(null, false);
         emit('close');
       }
       showPicker.value = false;
