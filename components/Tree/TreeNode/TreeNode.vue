@@ -1,5 +1,5 @@
 <template>
-  <div @click.stop="selectNode(item)" :class="containerClass">
+  <div :id="selected.id === item.id ? 'selectedTreeNode' : ''" @click.stop="selectNode(item)" :class="containerClass">
     <span
       v-if="isFolder && !expanded"
       @click.stop="toggle"
