@@ -152,7 +152,7 @@ export default {
           }
         }
       } else {
-        handler(this.closeDialog);
+        handler(this.closeDialog, this.loadingStatus);
         if (this.autoClose) {
           this.$emit('close');
         }
