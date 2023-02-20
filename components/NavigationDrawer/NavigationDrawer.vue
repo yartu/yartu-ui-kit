@@ -27,6 +27,11 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  customClass: {
+    type: Array,
+    required: false,
+    default: () => [],
+  },
   width: {
     type: String,
     default: '',
@@ -121,6 +126,7 @@ const containerClass = computed(() => [
     'navigation-drawer-rail': !props.open && props.right && props.rail,
     'rounded-lg': props.rounded,
   },
+  ...props.customClass,
 ]);
 </script>
 <style>
