@@ -5,7 +5,7 @@
     @click="emitCollapse"
   ></div>
   <div
-    :class="containerClass"
+    :class="[containerClass, drawerClasses]"
     :style="[widthStyle, bgStyle, topGapStyle, bottomGapStyle]"
   >
     <slot />
@@ -23,6 +23,7 @@ import { computed } from 'vue';
 
 const emit = defineEmits(['collapse']);
 const props = defineProps({
+  drawerClasses: String,
   absolute: {
     type: Boolean,
     default: false,
