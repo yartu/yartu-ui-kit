@@ -54,55 +54,53 @@
     :skeletonCount="skeletonCount"
   >
   </calendar-widget-skeleton>
-  <conference-widget-skeleton 
-    v-else-if="type === 'conference-widget'">
+  <conference-widget-skeleton v-else-if="type === 'conference-widget'">
   </conference-widget-skeleton>
-  <contact-widget-skeleton 
-    v-else-if="type === 'contact-widget'">
+  <contact-widget-skeleton v-else-if="type === 'contact-widget'">
   </contact-widget-skeleton>
-  <weather-widget-skeleton 
-    v-else-if="type === 'weather-widget'">
+  <weather-widget-skeleton v-else-if="type === 'weather-widget'">
   </weather-widget-skeleton>
-  <navbar-search-skeleton 
+  <navbar-search-skeleton
     v-else-if="type.includes('navbar-search')"
     :skeletonCount="skeletonCount"
-    >
+  >
   </navbar-search-skeleton>
-  <conference-card-skeleton 
+  <conference-card-skeleton
     v-else-if="type.includes('conference-card')"
     :skeletonCount="skeletonCount"
-    >
+  >
   </conference-card-skeleton>
-  <note-content-skeleton 
+  <note-content-skeleton
     v-else-if="type.includes('note-content')"
     :skeletonCount="skeletonCount"
-    >
+  >
   </note-content-skeleton>
-  <project-task-card-skeleton 
+  <project-task-card-skeleton
     v-else-if="type.includes('project-task-card')"
     :skeletonCount="skeletonCount"
-    >
+  >
   </project-task-card-skeleton>
-  <project-task-detail-skeleton 
-  v-else-if="type === 'project-task-detail-skeleton'">
-    :skeletonCount="skeletonCount"
-    >
+  <project-task-detail-skeleton
+    v-else-if="type === 'project-task-detail-skeleton'"
+  >
+    :skeletonCount="skeletonCount" >
   </project-task-detail-skeleton>
-  <activity-skeleton 
+  <activity-skeleton
     v-else-if="type.includes('activity-skeleton')"
     :skeletonCount="skeletonCount"
-    >
+  >
   </activity-skeleton>
-  <comment-skeleton 
+  <comment-skeleton
     v-else-if="type.includes('comment-skeleton')"
     :skeletonCount="skeletonCount"
-    >
+  >
   </comment-skeleton>
-  <navigation-drawer-skeleton 
+  <navigation-drawer-skeleton
     v-else-if="type.includes('navigation-drawer')"
     :skeletonCount="skeletonCount"
-    >
+  >
   </navigation-drawer-skeleton>
+  <loading-circular v-else-if="type === 'loading-circular'"> </loading-circular>
 </template>
 
 <script>
@@ -137,6 +135,7 @@ import ProjectTaskDetailSkeleton from "./ProjectTaskDetailSkeleton.vue";
 import ActivitySkeleton from "./ActivitySkeleton.vue";
 import CommentSkeleton from "./CommentSkeleton.vue";
 import NavigationDrawerSkeleton from "./NavigationDrawerSkeleton.vue";
+import LoadingCircular from "./LoadingCircular.vue";
 
 // TODO : Add more template @aziz
 const props = defineProps({
