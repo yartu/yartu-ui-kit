@@ -25,13 +25,13 @@ import { Modal } from '../Modal';
 const modals = ref([]);
 const bus = useEventBus('yartuModal');
 
-const listener = (type, { instance, options, callBack }) => {
+const listener = (type, { instance, options, closeCallBack }) => {
   if (type === 'open') {
     const modal = {
       options,
       dynamicComponent: shallowRef(instance),
       openModal: true,
-      callBack,
+      closeCallBack,
     };
     modals.value.push(modal);
   } else if (type === 'clear') {
@@ -44,8 +44,8 @@ const listener = (type, { instance, options, callBack }) => {
 const closeModal = (modal, index, x) => {
   modal.openModal = false;
   modals.value.splice(index, 1);
-  if (modal.callBack) {
-    modal.callBack(modal);
+  if (modal.closeCallBack) {
+    modal.closeCallBack(modal);
   }
 };
 

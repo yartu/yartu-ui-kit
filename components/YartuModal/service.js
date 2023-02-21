@@ -5,8 +5,8 @@ const YartuModalSymbol = Symbol();
 const bus = useEventBus('yartuModal');
 
 const busFunctions = {
-  open: (instance, options = {}, callBack = null) => {
-    bus.emit('open', { instance, options, callBack });
+  open: (instance, options = {}, closeCallBack = null) => {
+    bus.emit('open', { instance, options, closeCallBack });
   },
   clear: () => {
     bus.emit('clear', {});
