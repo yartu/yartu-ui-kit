@@ -305,6 +305,7 @@ const clear = () => {
   emit('update:modelValue', null);
   showPicker.value = false;
   selectedDate.value = null;
+  emit('close');
 };
 
 const emitPreset = (preset) => {
@@ -323,6 +324,7 @@ const emitSelected = (event, closePicker = false) => {
   emit('update:modelValue', selectedDate.value);
   if(closePicker === true) {
     showPicker.value = false;
+    emit('close');
   }
 };
 
