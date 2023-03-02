@@ -53,35 +53,39 @@
             :key="header.value"
             class="p-2.5 text-GREY-1 text-xs whitespace-nowrap font-semibold"
           >
-            <div
-              class="flex items-center gap-2"
-              :class="index === headers.length - 1 ? 'justify-end' : ''"
-            >
-              {{ header.text }}
-              <button
-                v-if="header.text !== ''"
-                type="button"
-                @click="sort === 'asc' ? dsc(header.value) : asc(header.value)"
-                class="w-4 h-4 rounded hover:bg-BORDER"
+            <slot :name="`y-table-header-${header.value}`" :header="header">
+              <div
+                class="flex items-center gap-2"
+                :class="index === headers.length - 1 ? 'justify-end' : ''"
               >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+                {{ header.text }}
+                <button
+                  v-if="header.text !== ''"
+                  type="button"
+                  @click="
+                    sort === 'asc' ? dsc(header.value) : asc(header.value)
+                  "
+                  class="w-4 h-4 rounded hover:bg-BORDER"
                 >
-                  <path
-                    d="M5 7L8 3L11 7L5 7Z"
-                    :fill="sort === 'asc' ? '#394C66' : '#9AA1B4'"
-                  />
-                  <path
-                    d="M5 9L8 13L11 9L5 9Z"
-                    :fill="sort === 'dsc' ? '#394C66' : '#9AA1B4'"
-                  />
-                </svg>
-              </button>
-            </div>
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M5 7L8 3L11 7L5 7Z"
+                      :fill="sort === 'asc' ? '#394C66' : '#9AA1B4'"
+                    />
+                    <path
+                      d="M5 9L8 13L11 9L5 9Z"
+                      :fill="sort === 'dsc' ? '#394C66' : '#9AA1B4'"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </slot>
           </th>
         </tr>
       </template>
@@ -189,7 +193,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['selected', 'choose', 'context']);
+const emit = defineEmits(["selected", "choose", "context"]);
 
 const selectedList = ref([]);
 const allChecked = ref(false);
@@ -212,7 +216,7 @@ const openDetail = (item) => {
 };
 
 const contextMenu = (event, item) => {
-  emit('context', { event, item });
+  emit("context", { event, item });
 };
 
 const selectAll = () => {
