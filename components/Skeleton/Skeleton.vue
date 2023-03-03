@@ -1,22 +1,78 @@
 <template>
+  <div v-if="type === 'list-all'" class="flex flex-col gap-16">
+    yartu-card-skeleton
+    <yartu-card-skeleton :skeletonCount="5"></yartu-card-skeleton>
+    repo-folder-skeleton
+    <repo-folder-skeleton :skeletonCount="5"></repo-folder-skeleton>
+    drive-client-skeleton
+    <drive-client-skeleton :skeletonCount="5"></drive-client-skeleton>
+    table-item-skeleton
+    <table-item-skeleton :skeletonCount="5"></table-item-skeleton>
+    title-skeleton
+    <title-skeleton :skeletonCount="5"></title-skeleton>
+    email-list-skeleton
+    <email-list-skeleton :skeletonCount="5"></email-list-skeleton>
+    email-content-skeleton
+    <email-content-skeleton :skeletonCount="5"></email-content-skeleton>
+    profile-content-skeleton
+    <profile-content-skeleton :skeletonCount="5"></profile-content-skeleton>
+    list-item-skeleton
+    <list-item-skeleton :skeletonCount="5"></list-item-skeleton>
+    email-widget-skeleton
+    <email-widget-skeleton :skeletonCount="5"></email-widget-skeleton>
+    note-widget-skeleton
+    <note-widget-skeleton :skeletonCount="5"></note-widget-skeleton>
+    sticky-note-skeleton
+    <sticky-note-skeleton :skeletonCount="5"></sticky-note-skeleton>
+    calendar-widget-skeleton
+    <calendar-widget-skeleton :skeletonCount="5"></calendar-widget-skeleton>
+    conference-widget-skeleton
+    <conference-widget-skeleton :skeletonCount="5"></conference-widget-skeleton>
+    contact-widget-skeleton
+    <contact-widget-skeleton :skeletonCount="5"></contact-widget-skeleton>
+    weather-widget-skeleton
+    <weather-widget-skeleton :skeletonCount="5"></weather-widget-skeleton>
+    navbar-search-skeleton
+    <navbar-search-skeleton :skeletonCount="5"></navbar-search-skeleton>
+    conference-card-skeleton
+    <conference-card-skeleton :skeletonCount="5"></conference-card-skeleton>
+    note-content-skeleton
+    <note-content-skeleton :skeletonCount="5"></note-content-skeleton>
+    project-task-card
+    <project-task-card-skeleton :skeletonCount="5"></project-task-card-skeleton>
+    project-card-skeleton
+    <project-card-skeleton :skeletonCount="5"></project-card-skeleton>
+    project-task-detail
+    <project-task-detail-skeleton
+      :skeletonCount="5"
+    ></project-task-detail-skeleton>
+    project-header-skeleton
+    <project-header-skeleton :skeletonCount="5"></project-header-skeleton>
+    activity-skeleton
+    <activity-skeleton :skeletonCount="5"></activity-skeleton>
+    comment-skeleton
+    <comment-skeleton :skeletonCount="5"></comment-skeleton>
+    navigation-drawer-skeleton
+    <navigation-drawer-skeleton :skeletonCount="5"></navigation-drawer-skeleton>
+  </div>
   <yartu-card-skeleton
-    v-if="type.includes('yartu-card')"
+    v-else-if="type.includes('yartu-card')"
     :skeletonCount="skeletonCount"
   ></yartu-card-skeleton>
   <repo-folder-skeleton
-    v-if="type.includes('repo-folder')"
+    v-else-if="type.includes('repo-folder')"
     :skeletonCount="skeletonCount"
   ></repo-folder-skeleton>
   <drive-client-skeleton
-    v-if="type.includes('drive-client')"
+    v-else-if="type.includes('drive-client')"
     :skeletonCount="skeletonCount"
   ></drive-client-skeleton>
   <table-item-skeleton
-    v-if="type.includes('table-item')"
+    v-else-if="type.includes('table-item')"
     :skeletonCount="skeletonCount"
   ></table-item-skeleton>
   <title-skeleton
-    v-if="type.includes('title')"
+    v-else-if="type.includes('title')"
     :skeletonCount="skeletonCount"
   ></title-skeleton>
   <email-list-skeleton
@@ -75,23 +131,29 @@
     :skeletonCount="skeletonCount"
   >
   </note-content-skeleton>
+  <project-card-skeleton
+    v-else-if="type.includes('project-card')"
+    :skeletonCount="skeletonCount"
+  ></project-card-skeleton>
   <project-task-card-skeleton
     v-else-if="type.includes('project-task-card')"
     :skeletonCount="skeletonCount"
   >
   </project-task-card-skeleton>
-  <project-task-detail-skeleton
-    v-else-if="type === 'project-task-detail-skeleton'"
-  >
-    :skeletonCount="skeletonCount" >
+  <project-task-detail-skeleton v-else-if="type === 'project-task-detail'">
   </project-task-detail-skeleton>
+  <project-header-skeleton
+    v-else-if="type.includes('project-header')"
+    :skeletonCount="skeletonCount"
+  >
+  </project-header-skeleton>
   <activity-skeleton
-    v-else-if="type.includes('activity-skeleton')"
+    v-else-if="type.includes('activity')"
     :skeletonCount="skeletonCount"
   >
   </activity-skeleton>
   <comment-skeleton
-    v-else-if="type.includes('comment-skeleton')"
+    v-else-if="type.includes('comment')"
     :skeletonCount="skeletonCount"
   >
   </comment-skeleton>
@@ -131,11 +193,13 @@ import DriveClientSkeleton from "./DriveClientSkeleton.vue";
 import ConferenceCardSkeleton from "./ConferenceCardSkeleton.vue";
 import NoteContentSkeleton from "./NoteContentSkeleton.vue";
 import ProjectTaskCardSkeleton from "./ProjectTaskCardSkeleton.vue";
+import ProjectCardSkeleton from "./ProjectCardSkeleton.vue";
 import ProjectTaskDetailSkeleton from "./ProjectTaskDetailSkeleton.vue";
 import ActivitySkeleton from "./ActivitySkeleton.vue";
 import CommentSkeleton from "./CommentSkeleton.vue";
 import NavigationDrawerSkeleton from "./NavigationDrawerSkeleton.vue";
 import LoadingCircular from "./LoadingCircular.vue";
+import ProjectHeaderSkeleton from "./ProjectHeaderSkeleton.vue";
 
 // TODO : Add more template @aziz
 const props = defineProps({
