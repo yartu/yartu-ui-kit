@@ -140,6 +140,11 @@
     :skeletonCount="skeletonCount"
   >
   </project-task-card-skeleton>
+  <project-board-card-skeleton
+    v-else-if="type.includes('project-board-card')"
+    :skeletonCount="skeletonCount"
+  >
+  </project-board-card-skeleton>
   <project-task-detail-skeleton v-else-if="type === 'project-task-detail'">
   </project-task-detail-skeleton>
   <project-header-skeleton
@@ -193,6 +198,7 @@ import DriveClientSkeleton from "./DriveClientSkeleton.vue";
 import ConferenceCardSkeleton from "./ConferenceCardSkeleton.vue";
 import NoteContentSkeleton from "./NoteContentSkeleton.vue";
 import ProjectTaskCardSkeleton from "./ProjectTaskCardSkeleton.vue";
+import ProjectBoardCardSkeleton from "./ProjectBoardCardSkeleton.vue";
 import ProjectCardSkeleton from "./ProjectCardSkeleton.vue";
 import ProjectTaskDetailSkeleton from "./ProjectTaskDetailSkeleton.vue";
 import ActivitySkeleton from "./ActivitySkeleton.vue";
