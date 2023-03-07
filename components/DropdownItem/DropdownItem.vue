@@ -1,9 +1,16 @@
 <template>
-  <li :class="containerClass" role="button" :disabled="disabled">
+  <li
+    :class="containerClass"
+    :disabled="disabled"
+    @mouseover="$emit('hover', true)"
+    @mouseleave="$emit('hover', false)"
+    role="button"
+  >
     <slot name="prefix">
       <i
+        v-if="prefix"
         class="w-6 h-6 text-2xl leading-6"
-        :class="prefix != '' ? prefix : ''"
+        :class="prefix"
         aria-hidden="true"
       >
       </i>
@@ -25,6 +32,7 @@
 <script>
 export default {
   name: 'y-dropdown-item',
+  emits: ['hover'],
   props: {
     active: {
       type: Boolean,
