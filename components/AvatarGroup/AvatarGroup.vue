@@ -11,6 +11,7 @@ export default {
   data() {
     return {
       shownAvatar: 0,
+      avatars: [],
     };
   },
   props: {
@@ -52,10 +53,11 @@ export default {
         !this.color.includes('#') &&
         !this.color.includes('r') &&
         !this.color.includes('h')
-      )
-        this.getAvatar.lastChild.style.backgroundColor =
-          colors[this.color].base;
-      else this.getAvatar.lastChild.style.backgroundColor = this.color;
+      ) {
+        this.getAvatar.lastChild.style.backgroundColor = colors[this.color].base;
+      } else {
+        this.getAvatar.lastChild.style.backgroundColor = this.color;
+      }
       this.getAvatar.lastChild.innerHTML = '+' + this.shownAvatar;
     },
   },

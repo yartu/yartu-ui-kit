@@ -26,7 +26,7 @@ export default {
 </script>
 
 <script setup>
-import { computed, ref, onUnmounted, onMounted, shallowRef } from 'vue';
+import { computed, watch, ref, onUnmounted, onMounted, shallowRef } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 
 const open = ref(false);
@@ -89,6 +89,15 @@ const openContextMenu = (pos = undefined) => {
 defineExpose({
   openContextMenu,
 });
+
+watch(
+  () => props.show,
+  (val) => {
+    if (val) {
+      calculatePosition();
+    }
+  }
+)
 
 const calculatePosition = (dropdownContainer = undefined) => {
   // improve this @aziz

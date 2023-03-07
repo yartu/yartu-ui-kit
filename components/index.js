@@ -60,6 +60,7 @@ import NavigationDrawer from './NavigationDrawer';
 import CollapsiblePanel from './CollapsiblePanel';
 import DropdownDrawerItem from './DropdownDrawerItem';
 import NavigationDrawerItem from './NavigationDrawerItem';
+import Mention from './Mention';
 
 export {
   Tab,
@@ -124,4 +125,5 @@ export {
   CollapsiblePanel,
   DropdownDrawerItem,
   NavigationDrawerItem,
+  Mention,
 };
