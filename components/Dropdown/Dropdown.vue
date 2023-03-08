@@ -39,8 +39,16 @@ const setIgnore = () => {
   }
 };
 
-onClickOutside(target, () => (open.value = false), { ignore: [setIgnore()] });
+onClickOutside(
+  target,
+  () => {
+    open.value = false;
+    emit('hide');
+  },
+  { ignore: [setIgnore()] }
+);
 
+const emit = defineEmits(['hide']);
 const props = defineProps({
   show: {
     type: Boolean,
