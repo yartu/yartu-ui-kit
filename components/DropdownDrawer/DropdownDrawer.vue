@@ -34,7 +34,7 @@
       :class="[
         contentClass,
         open
-          ? 'max-h-[148px] overflow-hidden hover:overflow-y-auto before:h-[32px]'
+          ? 'max-h-[148px] overflow-y-auto lg:overflow-hidden hover:overflow-y-auto before:h-[32px]'
           : 'max-h-0 border-none overflow-hidden before:hidden',
       ]"
     >
