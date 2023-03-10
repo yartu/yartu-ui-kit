@@ -8,7 +8,7 @@
     >
       <div v-if="modelValue" :class="containerClass">
         <div
-          class="bg-white rounded-xl relative overflow-auto"
+          class="!rounded-none !min-w-full !max-w-full !h-full bg-white rounded-xl relative overflow-auto"
           :style="sizeStyle"
           role="dialog"
           aria-labelledby="modalTitle"

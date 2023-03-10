@@ -42,6 +42,7 @@ import Pagination from './Pagination';
 import Breadcrumb from './Breadcrumb';
 import YartuModal from './YartuModal';
 import ButtonGroup from './ButtonGroup';
+import BottomSheet from './BottomSheet';
 import CurtainMenu from './CurtainMenu';
 import SimpleTable from './SimpleTable';
 import ProgressBar from './ProgressBar';
@@ -107,6 +108,7 @@ export {
   Breadcrumb,
   YartuModal,
   ButtonGroup,
+  BottomSheet,
   CurtainMenu,
   SimpleTable,
   ProgressBar,

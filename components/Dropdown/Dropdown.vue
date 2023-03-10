@@ -3,6 +3,7 @@
     <teleport to="body">
       <transition name="fade">
         <div
+          v-if="!bottomSheetController"
           ref="dropdownContent"
           v-show="dropdownStatus"
           :style="bgStyle"
@@ -13,7 +14,17 @@
           </ol>
         </div>
       </transition>
+      <bottom-sheet
+        v-if="bottomSheetController"
+        :show="dropdownStatus"
+        :bg="bg"
+        :ignoreClickOutside="ignoreClickOutside"
+        :classes="classes"
+      >
+        <slot />
+      </bottom-sheet>
     </teleport>
+
     <slot name="activator" :open="openDropdown" :context-menu="openContextMenu">
     </slot>
   </div>
@@ -21,15 +32,17 @@
 
 <script>
 export default {
-  name: 'y-dropdown',
+  name: "y-dropdown",
 };
 </script>
 
 <script setup>
-import { computed, watch, ref, onUnmounted, onMounted, shallowRef } from 'vue';
-import { onClickOutside } from '@vueuse/core';
+import { computed, watch, ref, onUnmounted, onMounted, shallowRef } from "vue";
+import { onClickOutside } from "@vueuse/core";
+import { BottomSheet } from "../BottomSheet";
 
 const open = ref(false);
+const bottomSheetController = ref(false);
 const target = ref(null);
 const dropdownContent = ref(null);
 
@@ -43,12 +56,12 @@ onClickOutside(
   target,
   () => {
     open.value = false;
-    emit('hide');
+    emit("hide");
   },
   { ignore: [setIgnore()] }
 );
 
-const emit = defineEmits(['hide']);
+const emit = defineEmits(["hide"]);
 const props = defineProps({
   show: {
     type: Boolean,
@@ -60,7 +73,7 @@ const props = defineProps({
   },
   bg: {
     type: String,
-    default: '#ffffff',
+    default: "#ffffff",
   },
   left: {
     type: Boolean,
@@ -105,27 +118,32 @@ watch(
       calculatePosition();
     }
   }
-)
+);
 
 const calculatePosition = (dropdownContainer = undefined) => {
-  // improve this @aziz
-  if (dropdownContainer === undefined || dropdownContainer.type === 'resize') {
-    dropdownContainer = target.value.getBoundingClientRect();
-  } else {
-    dropdownContainer.top = dropdownContainer.y;
-    dropdownContainer.bottom = dropdownContainer.y;
-    dropdownContainer.left = dropdownContainer.x;
-    dropdownContainer.right = dropdownContainer.x;
-  }
-  if (props.top) {
-    dropdownContent.value.style.top = dropdownContainer.top - 12 + 'px';
-  } else {
-    dropdownContent.value.style.top = dropdownContainer.bottom + 12 + 'px';
-  }
-  if (props.left)
-    dropdownContent.value.style.left = dropdownContainer.right + 'px';
-  else {
-    dropdownContent.value.style.left = dropdownContainer.left + 'px';
+  // improve this @kenarumut
+  if (!bottomSheetController.value){
+    if (
+      dropdownContainer === undefined ||
+      dropdownContainer.type === "resize"
+    ) {
+      dropdownContainer = target.value.getBoundingClientRect();
+    } else {
+      dropdownContainer.top = dropdownContainer.y;
+      dropdownContainer.bottom = dropdownContainer.y;
+      dropdownContainer.left = dropdownContainer.x;
+      dropdownContainer.right = dropdownContainer.x;
+    }
+    if (props.top) {
+      dropdownContent.value.style.top = dropdownContainer.top - 12 + "px";
+    } else {
+      dropdownContent.value.style.top = dropdownContainer.bottom + 12 + "px";
+    }
+    if (props.left)
+      dropdownContent.value.style.left = dropdownContainer.right + "px";
+    else {
+      dropdownContent.value.style.left = dropdownContainer.left + "px";
+    }
   }
 };
 
@@ -134,11 +152,12 @@ const dropdownStatus = computed(() => {
 });
 
 onMounted(() => {
-  window.addEventListener('resize', calculatePosition);
+  if(screen.width < 1024) bottomSheetController.value = true;
+  window.addEventListener("resize", calculatePosition);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', calculatePosition);
+  window.removeEventListener("resize", calculatePosition);
 });
 
 const bgStyle = computed(() => {
@@ -147,27 +166,27 @@ const bgStyle = computed(() => {
 
 const containerClass = computed(() => {
   return [
-    'relative',
+    "relative",
     {
       block: props.block,
-      'inline-block': !props.block,
+      "inline-block": !props.block,
     },
   ];
 });
 
 const contentClass = computed(() => {
   return [
-    'dropdown-content',
-    'shadow-1',
-    'fixed z-1001',
-    'py-2',
-    'bg-WHITE',
-    'text-sm font-semibold text-BLACK-2',
-    'flex flex-col max-w-[232px] w-[232px]',
-    'border-BORDER border rounded-lg',
+    "dropdown-content",
+    "shadow-1",
+    "fixed z-1001",
+    "py-2",
+    "bg-WHITE",
+    "text-sm font-semibold text-BLACK-2",
+    "flex flex-col max-w-[232px] w-[232px]",
+    "border-BORDER border rounded-lg",
     {
-      '-translate-x-full': props.left,
-      '-translate-y-full': props.top,
+      "-translate-x-full": props.left,
+      "-translate-y-full": props.top,
     },
   ];
 });
