@@ -13,9 +13,11 @@
         <i v-if="icon != ''" :class="icon" aria-hidden="true"></i>
       </button>
     </div>
-    <div :class="[contentClass]">
-      <slot></slot>
-    </div>
+    <transition name="fade">
+      <div v-show="open" :class="[contentClass]">
+        <slot></slot>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -61,10 +63,6 @@ export default {
     contentClass() {
       return [
         'transition-all duration-300',
-        {
-          'max-h-screen': this.open,
-          'max-h-0 overflow-hidden': !this.open,
-        },
       ];
     },
     btnClass() {
