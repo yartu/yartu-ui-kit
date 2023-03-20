@@ -7,8 +7,8 @@
       <div class="w-8 h-8 bg-BORDER rounded-lg"></div>
 
       <div class="flex flex-col gap-1">
-        <div class="w-28 h-4 h-full bg-BORDER rounded-lg"></div>
-        <div class="w-48 h-3 h-full bg-BORDER rounded-lg"></div>
+        <div class="w-28 h-4 bg-BORDER rounded-lg"></div>
+        <div class="w-48 h-3 bg-BORDER rounded-lg"></div>
       </div>
     </div>
   </div>
