@@ -241,10 +241,12 @@ const clear = () => {
 };
 
 const calculatePosition = () => {
-  let container = target.value.getBoundingClientRect();
-  let pickerContainerStyle = pickerContainer.value.style;
-  pickerContainerStyle.top = container.bottom + 16 + 'px';
-  pickerContainerStyle.left = container.left + 'px';
+  if(target.value){
+    let container = target.value.getBoundingClientRect();
+    let pickerContainerStyle = pickerContainer.value.style;
+    pickerContainerStyle.top = container.bottom + 16 + 'px';
+    pickerContainerStyle.left = container.left + 'px';
+  }
 };
 
 onMounted(() => {
