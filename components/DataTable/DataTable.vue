@@ -33,7 +33,7 @@
       </label>
     </div>
     <div v-if="loading">Loading..</div>
-    <SimpleTable v-else>
+    <SimpleTable v-else-if="items.length > 0">
       <template #thead>
         <tr class="text-BLACK-2">
           <th
@@ -134,6 +134,60 @@
         </tr>
       </template>
     </SimpleTable>
+    <SimpleTable v-else>
+      <template #thead>
+        <tr class="text-BLACK-2">
+          <th
+            v-for="(header, index) in headers"
+            :key="header.value"
+            class="p-2.5 text-GREY-1 text-xs whitespace-nowrap font-semibold"
+          >
+            <slot :name="`y-table-header-${header.value}`" :header="header">
+              <div
+                class="flex items-center gap-2"
+                :class="index === headers.length - 1 ? 'justify-end' : ''"
+              >
+                {{ header.text }}
+                <button
+                  v-if="header.text !== ''"
+                  type="button"
+                  @click="
+                    sort === 'asc' ? dsc(header.value) : asc(header.value)
+                  "
+                  class="w-4 h-4 rounded hover:bg-BORDER"
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M5 7L8 3L11 7L5 7Z"
+                      :fill="sort === 'asc' ? '#394C66' : '#9AA1B4'"
+                    />
+                    <path
+                      d="M5 9L8 13L11 9L5 9Z"
+                      :fill="sort === 'dsc' ? '#394C66' : '#9AA1B4'"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </slot>
+          </th>
+        </tr>
+      </template>
+      <template #tbody>
+        <tr class="border-y border-BORDER text-BLACK-2 hover:bg-LIGHTBLUE-4 cursor-pointer opacity-20">
+          <td class="p-2.5 text-xs whitespace-nowrap font-semibold text-center" :colspan="headers.length">
+            <slot name="empty">
+              <span>{{ emptyStateText }}</span>
+            </slot>
+          </td>
+        </tr>
+      </template>
+    </SimpleTable>
   </div>
 </template>
 
@@ -191,6 +245,10 @@ const props = defineProps({
     type: Array,
     default: [],
   },
+  emptyStateText: {
+    type: String,
+    default: "You don't have any item",
+  }
 });
 
 const emit = defineEmits(["selected", "choose", "context"]);
