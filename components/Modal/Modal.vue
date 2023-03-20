@@ -8,8 +8,7 @@
     >
       <div v-if="modelValue" :class="containerClass">
         <div
-          class="bg-white rounded-xl relative overflow-auto"
-          :style="sizeStyle"
+          class="bg-white relative overflow-auto modal-container"
           role="dialog"
           aria-labelledby="modalTitle"
           aria-describedby="modalDescription"
@@ -57,52 +56,71 @@
 </template>
 <script>
 export default {
-  name: 'y-modal',
-  props: {
-    fullScreen: {
-      type: Boolean,
-      default: false,
-    },
-    maxWidth: {
-      type: String,
-      default: '404px',
-    },
-    minWidth: {
-      type: String,
-      default: '404px',
-    },
-    maxHeight: {
-      type: String,
-      required: false,
-    },
-    closable: {
-      type: Boolean,
-      default: true,
-    },
-    modelValue: null,
-  },
-  emits: ['closed', 'update:modelValue'],
-  computed: {
-    containerClass() {
-      return [
-        'overflow-x-hidden overflow-y-auto',
-        'fixed',
-        'inset-0 z-50',
-        'outline-none',
-        'focus:outline-none',
-        'flex justify-center items-center',
-      ];
-    },
-    sizeStyle() {
-      const sizes = [
-        `min-width: ${this.minWidth};`,
-        `max-width: ${this.maxWidth};`,
-      ];
-      if (this.maxHeight && !this.fullScreen) {
-        sizes.push(`max-height: ${this.maxHeight};`);
-      }
-      return sizes;
-    },
-  },
+  name: "y-modal",
 };
 </script>
+<script setup>
+import { ref, computed } from "vue";
+
+const props = defineProps({
+  fullScreen: {
+    type: Boolean,
+    default: false,
+  },
+  maxWidth: {
+    type: String,
+    default: "404px",
+  },
+  minWidth: {
+    type: String,
+    default: "404px",
+  },
+  maxHeight: {
+    type: String,
+    required: false,
+  },
+  closable: {
+    type: Boolean,
+    default: true,
+  },
+  modelValue: null,
+});
+
+const emit = defineEmits(["closed", "update:modelValue"]);
+
+const minModalWith = ref(props.minWidth);
+const maxModalWith = ref(props.maxWidth);
+const modalMaxHeight = ref(
+  props.maxHeight && !props.fullScreen ? props.maxHeight : ""
+);
+
+const containerClass = computed(() => {
+  return [
+    "overflow-x-hidden overflow-y-auto",
+    "fixed",
+    "inset-0 z-50",
+    "outline-none",
+    "focus:outline-none",
+    "flex justify-center items-center",
+  ];
+});
+</script>
+<style scoped>
+@media screen and (min-width: 1024px) {
+  .modal-container {
+    min-width: v-bind(minModalWith) !important;
+    max-width: v-bind(maxModalWith) !important;
+    max-height: v-bind(modalMaxHeight) !important;
+    width: auto !important;
+    height: auto !important;
+    border-radius: 12px;
+  }
+}
+.modal-container {
+  min-width: 100%;
+  max-width: none;
+  max-height: none;
+  width: 100%;
+  height: 100%;
+}
+</style>
