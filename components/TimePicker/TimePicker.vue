@@ -145,7 +145,7 @@ export default {
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue';
-import dayjs from 'dayjs';
+import * as dayjs from 'dayjs';
 import { onClickOutside } from '@vueuse/core';
 
 const emit = defineEmits(['update', 'update:modelValue', 'close']);

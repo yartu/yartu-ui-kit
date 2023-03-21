@@ -171,7 +171,9 @@
       </teleport>
     </transition>
     <bottom-sheet v-else :show="showPicker">
-      <div class="w-full flex items-center pb-6 justify-center overflow-y-scroll">
+      <div
+        class="w-full flex items-center pb-6 justify-center overflow-y-scroll"
+      >
         <div ref="pickerContainer" :class="bottomSheetPickerClass">
           <div v-if="preset" class="flex flex-col gap-2 mb-4">
             <p class="text-sm text-GREY-1 font-semibold pb-1">PRESET</p>
@@ -306,7 +308,7 @@ export default {
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import { onClickOutside } from "@vueuse/core";
 
-import dayjs from "dayjs";
+import * as dayjs from "dayjs";
 import { BottomSheet } from "../BottomSheet";
 
 const emit = defineEmits([
@@ -524,9 +526,6 @@ const pickerClass = computed(() => {
 });
 
 const bottomSheetPickerClass = computed(() => {
-  return [
-    "w-fit",
-    "flex flex-col justify-center items-center",
-  ];
+  return ["w-fit", "flex flex-col justify-center items-center"];
 });
 </script>

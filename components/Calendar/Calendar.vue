@@ -110,7 +110,7 @@ export default {
 
 <script setup>
 import { ref, watch, computed } from 'vue';
-import dayjs from 'dayjs';
+import * as dayjs from 'dayjs';
 
 const emit = defineEmits([
   'update',
