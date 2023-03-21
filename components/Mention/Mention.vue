@@ -62,7 +62,7 @@ import {
 
 import { Dropdown } from '../Dropdown';
 import { DropdownItem } from '../DropdownItem';
-import getCaretPosition from '../../utils/textareacaret';
+import * as getCaretPosition from '../../utils/textareacaret';
 
 const show = ref(false);
 const currentKey = ref(null);
