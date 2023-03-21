@@ -71,6 +71,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  flex: {
+    type: Boolean,
+    default: false,
+  },
   bg: {
     type: String,
     default: "#ffffff",
@@ -168,9 +172,12 @@ const containerClass = computed(() => {
   return [
     "relative",
     {
-      block: props.block,
-      "inline-block": !props.block,
+      "block": props.block,
+      "inline-block": !props.block && !props.flex,
     },
+    {
+      "flex": props.flex,
+    }
   ];
 });
 
