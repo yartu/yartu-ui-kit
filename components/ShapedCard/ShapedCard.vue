@@ -77,7 +77,7 @@ const bottomShapeClass = computed(() => [
   "h-[24px] w-[98px]",
   "bg-white",
   "px-2",
-  "bottom-[70px]",
+  "bottom-[69px]",
   "right-0",
   "z-1",
   "shape-path",
