@@ -14,7 +14,7 @@
     <div
       class="absolute bottom-0 z-1 inset-x-0 bg-LIGHTBLUE-9 flex flex-wrap items-center justify-end gap-4 px-7 py-4 rounded-b-lg"
     >
-      <y-button :loading="isLoading" :disabled="isLoading" v-if="showCancelButton" secondary size="lg" @click="$emit('close')">
+      <y-button :disabled="isLoading" v-if="showCancelButton" secondary size="lg" @click="$emit('close')">
         {{ cancelButton }}
       </y-button>
       <y-button
