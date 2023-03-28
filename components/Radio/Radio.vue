@@ -58,7 +58,7 @@ export default {
     radioButtonContainer() {
       return [
         'w-fit',
-        'inline-flex items-center justify-center flex-wrap gap-2',
+        'inline-flex items-center justify-center gap-2',
       ];
     },
     radioButtonClass() {
