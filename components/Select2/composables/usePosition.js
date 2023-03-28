@@ -25,24 +25,26 @@ export default function useDropdown(props, context, dep) {
 
   const calculatePosition = () => {
     // improve this @aziz
-    let dropdownContainer = multiselect.value.getBoundingClientRect();
+    if(multiselect.value){
+      let dropdownContainer = multiselect.value.getBoundingClientRect();
 
-    if (openDirection.value === 'top') {
-      optionContainer.value.style.top = dropdownContainer.top - 12 + 'px';
-    } else {
-      optionContainer.value.style.top =
-        dropdownContainer.top + dropdownContainer.height + 12 + 'px';
-    }
-    optionContainer.value.style.left = dropdownContainer.left + 'px';
-    optionContainer.value.style.minWidth =
-      dropdownContainer.right - dropdownContainer.left + 'px';
-    optionContainer.value.style.maxWidth =
-      dropdownContainer.right - dropdownContainer.left + 'px';
+      if (openDirection.value === 'top') {
+        optionContainer.value.style.top = dropdownContainer.top - 12 + 'px';
+      } else {
+        optionContainer.value.style.top =
+          dropdownContainer.top + dropdownContainer.height + 12 + 'px';
+      }
+      optionContainer.value.style.left = dropdownContainer.left + 'px';
+      optionContainer.value.style.minWidth =
+        dropdownContainer.right - dropdownContainer.left + 'px';
+      optionContainer.value.style.maxWidth =
+        dropdownContainer.right - dropdownContainer.left + 'px';
 
-    if (window.innerHeight - dropdownContainer.bottom < 224) {
-      setTimeout(() => {
-        optionContainer.value.classList.add('force-to-top');
-      }, 50);
+      if (window.innerHeight - dropdownContainer.bottom < 224) {
+        setTimeout(() => {
+          optionContainer.value.classList.add('force-to-top');
+        }, 50);
+      }
     }
   };
 
