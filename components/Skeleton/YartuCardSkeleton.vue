@@ -5,8 +5,8 @@
         <div class="w-full h-full bg-LIGHTBLUE-7 rounded-lg"></div>
       </template>
       <div class="flex flex-col gap-2">
-        <div class="w-28 h-3 h-full bg-BORDER rounded-lg"></div>
-        <div class="w-48 h-3 h-full bg-BORDER rounded-lg"></div>
+        <div class="w-28 h-3 bg-BORDER rounded-lg"></div>
+        <div class="w-48 h-3 bg-BORDER rounded-lg"></div>
       </div>
     </y-shaped-card>
   </div>
