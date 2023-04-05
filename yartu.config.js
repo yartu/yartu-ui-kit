@@ -353,7 +353,6 @@ mergedConfig.content.push(
 );
 
 mergedConfig.plugins = mergedConfig.plugins.concat([
-  lineClamp,
   tailwindTypography,
   scrollbarHide,
 ]);
