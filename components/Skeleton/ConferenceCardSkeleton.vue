@@ -7,10 +7,10 @@
       <div class="flex flex-col gap-4 justify-center items-center w-full">
         <div class="w-full h-5 bg-BORDER rounded-lg"></div>
         <div class="flex flex-col gap-2 w-full">
-          <div class="w-2/3 h-3 h-full bg-BORDER rounded-lg"></div>
-          <div class="w-1/3 h-3 h-full bg-BORDER rounded-lg"></div>
-          <div class="w-2/3 h-3 h-full bg-BORDER rounded-lg"></div>
-          <div class="w-1/3 h-3 h-full bg-BORDER rounded-lg"></div>
+          <div class="w-2/3 h-3 bg-BORDER rounded-lg"></div>
+          <div class="w-1/3 h-3 bg-BORDER rounded-lg"></div>
+          <div class="w-2/3 h-3 bg-BORDER rounded-lg"></div>
+          <div class="w-1/3 h-3 bg-BORDER rounded-lg"></div>
         </div>
       </div>
     </div>

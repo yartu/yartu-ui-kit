@@ -9,12 +9,12 @@
         <div class="w-full h-px bg-BORDER"></div>
         <div class="flex flex-col gap-4 w-full">
           <div class="flex flex-col gap-1">
-            <div class="w-20 h-4 h-full bg-BORDER rounded-lg"></div>
-            <div class="w-24 h-3 h-full bg-BORDER rounded-lg"></div>
+            <div class="w-20 h-4 bg-BORDER rounded-lg"></div>
+            <div class="w-24 h-3 bg-BORDER rounded-lg"></div>
           </div>
           <div class="flex flex-col gap-1">
-            <div class="w-20 h-4 h-full bg-BORDER rounded-lg"></div>
-            <div class="w-24 h-3 h-full bg-BORDER rounded-lg"></div>
+            <div class="w-20 h-4 bg-BORDER rounded-lg"></div>
+            <div class="w-24 h-3 bg-BORDER rounded-lg"></div>
           </div>
         </div>
       </div>
