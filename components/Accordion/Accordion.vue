@@ -7,7 +7,7 @@
       </span>
       <hr v-if="hr" class="grow text-BORDER" />
       <button
-        @click="open = !open"
+        @click="toggleOpen"
         :class="[btnClass, open ? 'rotate-90' : '']"
       >
         <i v-if="icon != ''" :class="icon" aria-hidden="true"></i>
@@ -51,6 +51,7 @@ export default {
       default: false,
     },
   },
+  emits: ['collapse'],
   computed: {
     containerClass() {
       return [
@@ -87,6 +88,12 @@ export default {
           'gap-4': this.hr,
         },
       ];
+    },
+  },
+  methods: {
+    toggleOpen () {
+      this.open = !this.open;
+      this.$emit('collapse', this.open);
     },
   },
   mounted() {
