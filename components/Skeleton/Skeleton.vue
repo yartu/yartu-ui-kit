@@ -54,6 +54,8 @@
     <comment-skeleton :skeletonCount="5"></comment-skeleton>
     navigation-drawer-skeleton
     <navigation-drawer-skeleton :skeletonCount="5"></navigation-drawer-skeleton>
+    uploading-item-skeleton
+    <uploading-item-skeleton :skeletonCount="4"></uploading-item-skeleton>
   </div>
   <yartu-card-skeleton
     v-else-if="type.includes('yartu-card')"
@@ -167,6 +169,11 @@
     :skeletonCount="skeletonCount"
   >
   </navigation-drawer-skeleton>
+  <uploading-item-skeleton
+    v-else-if="type.includes('uploading-item')"
+    :skeletonCount="skeletonCount"
+  >
+  </uploading-item-skeleton>
   <loading-circular v-else-if="type === 'loading-circular'"> </loading-circular>
 </template>
 
@@ -206,6 +213,7 @@ import CommentSkeleton from "./CommentSkeleton.vue";
 import NavigationDrawerSkeleton from "./NavigationDrawerSkeleton.vue";
 import LoadingCircular from "./LoadingCircular.vue";
 import ProjectHeaderSkeleton from "./ProjectHeaderSkeleton.vue";
+import UploadingItemSkeleton from "./UploadingItemSkeleton.vue";
 
 // TODO : Add more template @aziz
 const props = defineProps({
