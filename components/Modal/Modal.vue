@@ -74,6 +74,7 @@ const props = defineProps({
   minWidth: {
     type: String,
     default: "404px",
+    required: true,
   },
   maxHeight: {
     type: String,
