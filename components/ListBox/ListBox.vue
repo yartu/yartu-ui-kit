@@ -44,17 +44,24 @@ const props = defineProps({
 
 const selected = ref(props.modelValue);
 
-function choose(item) {
+const setItem = (item) => {
+  if (typeof item === 'object') {
+    return { ...item };
+  }
+  return item;
+};
+
+const choose = (item) => {
 
   let selectedItem = item;
   if (typeof item === 'object') {
-    selectedItem = item[props.itemKey];
+    selectedItem = { ...item }[props.itemKey];
   }
 
   if (props.multiple && !selected.value.find((s) => s === selectedItem || s[props.selectedItem] === selectedItem)) {
-    selected.value.push(item);
+    selected.value.push(setItem(item));
   } else if (!props.multiple) {
-    selected.value = item;
+    selected.value = setItem(item);
   } else if (props.multiple && selected.value.find((s) => s === selectedItem || s[props.selectedItem] === selectedItem)) {
     selected.value = selected.value.filter((data) => {
       if (typeof data === 'object') {
