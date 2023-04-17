@@ -1,6 +1,5 @@
 /* eslint-disable */
 
-const lineClamp = require('@tailwindcss/line-clamp');
 const tailwindTypography = require('@tailwindcss/typography');
 const scrollbarHide = require('tailwind-scrollbar-hide');
 
@@ -353,7 +352,6 @@ mergedConfig.content.push(
 );
 
 mergedConfig.plugins = mergedConfig.plugins.concat([
-  lineClamp,
   tailwindTypography,
   scrollbarHide,
 ]);

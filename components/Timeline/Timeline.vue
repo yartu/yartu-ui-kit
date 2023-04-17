@@ -13,12 +13,12 @@
           <div class="w-2 h-2 bg-BLACK-2 rounded-full"></div>
         </slot>
         <slot
-          v-if="index !== value.length - 1"
+          v-if="index !== value.length"
           name="connector"
           :item="item"
           :index="index"
         >
-          <div class="w-px flex-1 bg-BORDER mb-2"></div>
+          <div class="flex-1 bg-BORDER mb-2 w-0.5"></div>
         </slot>
       </div>
       <div class="flex-1 px-4 relative -top-1.5">

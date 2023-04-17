@@ -5,14 +5,18 @@
       v-show="bottomSheetStatus"
       class="w-full h-full fixed bottom-0 left-0 z-1001 flex flex-col bg-BLACKOVERLAY"
     >
-      <div class="overlay flex-1 min-h-[40%] w-full"></div>
       <div
+        @click="closeBottomSheet"
+        class="overlay flex-1 min-h-[40%] w-full"
+      ></div>
+      <div
+        ref="items"
         class="items h-fit max-h-[60%] w-full rounded-t-lg py-2 overflow-hidden relative"
         :style="bgStyle"
       >
-      <div class="w-full relative h-full overflow-y-scroll">
-        <slot />
-      </div>
+        <div class="w-full relative h-full overflow-y-scroll">
+          <slot />
+        </div>
         <div
           class="stroke w-1/3 h-1 rounded-full absolute bg-GREY-1 bottom-0.5 left-1/2 -translate-x-1/2"
         ></div>
@@ -31,7 +35,7 @@ export default {
 import { computed, ref, onUnmounted, onMounted } from "vue";
 import { onClickOutside } from "@vueuse/core";
 
-const target = ref(null);
+const items = ref(null);
 const bottomSheetContent = ref(null);
 
 const emit = defineEmits(["hide"]);
@@ -55,17 +59,21 @@ const props = defineProps({
 
 const open = ref(props.show);
 
+const closeBottomSheet = () => {
+  open.value = false;
+  emit("hide");
+};
+
 const setIgnore = () => {
   if (props.ignoreClickOutside) {
-    return bottomSheetContent;
+    return items;
   }
 };
 
 onClickOutside(
-  target,
+  items,
   () => {
-    open.value = false;
-    emit("hide");
+    closeBottomSheet();
   },
   { ignore: [setIgnore()] }
 );

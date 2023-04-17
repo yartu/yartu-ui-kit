@@ -1,13 +1,18 @@
 <template>
   <nav :class="containerClass">
     <ol :class="itemClass">
-      <li v-for="(crumb, index) in crumbs" :key="index">
+      <li v-for="(crumb, index) in crumbs" :key="index" class="flex items-center gap-1">
         <button
           type="button"
           class="font-extrabold"
           @click="selected(crumb, index)"
         >
+        <template v-if="crumb.length > 24 && truncate">
+          {{ crumb[0] }}{{ crumb[1] }}{{ crumb[2] }}...{{ crumb[crumb.length-3] }}{{ crumb[crumb.length-2] }}{{ crumb[crumb.length-1] }}
+        </template>
+        <template v-else>
           {{ crumb }}
+        </template>
         </button>
         <span
           v-if="!isLast(index)"
@@ -40,6 +45,10 @@ const props = defineProps({
     type: String,
     default: 'md',
   },
+  truncate: {
+    type: Boolean,
+    default: true,
+  }
 });
 
 const isLast = (index) => {

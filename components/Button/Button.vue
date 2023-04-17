@@ -1,6 +1,6 @@
 <template>
   <button :class="buttonClass" :disabled="disabled" type="button">
-    <span v-if="loading && !icon" class="mr-2">
+    <span v-if="loading" class="mr-2">
       <svg
         class="animate-spin h-5 w-5"
         width="24"
@@ -24,7 +24,7 @@
       </svg>
     </span>
     <i
-      v-if="icon != ''"
+      v-else-if="icon != ''"
       :class="icon"
       aria-hidden="true"
       :style="iconColor !== 'none' ? `'color: ${iconColor};'` : ''"
@@ -35,7 +35,7 @@
 
 <script>
 export default {
-  name: 'y-button',
+  name: "y-button",
   props: {
     disabled: {
       type: Boolean,
@@ -79,11 +79,11 @@ export default {
     },
     icon: {
       type: [String, Array],
-      default: '',
+      default: "",
     },
     size: {
       type: String,
-      default: 'md',
+      default: "md",
     },
     app: {
       type: Boolean,
@@ -95,64 +95,64 @@ export default {
     },
     spinnerBg: {
       type: String,
-      default: '#f8fafd',
+      default: "#f8fafd",
     },
     spinnerColor: {
       type: String,
-      default: '#3663f2',
+      default: "#3663f2",
     },
     iconColor: {
       type: String,
-      default: 'none',
+      default: "none",
     },
   },
   computed: {
     buttonClass() {
       return [
-        'font-semibold text-sm',
-        'rounded-lg',
-        'transition-all duration-300',
-        'inline-flex items-center justify-center',
-        'disabled:cursor-not-allowed',
+        "font-semibold text-sm",
+        "rounded-lg",
+        "transition-all duration-300",
+        "inline-flex items-center justify-center",
+        "disabled:cursor-not-allowed",
         {
-          'bg-BLUE text-white hover:bg-HOVER-BLUE disabled:bg-LIGHTBLUE-3':
+          "bg-BLUE text-white hover:bg-HOVER-BLUE disabled:bg-LIGHTBLUE-3":
             this.primary,
-          'border border-BORDER bg-white text-BLUE hover:bg-LIGHTBLUE-5 disabled:bg-GREY-3':
+          "border border-BORDER bg-white text-BLUE hover:bg-LIGHTBLUE-5 disabled:bg-GREY-3":
             this.secondary,
-          'bg-BLACK-2 text-white hover:bg-BLACK-3 disabled:bg-GREY-3 disabled:border-BORDER disabled:border':
+          "bg-BLACK-2 text-white hover:bg-BLACK-3 disabled:bg-GREY-3 disabled:border-BORDER disabled:border":
             this.tertiary,
-          'bg-RED text-white hover:bg-RED-3 disabled:opacity-50': this.error,
-          'bg-GREEN text-white hover:bg-GREEN-2 disabled:opacity-50':
+          "bg-RED text-white hover:bg-RED-3 disabled:opacity-50": this.error,
+          "bg-GREEN text-white hover:bg-GREEN-2 disabled:opacity-50":
             this.success,
-          'text-BLUE hover:underline disabled:text-GREY-3 !p-0': this.text,
+          "text-BLUE hover:underline disabled:text-GREY-3 !p-0": this.text,
 
-          'h-10 py-2 px-7': this.size == 'lg',
-          'h-9 py-2 px-3': this.size == 'md',
-          'h-8 py-1 px-3': this.size == 'sm',
-          'h-6 py-1 px-3': this.size == 'xs',
+          "h-10 py-2 px-7": this.size == "lg",
+          "h-9 py-2 px-3": this.size == "md",
+          "h-8 py-1 px-3": this.size == "sm",
+          "h-6 py-1 px-3": this.size == "xs",
 
-          'w-10 h-10 !p-0': this.square && this.size == 'lg',
-          'w-9 h-9 !p-0': this.square && this.size == 'md',
-          'w-8 h-8 !p-0': this.square && this.size == 'sm',
-          'w-6 h-6 !p-0': this.square && this.size == 'xs',
+          "w-10 h-10 !p-0": this.square && this.size == "lg",
+          "w-9 h-9 !p-0": this.square && this.size == "md",
+          "w-8 h-8 !p-0": this.square && this.size == "sm",
+          "w-6 h-6 !p-0": this.square && this.size == "xs",
 
-          'w-10 h-10 !p-0 !rounded-full hover:bg-GREY-8':
-            this.circle && this.size == 'lg',
-          'w-9 h-9 !p-0 !rounded-full hover:bg-GREY-8':
-            this.circle && this.size == 'md',
-          'w-8 h-8 !p-0 !rounded-full hover:bg-GREY-8':
-            this.circle && this.size == 'sm',
-          'w-6 h-6 !p-0 !rounded-full hover:bg-GREY-8':
-            this.circle && this.size == 'xs',
-          'w-4 h-4 !p-0 !rounded-full hover:bg-GREY-8':
-            this.circle && this.size == '2xs',
+          "w-10 h-10 !p-0 !rounded-full hover:bg-GREY-8":
+            this.circle && this.size == "lg",
+          "w-9 h-9 !p-0 !rounded-full hover:bg-GREY-8":
+            this.circle && this.size == "md",
+          "w-8 h-8 !p-0 !rounded-full hover:bg-GREY-8":
+            this.circle && this.size == "sm",
+          "w-6 h-6 !p-0 !rounded-full hover:bg-GREY-8":
+            this.circle && this.size == "xs",
+          "w-4 h-4 !p-0 !rounded-full hover:bg-GREY-8":
+            this.circle && this.size == "2xs",
 
-          'bg-LIGHTBLUE-3 hover:bg-LIGHTBLUE-3': this.loading && this.primary,
-          'bg-GREY-3 hover:bg-GREY-3':
+          "bg-LIGHTBLUE-3 hover:bg-LIGHTBLUE-3": this.loading && this.primary,
+          "bg-GREY-3 hover:bg-GREY-3":
             this.loading && (this.secondary || this.tertiary),
-          'transition-none outline-LIGHTBLUE-5 outline-2 hover:outline':
+          "transition-none outline-LIGHTBLUE-5 outline-2 hover:outline":
             this.app,
-          'bg-LIGHTBLUE-5 outline-2 border-2 outline border-BLUE outline-LIGHTBLUE-5':
+          "bg-LIGHTBLUE-5 outline-2 border-2 outline border-BLUE outline-LIGHTBLUE-5":
             this.app && this.active,
         },
       ];
