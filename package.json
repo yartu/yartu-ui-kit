@@ -1,7 +1,7 @@
 {
   "name": "@yartu/ui-kit",
   "description": "Yartu UI Kit for Developers w/ Vue3+Tailwind",
-  "version": "1.0.0-beta.134",
+  "version": "1.0.0-beta.135",
   "author": "Yartu Information Technologies AS <info@yartu.io> (https://www.yartu.io)",
   "bugs": {
     "url": "https://github.com/yartu/yartu-ui-kit/issues",
@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.9",
-    "@vueuse/core": "^10.0.2",
+    "@vueuse/core": "^10.1.0",
     "core-js": "^3.30.1",
     "dayjs": "^1.11.7",
     "postcss": "^8.4.23",
