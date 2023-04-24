@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center w-full gap-4 flex-wrap">
+  <div class="flex items-center w-full gap-6 flex-wrap">
     <div
       v-for="i in skeletonCount"
       class="w-full 4xs:w-1/2-gap-6 xs:w-1/3-gap-6 lg:w-1/4-gap-6 2xl:w-1/5-gap-6 h-full bg-white rounded-lg p-2 animate-pulse border border-BORDER pt-10"
