@@ -54,41 +54,58 @@ const VALIDATIONS = {
   ],
 };
 
-const validate = (rules, value) => {
+const validate = (rules, value, objectKey='email') => {
   let valid = true;
-  for (let rule of rules) {
-    if (typeof rule === 'function') {
-      const isValid = rule(value);
-      if (isValid !== true) {
-        valid = isValid;
-        break;
-      }
-    } else if (typeof rule === 'string') {
-      let ruleName = rule;
-      let ruleParams = [];
+  let valueList = [];
 
-      if (rule.includes(':')) {
-        const splitName = rule.split(':');
-        ruleName = splitName[0];
-        ruleParams = splitName.splice(1);
-      }
+  if (Array.isArray(value)) {
+    valueList = value;
+  } else {
+    valueList = [value];
+  }
 
-      if (!VALIDATIONS[ruleName]) {
-        continue;
-      }
+  for (let val of valueList) {
 
-      const functions = VALIDATIONS[ruleName];
-      for (let ruleFunction of functions) {
-        const isValid = ruleFunction(value, ruleParams);
+    if (typeof val === 'object') {
+      val = val[objectKey];
+    }
+
+    for (let rule of rules) {
+      if (typeof rule === 'function') {
+        const isValid = rule(val);
         if (isValid !== true) {
           valid = isValid;
           break;
         }
+      } else if (typeof rule === 'string') {
+        let ruleName = rule;
+        let ruleParams = [];
+  
+        if (rule.includes(':')) {
+          const splitName = rule.split(':');
+          ruleName = splitName[0];
+          ruleParams = splitName.splice(1);
+        }
+  
+        if (!VALIDATIONS[ruleName]) {
+          continue;
+        }
+  
+        const functions = VALIDATIONS[ruleName];
+        for (let ruleFunction of functions) {
+          const isValid = ruleFunction(val, ruleParams);
+          if (isValid !== true) {
+            valid = isValid;
+            break;
+          }
+        }
+      } else {
+        console.error("Yartu Ui Kit, form validation don't accept to: ", rule);
       }
-    } else {
-      console.error("Yartu Ui Kit, form validation don't accept to: ", rule);
     }
   }
+
+
   return valid;
 };
 
