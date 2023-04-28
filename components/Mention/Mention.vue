@@ -3,6 +3,7 @@
     <Dropdown
       :show="show"
       top
+      class="w-full"
     >
       <template #activator>
         <slot></slot>
