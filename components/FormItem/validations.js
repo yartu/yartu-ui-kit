@@ -69,7 +69,7 @@ const validate = (rules, value, objectKey=false) => {
     if (typeof val === 'object') {
       if (objectKey) {
         val = val[objectKey];
-      } else if (val.isSuggest) {
+      } else if (val.email) {
         val = val.email;
       }
     }
