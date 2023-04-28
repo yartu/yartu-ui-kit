@@ -1,4 +1,5 @@
 import { ref, toRefs, computed, nextTick } from 'vue';
+import { validate } from '../../FormItem/validations';
 
 export default function useMultiselect(props, context, dep) {
   const { searchable, disabled, clearOnBlur } = toRefs(props);
@@ -9,7 +10,9 @@ export default function useMultiselect(props, context, dep) {
   const open = dep.open;
   const close = dep.close;
   const clearSearch = dep.clearSearch;
+  const search = dep.search;
   const isOpen = dep.isOpen;
+  const rules = props.rules;
 
   // ================ DATA ================
 
@@ -24,6 +27,8 @@ export default function useMultiselect(props, context, dep) {
   const isActive = ref(false);
 
   const mouseClicked = ref(false);
+  const update = dep.update;
+
 
   // ============== COMPUTED ==============
 
@@ -61,6 +66,19 @@ export default function useMultiselect(props, context, dep) {
 
   const deactivate = () => {
     isActive.value = false;
+
+    if (isOpen.value && search.value.length > 0) {
+      const iv = dep.iv;
+      const val = search.value.trim();
+      const valid = validate(rules, val);
+      const suggest = {
+        isSuggest: true,
+        email: val,
+        name: val,
+        valid,
+      };
+      update([...iv.value, ...[suggest]]);
+    }
 
     setTimeout(() => {
       if (!isActive.value) {
