@@ -308,8 +308,12 @@
       <teleport to="body">
         <div ref="optionContainer" :class="classList.dropdown" tabindex="-1">
           <slot name="beforelist" :options="fo"></slot>
+          
+          <slot v-if="loading" name="loading">
+            Loading..
+          </slot>
 
-          <ul :class="classList.options" :id="ariaControls" role="listbox">
+          <ul v-else :class="classList.options" :id="ariaControls" role="listbox">
             <template v-if="groups">
               <li
                 v-for="(group, i, key) in fg"
@@ -395,7 +399,7 @@
             </template>
           </ul>
 
-          <slot v-if="noOptions" name="nooptions">
+          <slot v-if="noOptions && !loading" name="nooptions">
             <div :class="classList.noOptions" v-html="noOptionsText"></div>
           </slot>
 
@@ -804,8 +808,8 @@ export default {
       useValue,
       usePointer,
       useDropdown,
-      useSearch,
       useData,
+      useSearch,
       useMultiselect,
       usePosition,
       useOptions,

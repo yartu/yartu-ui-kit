@@ -1,4 +1,5 @@
 import { ref, getCurrentInstance, watch, toRefs } from "vue";
+import { validate } from '../../FormItem/validations';
 
 export default function useSearch(props, context, dep) {
   const { regex } = toRefs(props);
@@ -9,6 +10,8 @@ export default function useSearch(props, context, dep) {
 
   const isOpen = dep.isOpen;
   const open = dep.open;
+  const update = dep.update;
+  const rules = props.rules;
 
   // ================ DATA ================
   
@@ -42,23 +45,31 @@ export default function useSearch(props, context, dep) {
 
   const handlePaste = (e) => {
 
-    // TODO : @akucuk
-    let clipboardData = e.clipboardData || window.clipboardData;
-    let pastedData = clipboardData.getData("Text");
-    console.log('PASTE', e, pastedData);
+    const clipboardData = e.clipboardData || window.clipboardData;
+    const pastedData = clipboardData.getData("Text");
+    const split_data = pastedData.split(/[\s,;\n\t]+/);
+    const iv = dep.iv;
+    const res = [];
 
-    let split_data = pastedData.split(/[\s,;\n\t]+/);
-    let regex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi;
-    let mail_regex = RegExp(regex);
-    let res = [];
+    for (let data of split_data) {
+      data = data.trim();
+      let valid = true;
 
-    console.log('split_data', split_data);
+      if (rules.length) {
+        valid = validate(rules, data);
+      }
+  
+      res.push({
+        isSuggest: true,
+        email: data,
+        name: data,
+        valid,
+      });
+    }
 
-    // for (let data of split_data) {
-    //   data = data.trim();
-    // }
-
-    context.emit("paste", e, $this);
+    update([...iv.value, ...res]);
+    clearSearch();
+    e.preventDefault()
   };
 
   // ============== WATCHERS ==============

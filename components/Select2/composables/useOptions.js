@@ -192,7 +192,7 @@ export default function useOptions (props, context, dep)
       [valueProp.value]: search.value,
       [label.value]: search.value,
       [trackBy.value]: search.value,
-      __CREATE__: true,
+      isSuggest: true,
     }]
   })
 
@@ -317,9 +317,9 @@ export default function useOptions (props, context, dep)
       return
     }
 
-    if (onCreate && onCreate.value && !isSelected(option) && option.__CREATE__) {
+    if (onCreate && onCreate.value && !isSelected(option) && option.isSuggest) {
       option = { ...option }
-      delete option.__CREATE__
+      delete option.isSuggest
 
       option = onCreate.value(option, $this)
 
@@ -338,9 +338,9 @@ export default function useOptions (props, context, dep)
   }
 
   const handleOptionSelect = (option) => {
-    if (option.__CREATE__) {
+    if (option.isSuggest) {
       option = { ...option }
-      delete option.__CREATE__
+      delete option.isSuggest
     }
 
     switch (mode.value) {
