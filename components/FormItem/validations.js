@@ -54,7 +54,7 @@ const VALIDATIONS = {
   ],
 };
 
-const validate = (rules, value, objectKey='email') => {
+const validate = (rules, value, objectKey=false) => {
   let valid = true;
   let valueList = [];
 
@@ -67,7 +67,11 @@ const validate = (rules, value, objectKey='email') => {
   for (let val of valueList) {
 
     if (typeof val === 'object') {
-      val = val[objectKey];
+      if (objectKey) {
+        val = val[objectKey];
+      } else if (val.isSuggest) {
+        val = val.email;
+      }
     }
 
     for (let rule of rules) {
