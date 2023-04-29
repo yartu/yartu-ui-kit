@@ -565,6 +565,11 @@ export default {
       required: false,
       default: 'single', // single|multiple|tags
     },
+    outSideClickAccept: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
     searchable: {
       type: Boolean,
       required: false,

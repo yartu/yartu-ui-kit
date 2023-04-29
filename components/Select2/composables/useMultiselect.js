@@ -13,6 +13,7 @@ export default function useMultiselect(props, context, dep) {
   const search = dep.search;
   const isOpen = dep.isOpen;
   const rules = props.rules;
+  const outSideClickAccept = props.outSideClickAccept;
 
   // ================ DATA ================
 
@@ -67,7 +68,7 @@ export default function useMultiselect(props, context, dep) {
   const deactivate = () => {
     isActive.value = false;
 
-    if (isOpen.value && search.value.length > 0) {
+    if (outSideClickAccept && isOpen.value && search.value?.length > 0) {
       const iv = dep.iv;
       const val = search.value.trim();
       const valid = validate(rules, val);
