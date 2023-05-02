@@ -174,6 +174,10 @@
     :skeletonCount="skeletonCount"
   >
   </uploading-item-skeleton>
+  <thread-skeleton
+  v-else-if="type === 'thread'"
+  >
+  </thread-skeleton>
   <loading-circular v-else-if="type === 'loading-circular'"> </loading-circular>
 </template>
 
@@ -214,6 +218,7 @@ import NavigationDrawerSkeleton from "./NavigationDrawerSkeleton.vue";
 import LoadingCircular from "./LoadingCircular.vue";
 import ProjectHeaderSkeleton from "./ProjectHeaderSkeleton.vue";
 import UploadingItemSkeleton from "./UploadingItemSkeleton.vue";
+import ThreadSkeleton from "./ThreadSkeleton.vue";
 
 // TODO : Add more template @aziz
 const props = defineProps({
