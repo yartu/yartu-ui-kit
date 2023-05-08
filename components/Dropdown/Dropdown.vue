@@ -25,21 +25,21 @@
       </bottom-sheet>
     </teleport>
 
-    <slot name="activator" :open="openDropdown" :context-menu="openContextMenu">
-    </slot>
+    <slot name="activator" :open="openDropdown" :context-menu="openContextMenu"> </slot>
   </div>
 </template>
 
 <script>
 export default {
-  name: "y-dropdown",
+  name: 'y-dropdown',
 };
 </script>
 
 <script setup>
-import { computed, watch, ref, onUnmounted, onMounted, shallowRef } from "vue";
-import { onClickOutside } from "@vueuse/core";
-import { BottomSheet } from "../BottomSheet";
+import { computed, watch, ref, onUnmounted, onMounted, shallowRef, nextTick } from 'vue';
+import { onClickOutside } from '@vueuse/core';
+import { BottomSheet } from '../BottomSheet';
+// import { YartuTeleport } from "../YartuTeleport";
 
 const open = ref(false);
 const bottomSheetController = ref(false);
@@ -56,12 +56,12 @@ onClickOutside(
   target,
   () => {
     open.value = false;
-    emit("hide");
+    emit('hide');
   },
-  { ignore: [setIgnore()] }
+  { ignore: [setIgnore()] },
 );
 
-const emit = defineEmits(["hide"]);
+const emit = defineEmits(['hide']);
 const props = defineProps({
   show: {
     type: Boolean,
@@ -77,7 +77,7 @@ const props = defineProps({
   },
   bg: {
     type: String,
-    default: "#ffffff",
+    default: '#ffffff',
   },
   left: {
     type: Boolean,
@@ -121,16 +121,13 @@ watch(
     if (val) {
       calculatePosition();
     }
-  }
+  },
 );
 
 const calculatePosition = (dropdownContainer = undefined) => {
   // improve this @kenarumut
-  if (!bottomSheetController.value){
-    if (
-      dropdownContainer === undefined ||
-      dropdownContainer.type === "resize"
-    ) {
+  if (!bottomSheetController.value) {
+    if (dropdownContainer === undefined || dropdownContainer.type === 'resize') {
       dropdownContainer = target.value.getBoundingClientRect();
     } else {
       dropdownContainer.top = dropdownContainer.y;
@@ -138,16 +135,41 @@ const calculatePosition = (dropdownContainer = undefined) => {
       dropdownContainer.left = dropdownContainer.x;
       dropdownContainer.right = dropdownContainer.x;
     }
-    if (props.top) {
-      dropdownContent.value.style.top = dropdownContainer.top - 12 + "px";
-    } else {
-      dropdownContent.value.style.top = dropdownContainer.bottom + 12 + "px";
-    }
-    if (props.left)
-      dropdownContent.value.style.left = dropdownContainer.right + "px";
-    else {
-      dropdownContent.value.style.left = dropdownContainer.left + "px";
-    }
+
+    let heightContoller = 0;
+    let widthController = 0;
+    nextTick(() => {
+      heightContoller = dropdownContent.value.getBoundingClientRect().height;
+      widthController = dropdownContent.value.getBoundingClientRect().width;
+      if (props.top) {
+        if (heightContoller + dropdownContainer.bottom < window.innerHeight) {
+          dropdownContent.value.style.top = '16px';
+        } else {
+          dropdownContent.value.style.top = dropdownContainer.top - 12 + 'px';
+        }
+      } else {
+        if (dropdownContainer.top + heightContoller > window.innerHeight) {
+          dropdownContent.value.style.top = 'auto';
+          dropdownContent.value.style.bottom = '16px';
+        } else {
+          dropdownContent.value.style.top = dropdownContainer.bottom + 12 + 'px';
+        }
+      }
+      if (props.left) {
+        if (widthController + dropdownContainer.left > window.innerWidth) {
+          dropdownContent.value.style.left = '16px';
+        } else {
+          dropdownContent.value.style.left = dropdownContainer.right + 'px';
+        }
+      } else {
+        if (widthController + dropdownContainer.right > window.innerWidth) {
+          dropdownContent.value.style.left = 'auto';
+          dropdownContent.value.style.right = '16px';
+        } else {
+          dropdownContent.value.style.left = dropdownContainer.left + 'px';
+        }
+      }
+    });
   }
 };
 
@@ -156,12 +178,12 @@ const dropdownStatus = computed(() => {
 });
 
 onMounted(() => {
-  if(screen.width < 1024) bottomSheetController.value = true;
-  window.addEventListener("resize", calculatePosition);
+  if (screen.width < 1024) bottomSheetController.value = true;
+  window.addEventListener('resize', calculatePosition);
 });
 
 onUnmounted(() => {
-  window.removeEventListener("resize", calculatePosition);
+  window.removeEventListener('resize', calculatePosition);
 });
 
 const bgStyle = computed(() => {
@@ -170,30 +192,31 @@ const bgStyle = computed(() => {
 
 const containerClass = computed(() => {
   return [
-    "relative",
+    'relative',
     {
-      "block": props.block,
-      "inline-block": !props.block && !props.flex,
+      block: props.block,
+      'inline-block': !props.block && !props.flex,
     },
     {
-      "flex": props.flex,
-    }
+      flex: props.flex,
+    },
   ];
 });
 
 const contentClass = computed(() => {
   return [
-    "dropdown-content",
-    "shadow-1",
-    "fixed z-1001",
-    "py-2",
-    "bg-WHITE",
-    "text-sm font-semibold text-BLACK-2",
-    "flex flex-col max-w-[232px] w-[232px]",
-    "border-BORDER border rounded-lg",
+    'dropdown-content',
+    'shadow-1',
+    'fixed z-1001',
+    'max-h-fit',
+    'py-2',
+    'bg-WHITE',
+    'text-sm font-semibold text-BLACK-2',
+    'flex flex-col max-w-[232px] w-[232px]',
+    'border-BORDER border rounded-lg',
     {
-      "-translate-x-full": props.left,
-      "-translate-y-full": props.top,
+      '-translate-x-full': props.left,
+      '-translate-y-full': props.top,
     },
   ];
 });
