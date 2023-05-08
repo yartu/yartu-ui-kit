@@ -156,7 +156,7 @@ const calculatePosition = (dropdownContainer = undefined) => {
         }
       }
       if (props.left) {
-        if (widthController + dropdownContainer.left > window.innerWidth) {
+        if (widthController > dropdownContainer.left) {
           dropdownContent.value.style.left = '16px';
         } else {
           dropdownContent.value.style.left = dropdownContainer.right + 'px';
