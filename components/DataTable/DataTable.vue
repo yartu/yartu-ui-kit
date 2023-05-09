@@ -60,7 +60,7 @@
               >
                 {{ header.text }}
                 <button
-                  v-if="header.text !== ''"
+                  v-if="header.text !== '' && header?.sortable !== false "
                   type="button"
                   @click="order(header.value)"
                   class="w-4 h-4 rounded hover:bg-BORDER"
@@ -147,7 +147,7 @@
               >
                 {{ header.text }}
                 <button
-                  v-if="header.text !== ''"
+                  v-if="header.text !== '' && header?.sortable !== false "
                   type="button"
                   @click="order(header.value)"
                   class="w-4 h-4 rounded hover:bg-BORDER"
