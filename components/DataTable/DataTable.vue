@@ -60,11 +60,9 @@
               >
                 {{ header.text }}
                 <button
-                  v-if="header.text !== ''"
+                  v-if="header.text !== '' && header?.sortable !== false "
                   type="button"
-                  @click="
-                    sort === 'asc' ? dsc(header.value) : asc(header.value)
-                  "
+                  @click="order(header.value)"
                   class="w-4 h-4 rounded hover:bg-BORDER"
                 >
                   <svg
@@ -149,11 +147,9 @@
               >
                 {{ header.text }}
                 <button
-                  v-if="header.text !== ''"
+                  v-if="header.text !== '' && header?.sortable !== false "
                   type="button"
-                  @click="
-                    sort === 'asc' ? dsc(header.value) : asc(header.value)
-                  "
+                  @click="order(header.value)"
                   class="w-4 h-4 rounded hover:bg-BORDER"
                 >
                   <svg
@@ -203,6 +199,10 @@ import { SimpleTable } from "../SimpleTable";
 import { Checkbox } from "../Checkbox";
 
 const props = defineProps({
+  orderBy: {
+    type: [Function, null],
+    default: null,
+  },
   selectable: {
     type: Boolean,
     default: true,
@@ -301,6 +301,24 @@ const tableItems = computed(() => {
 const search = (query) => {
   if (props.filter) {
     props.filter(query);
+  }
+};
+
+const order = (orderKey) => {
+  if (props.orderBy) {
+    if(sort.value === "asc") {
+      props.orderBy(`${orderKey}`);
+      sort.value = "dsc";
+    } else {
+      props.orderBy(`-${orderKey}`);
+      sort.value = "asc";
+    }
+  } else {
+    if (sort.value === 'asc') {
+      dsc(orderKey);
+    } else {
+      asc(orderKey);
+    }
   }
 };
 
