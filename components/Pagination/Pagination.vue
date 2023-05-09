@@ -195,6 +195,7 @@ const paginationTitleClass = computed(() => [
   'text-sm',
   'font-semibold',
   'text-BLACK-2',
+  'flex items-center my-auto',
   {
     'mr-2': props.simple,
     'mr-6': !props.simple,
