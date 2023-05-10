@@ -9,7 +9,7 @@ export default function useOptions (props, context, dep)
   const {
     options, mode, trackBy: trackBy_, limit, hideSelected, createTag, createOption: createOption_, label,
     appendNewTag, appendNewOption: appendNewOption_, multipleLabel, object, loading, delay, resolveOnLoad,
-    minChars, filterResults, clearOnSearch, clearOnSelect, valueProp,
+    minChars, filterResults, clearOnSearch, clearOnSelect, valueProp, resolveFunction,
     canDeselect, max, strict, closeOnSelect, groups: groupped, reverse, infinite,
     groupOptions, groupHideEmpty, groupSelect, onCreate, disabledProp, searchStart,
   } = toRefs(props)
@@ -584,7 +584,12 @@ export default function useOptions (props, context, dep)
         ro.value = response || []
 
         if (typeof callback == 'function') {
-          callback(response)
+          if (resolveFunction.value) {
+            const items = resolveFunction.value(response);
+            callback(items);
+          } else {
+            callback(response)
+          }
         }
 
         resolving.value = false
