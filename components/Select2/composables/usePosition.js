@@ -30,7 +30,7 @@ export default function useDropdown(props, context, dep) {
 
       if (openDirection.value === 'top') {
         optionContainer.value.style.top = dropdownContainer.top - 12 + 'px';
-      } else {
+      } else {  
         optionContainer.value.style.top =
           dropdownContainer.top + dropdownContainer.height + 12 + 'px';
       }
@@ -40,10 +40,8 @@ export default function useDropdown(props, context, dep) {
       optionContainer.value.style.maxWidth =
         dropdownContainer.right - dropdownContainer.left + 'px';
 
-      if (window.innerHeight - dropdownContainer.bottom < 224) {
-        setTimeout(() => {
-          optionContainer.value.classList.add('force-to-top');
-        }, 50);
+      if (window.innerHeight - dropdownContainer.bottom < 224 && optionContainer.value.classList) {
+        optionContainer.value.classList?.add('force-to-top');
       }
     }
   };
