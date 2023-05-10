@@ -21,6 +21,9 @@ export default {
     register(formItem) {
       this.formItems.push(formItem);
     },
+    resetFormItems() {
+      this.formItems = [];
+    },
     validate() {
       let valid = true;
       this.errors = [];
