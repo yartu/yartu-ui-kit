@@ -659,6 +659,10 @@ export default {
       required: false,
       default: true,
     },
+    resolveFunction: {
+      type: Function,
+      required: false,
+    },
     filterResults: {
       type: Boolean,
       required: false,
