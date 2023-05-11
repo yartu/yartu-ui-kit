@@ -2,7 +2,7 @@ import './assets/css/tailwind-input.css';
 import * as allComponents from './components';
 
 import { setOptions, setVueInstance } from './utils/config';
-import { useYartuNotify } from './components/YartuNotify/service';
+import { useYartuNotify, yartuNotify } from './components/YartuNotify/service';
 import { useYartuModal } from './components/YartuModal/service';
 
 export default {
@@ -22,4 +22,4 @@ export default {
 
 // export default YartuUiKit;
 export * from './components';
-export { useYartuNotify, useYartuModal };
+export { useYartuNotify, useYartuModal, yartuNotify };

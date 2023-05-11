@@ -21,7 +21,7 @@ const busFunctions = {
 const YartuNotifySymbol = Symbol();
 
 export const messages = ref([]);
-
+export const yartuNotify = busFunctions;
 
 export function useYartuNotify() {
   const yartuNotify = inject(YartuNotifySymbol);

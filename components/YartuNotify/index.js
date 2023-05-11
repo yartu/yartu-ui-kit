@@ -1,5 +1,5 @@
 import YartuNotify from "./YartuNotify.vue";
-import { useYartuNotify, YartuNotifyService, messages } from './service.js';
+import { useYartuNotify, YartuNotifyService, yartuNotify, messages } from './service.js';
 
 const _YartuNotify = {
   install(Vue) {
@@ -9,4 +9,4 @@ const _YartuNotify = {
 };
 
 export default _YartuNotify;
-export { YartuNotify, useYartuNotify, YartuNotifyService, messages };
+export { YartuNotify, useYartuNotify, yartuNotify, YartuNotifyService, messages };
