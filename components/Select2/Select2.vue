@@ -124,6 +124,7 @@
                 tabindex="-1"
                 :key="key"
                 :aria-label="activeListed.more"
+                @click.stop="activate(true)"
               >
                 <p class="truncate">+ {{ activeListed.more }}</p>
               </span>
