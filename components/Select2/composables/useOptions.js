@@ -149,13 +149,14 @@ export default function useOptions (props, context, dep)
   })
 
   const activeListed = computed(() => {
-    // return { items: iv.value, more: -1 };
     if (isOpen.value) {
-      return { items: iv.value, more: -1 };
+      return { items: ev.value, more: -1 };
     } else {
-      const selected = iv.value?.filter((i, index) => index < 4);
-      const more = iv.value.length - selected.length;
-      return { items: selected, more,};
+      if (ev.value?.filter) {
+        const selected = ev.value?.filter((i, index) => index < 4);
+        const more = ev.value.length - selected.length;
+        return { items: selected, more,};
+      }
     }
   });
 
