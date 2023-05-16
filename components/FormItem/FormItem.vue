@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     validate() {
-      if (!this.ignoreValid) {
+      if (!this.ignoreValid && this.rules?.length > 0) {
         this.errors = [];
         const value = this.modelValue;
         const valid = validate(this.rules, value);
@@ -50,6 +50,8 @@ export default {
           this.errors.push(valid);
         }
         return valid;
+      } else {
+        return true
       }
     },
   },
