@@ -11,7 +11,7 @@ export default function useOptions (props, context, dep)
     appendNewTag, appendNewOption: appendNewOption_, multipleLabel, object, loading, delay, resolveOnLoad,
     minChars, filterResults, clearOnSearch, clearOnSelect, valueProp, resolveFunction,
     canDeselect, max, strict, closeOnSelect, groups: groupped, reverse, infinite,
-    groupOptions, groupHideEmpty, groupSelect, onCreate, disabledProp, searchStart,
+    groupOptions, groupHideEmpty, groupSelect, onCreate, customHandlerProps, customOptionClickHandler, disabledProp, searchStart,
   } = toRefs(props)
 
   const $this = getCurrentInstance().proxy
@@ -304,6 +304,10 @@ export default function useOptions (props, context, dep)
     return option[disabledProp.value] === true
   }
 
+  const isCustomHandler = (option) => {
+    return customHandlerProps.value.filter((f) => !!option[f]).length > 0
+  }
+
   const isMax = () => {
     if (max === undefined || max.value === -1 || (!hasSelected.value && max.value > 0)) {
       return false
@@ -315,6 +319,19 @@ export default function useOptions (props, context, dep)
   const handleOptionClick = (option) => {
 
     if (isDisabled(option)) {
+      return
+    }
+
+    if (isCustomHandler(option)) {
+      customOptionClickHandler.value(option);
+      if (clearOnSelect.value) {
+        clearSearch()
+      }
+
+      if (closeOnSelect.value) {
+        clearPointer()
+        close()
+      }
       return
     }
 
