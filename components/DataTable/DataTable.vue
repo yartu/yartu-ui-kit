@@ -32,7 +32,11 @@
         />
       </label>
     </div>
-    <div v-if="loading">Loading..</div>
+    <div v-if="loading">
+      <slot name="loading">
+        Loading..
+      </slot>
+    </div>
     <SimpleTable v-else-if="items.length > 0">
       <template #thead>
         <tr class="text-BLACK-2">
