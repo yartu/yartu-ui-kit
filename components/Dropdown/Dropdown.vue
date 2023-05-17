@@ -142,13 +142,13 @@ const calculatePosition = (dropdownContainer = undefined) => {
       heightContoller = dropdownContent.value.getBoundingClientRect().height;
       widthController = dropdownContent.value.getBoundingClientRect().width;
       if (props.top) {
-        if (heightContoller + dropdownContainer.bottom < window.innerHeight) {
+        if (heightContoller + dropdownContainer.bottom < window.innerHeight && heightContoller > 0) {
           dropdownContent.value.style.top = '16px';
         } else {
           dropdownContent.value.style.top = dropdownContainer.top - 12 + 'px';
         }
       } else {
-        if (dropdownContainer.top + heightContoller > window.innerHeight) {
+        if (dropdownContainer.top + heightContoller > window.innerHeight && heightContoller > 0) {
           dropdownContent.value.style.top = 'auto';
           dropdownContent.value.style.bottom = '16px';
         } else {
@@ -156,13 +156,13 @@ const calculatePosition = (dropdownContainer = undefined) => {
         }
       }
       if (props.left) {
-        if (widthController > dropdownContainer.left) {
+        if (widthController > dropdownContainer.left && widthController > 0) {
           dropdownContent.value.style.left = '16px';
         } else {
           dropdownContent.value.style.left = dropdownContainer.right + 'px';
         }
       } else {
-        if (widthController + dropdownContainer.right > window.innerWidth) {
+        if (widthController + dropdownContainer.right > window.innerWidth && widthController > 0) {
           dropdownContent.value.style.left = 'auto';
           dropdownContent.value.style.right = '16px';
         } else {
