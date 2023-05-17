@@ -365,6 +365,7 @@
                       :is-selected="isSelected"
                       :is-pointed="isPointed"
                       :search="search"
+                      :handleOptionClick="handleOptionClick"
                     >
                       {{ option[label] }}
                     </slot>
@@ -769,6 +770,15 @@ export default {
       default: () => ({}),
     },
     onCreate: {
+      required: false,
+      type: Function,
+    },
+    customHandlerProps: {
+      required: false,
+      type: Array,
+      default: () => [],
+    },
+    customOptionClickHandler: {
       required: false,
       type: Function,
     },
