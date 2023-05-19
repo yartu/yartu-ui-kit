@@ -124,6 +124,8 @@ watch(
   },
 );
 
+const dropdownOverflowController = ref(false);
+
 const calculatePosition = (dropdownContainer = undefined) => {
   // improve this @kenarumut
   if (!bottomSheetController.value) {
@@ -141,9 +143,11 @@ const calculatePosition = (dropdownContainer = undefined) => {
     nextTick(() => {
       heightContoller = dropdownContent.value.getBoundingClientRect().height;
       widthController = dropdownContent.value.getBoundingClientRect().width;
+      if(heightContoller > window.innerHeight) dropdownOverflowController.value = true;
+      else dropdownOverflowController.value = false;
       if (props.top) {
-        if (heightContoller + dropdownContainer.bottom < window.innerHeight && heightContoller > 0) {
-          dropdownContent.value.style.top = '16px';
+        if ((heightContoller + 16) > dropdownContainer.top && heightContoller > 0) {
+          dropdownContent.value.style.top = heightContoller + 16 + 'px';
         } else {
           dropdownContent.value.style.top = dropdownContainer.top - 12 + 'px';
         }
@@ -157,7 +161,7 @@ const calculatePosition = (dropdownContainer = undefined) => {
       }
       if (props.left) {
         if (widthController > dropdownContainer.left && widthController > 0) {
-          dropdownContent.value.style.left = '16px';
+          dropdownContent.value.style.left = widthController + 16 + 'px';
         } else {
           dropdownContent.value.style.left = dropdownContainer.right + 'px';
         }
@@ -208,7 +212,10 @@ const contentClass = computed(() => {
     'dropdown-content',
     'shadow-1',
     'fixed z-1001',
-    'max-h-fit',
+    {
+      'max-h-fit' : !dropdownOverflowController.value,
+      'h-full overflow-scroll' : dropdownOverflowController.value,
+    }, 
     'py-2',
     'bg-WHITE',
     'text-sm font-semibold text-BLACK-2',
