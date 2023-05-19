@@ -14,12 +14,16 @@ export default {
   }),
   provide() {
     return {
-      yartuForm: this.register,
+      yartuFormRegister: this.register,
+      yartuFormUnRegiser: this.unregister,
     };
   },
   methods: {
     register(formItem) {
       this.formItems.push(formItem);
+    },
+    unregister(formItem) {
+      this.formItems = this.formItems.filter((f) => f.formItemId !== formItem.formItemId);
     },
     resetFormItems() {
       this.formItems = [];
