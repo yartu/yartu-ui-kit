@@ -58,6 +58,10 @@ const validate = (rules, value, objectKey=false) => {
   let valid = true;
   let valueList = [];
 
+  if (!value) {
+    return
+  }
+
   if (Array.isArray(value)) {
     valueList = value;
   } else {
