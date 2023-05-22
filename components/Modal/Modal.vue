@@ -85,6 +85,11 @@ const props = defineProps({
     default: true,
   },
   modelValue: null,
+  radius: {
+    type: String,
+    required: false,
+    default: () => '12px',
+  },
 });
 
 const emit = defineEmits(["closed", "update:modelValue"]);
@@ -94,6 +99,8 @@ const maxModalWith = ref(props.maxWidth);
 const modalMaxHeight = ref(
   props.maxHeight && !props.fullScreen ? props.maxHeight : ""
 );
+
+const modalRadius = ref(props.radius);
 
 const containerClass = computed(() => {
   return [
@@ -114,7 +121,7 @@ const containerClass = computed(() => {
     max-height: v-bind(modalMaxHeight) !important;
     width: auto !important;
     height: auto !important;
-    border-radius: 12px;
+    border-radius: v-bind(modalRadius) !important;
   }
 }
 .modal-container {
