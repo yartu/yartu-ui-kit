@@ -20,7 +20,9 @@ export default {
   },
   methods: {
     register(formItem) {
-      this.formItems.push(formItem);
+      if (!this.formItems.find((f) => f.formItemId === formItem.formItemId)) {
+        this.formItems.push(formItem);
+      }
     },
     unregister(formItem) {
       this.formItems = this.formItems.filter((f) => f.formItemId !== formItem.formItemId);

@@ -58,10 +58,6 @@ const validate = (rules, value, objectKey=false) => {
   let valid = true;
   let valueList = [];
 
-  if (!value) {
-    return
-  }
-
   if (Array.isArray(value)) {
     valueList = value;
   } else {
@@ -70,7 +66,7 @@ const validate = (rules, value, objectKey=false) => {
 
   for (let val of valueList) {
 
-    if (typeof val === 'object') {
+    if (val && typeof val === 'object') {
       if (objectKey) {
         val = val[objectKey];
       } else if (val.email) {
