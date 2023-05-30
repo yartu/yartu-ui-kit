@@ -24,7 +24,14 @@
       />
       <foreignObject x="0" :y="height - 34" :width="viewPortX" :height="height">
         <div :class="ringContentClass">
-          <p :class="ringTitleClass">{{ title }}</p>
+          <template v-if="loading">
+            <div class="w-full flex items-center justify-center">
+              <div class="w-24 h-3 bg-BORDER animate-pulse rounded-full"></div>
+            </div>
+          </template>
+          <template v-else>
+            <p :class="ringTitleClass">{{ title }}</p>
+          </template>
           <p :class="ringTextClass">{{ subtitle }}</p>
         </div>
       </foreignObject>
@@ -33,6 +40,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'y-progress-ring',
 };
@@ -61,6 +69,10 @@ const props = defineProps({
   ringColor: {
     type: String,
     default: '#3663F2',
+  },
+  loading: {
+    type: Boolean,
+    required: false,
   },
   title: {
     type: String,
