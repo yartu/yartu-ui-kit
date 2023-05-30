@@ -9,6 +9,7 @@
       <div v-if="modelValue" :class="containerClass">
         <div
           class="bg-white relative overflow-auto modal-container"
+          :class="modalClass"
           role="dialog"
           aria-labelledby="modalTitle"
           aria-describedby="modalDescription"
@@ -86,9 +87,9 @@ const props = defineProps({
   },
   modelValue: null,
   radius: {
-    type: String,
+    type: Boolean,
     required: false,
-    default: () => '12px',
+    default: () => true,
   },
 });
 
@@ -100,18 +101,23 @@ const modalMaxHeight = ref(
   props.maxHeight && !props.fullScreen ? props.maxHeight : ""
 );
 
-const modalRadius = ref(props.radius);
-
 const containerClass = computed(() => {
   return [
-    "overflow-x-hidden overflow-y-auto",
-    "fixed",
-    "inset-0 z-50",
-    "outline-none",
-    "focus:outline-none",
-    "flex justify-center items-center",
+    'overflow-x-hidden overflow-y-auto',
+    'fixed',
+    'inset-0 z-50',
+    'outline-none',
+    'focus:outline-none',
+    'flex justify-center items-center',
   ];
 });
+
+const modalClass = computed(() => {
+  return [
+    props.radius ? 'rounded-xl' : '',
+  ];
+});
+
 </script>
 <style scoped>
 @media screen and (min-width: 1024px) {
@@ -121,7 +127,6 @@ const containerClass = computed(() => {
     max-height: v-bind(modalMaxHeight) !important;
     width: auto !important;
     height: auto !important;
-    border-radius: v-bind(modalRadius) !important;
   }
 }
 .modal-container {
