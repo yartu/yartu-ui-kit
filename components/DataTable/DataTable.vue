@@ -93,6 +93,7 @@
       </template>
       <template #tbody>
         <tr
+          @dblclick.stop="emit('dblclick', item)"
           @click.stop="openDetail(item)"
           @contextmenu.prevent="contextMenu($event, item)"
           class="border-y border-BORDER text-BLACK-2 hover:bg-LIGHTBLUE-4 cursor-pointer"
@@ -255,7 +256,7 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(["selected", "choose", "context"]);
+const emit = defineEmits(["selected", "choose", "context", "dblclick"]);
 
 const selectedList = ref([]);
 const allChecked = ref(false);

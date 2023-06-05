@@ -15,6 +15,7 @@
 </template>
 
 <script>
+// TODO :: add outline (border color) parameter.
 export default {
   name: 'y-chip',
 };

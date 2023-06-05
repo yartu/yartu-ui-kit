@@ -299,8 +299,11 @@
 </template>
 
 <script>
+import FormItem from "../FormItem/FormItem.vue";
+
 export default {
   name: "y-date-time-picker",
+  extends: FormItem,
 };
 </script>
 
