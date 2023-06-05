@@ -211,9 +211,8 @@ export default {
         {
           'border-RED focus:border-RED': this.hasError,
           'border-YELLOW focus:border-YELLOW': this.warning,
-          'border-BLUE focus:border-BLUE': this.info,
+          'border-BLUE focus:border-BLUE': this.info || this.focused,
           'rounded-full text-sm': this.rounded,
-          'border-BLUE focus:border-BLUE': this.focused,
         },
       ];
     },
