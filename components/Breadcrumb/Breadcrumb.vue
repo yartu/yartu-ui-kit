@@ -27,6 +27,7 @@
 </template>
 
 <script>
+// TODO :: crumbs parameter is string array, add object array support.
 export default {
   name: 'y-breadcrumb',
 };
