@@ -55,7 +55,8 @@
           <th
             v-for="(header, index) in headers"
             :key="header.value"
-            class="p-2.5 text-GREY-1 text-xs whitespace-nowrap font-semibold"
+            class="p-2.5 text-xs whitespace-nowrap font-semibold"
+            :class="sortBy === header.value ? 'text-BLACK-2 !font-extrabold': 'text-GREY-1'"
           >
             <slot :name="`y-table-header-${header.value}`" :header="header">
               <div
@@ -262,6 +263,7 @@ const selectedList = ref([]);
 const allChecked = ref(false);
 const filteredItems = ref([]);
 const sort = ref("asc");
+const sortBy = ref(null)
 
 const indeterminate = computed(() => {
   const selectedLength = selectedList.value.length;
@@ -310,6 +312,7 @@ const search = (query) => {
 };
 
 const order = (orderKey) => {
+  sortBy.value = orderKey;
   if (props.orderBy) {
     if(sort.value === "asc") {
       props.orderBy(`${orderKey}`);
