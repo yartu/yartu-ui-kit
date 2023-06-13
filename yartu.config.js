@@ -286,6 +286,7 @@ const globalConfig = {
       },
       backgroundSize: {
         16: '1rem',
+        20: '1.25rem',
         24: '1.5rem',
         32: '2rem',
         56: '3.5rem',
