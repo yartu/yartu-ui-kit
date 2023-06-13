@@ -8,11 +8,13 @@
     >
       <div v-if="modelValue" :class="containerClass">
         <div
-          class="bg-white relative overflow-auto modal-container"
-          :class="modalClass"
+          id="modal-container"
+          class="bg-white relative overflow-auto transition-all duration-200 modal-container"
+          :class="[modalClass, escShakeClass ? 'scale-105' : '']"
           role="dialog"
           aria-labelledby="modalTitle"
           aria-describedby="modalDescription"
+          @keydown="lorem"
         >
           <button
             v-if="closable"
@@ -23,27 +25,9 @@
               $emit('closed');
             "
           >
-            <svg
-              width="32"
-              height="32"
-              viewBox="0 0 32 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M11 11L21 21"
-                stroke="#9AA1B4"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M11 21L21 11"
-                stroke="#9AA1B4"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M11 11L21 21" stroke="#9AA1B4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M11 21L21 11" stroke="#9AA1B4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
           </button>
           <div>
@@ -57,11 +41,11 @@
 </template>
 <script>
 export default {
-  name: "y-modal",
+  name: 'y-modal',
 };
 </script>
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 
 const props = defineProps({
   fullScreen: {
@@ -70,11 +54,11 @@ const props = defineProps({
   },
   maxWidth: {
     type: String,
-    default: "404px",
+    default: '404px',
   },
   minWidth: {
     type: String,
-    default: "404px",
+    default: '404px',
     required: true,
   },
   maxHeight: {
@@ -85,6 +69,10 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  disableEsc: {
+    type: Boolean,
+    default: false,
+  },
   modelValue: null,
   radius: {
     type: Boolean,
@@ -93,13 +81,12 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["closed", "update:modelValue"]);
+const emit = defineEmits(['closed', 'update:modelValue']);
 
+const escShakeClass = ref(false);
 const minModalWith = ref(props.minWidth);
 const maxModalWith = ref(props.maxWidth);
-const modalMaxHeight = ref(
-  props.maxHeight && !props.fullScreen ? props.maxHeight : ""
-);
+const modalMaxHeight = ref(props.maxHeight && !props.fullScreen ? props.maxHeight : '');
 
 const containerClass = computed(() => {
   return [
@@ -113,11 +100,29 @@ const containerClass = computed(() => {
 });
 
 const modalClass = computed(() => {
-  return [
-    props.radius ? 'rounded-xl' : '',
-  ];
+  return [props.radius ? 'rounded-xl' : ''];
 });
 
+const keypress = (e) => {
+  if (e.key === 'Escape' && !props.disableEsc) {
+    emit('update:modelValue', false);
+    emit('closed');
+  }
+  if (e.key === 'Escape' && props.disableEsc) {
+    escShakeClass.value = true;
+    setTimeout(() => {
+      escShakeClass.value = false;
+    }, 100);
+  }
+};
+
+onMounted(async () => {
+  window.addEventListener('keyup', keypress);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('keyup', keypress);
+});
 </script>
 <style scoped>
 @media screen and (min-width: 1024px) {
