@@ -10,7 +10,7 @@
         <div
           id="modal-container"
           class="bg-white relative overflow-auto transition-all duration-200 modal-container"
-          :class="[modalClass, escShakeClass ? 'scale-105' : '']"
+          :class="[modalClass, escapeController ? 'scale-105' : '']"
           role="dialog"
           aria-labelledby="modalTitle"
           aria-describedby="modalDescription"
@@ -83,7 +83,7 @@ const props = defineProps({
 
 const emit = defineEmits(['closed', 'update:modelValue']);
 
-const escShakeClass = ref(false);
+const escapeController = ref(false);
 const minModalWith = ref(props.minWidth);
 const maxModalWith = ref(props.maxWidth);
 const modalMaxHeight = ref(props.maxHeight && !props.fullScreen ? props.maxHeight : '');
@@ -109,9 +109,9 @@ const keypress = (e) => {
     emit('closed');
   }
   if (e.key === 'Escape' && props.disableEsc) {
-    escShakeClass.value = true;
+    escapeController.value = true;
     setTimeout(() => {
-      escShakeClass.value = false;
+      escapeController.value = false;
     }, 100);
   }
 };
