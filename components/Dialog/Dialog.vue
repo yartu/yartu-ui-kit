@@ -1,5 +1,8 @@
 <template>
-  <div class="overflow-auto mt-6 mb-24 px-7 box-border" style="max-height: calc(100vh - 21.5rem)">
+  <div
+    class="overflow-auto mt-6 mb-24 px-7 box-border transition-all duration-200"
+    style="max-height: calc(100vh - 21.5rem)"
+  >
     <div class="flex flex-col w-full">
       <h1 class="flex items-center gap-3 sticky z-1 top-0 bg-white font-bold text-2xl text-BLACK-2 pb-7">
         <y-icon v-if="dialogIcon" :name="`yi ${dialogIcon} ${dialogColor}`"></y-icon>
@@ -26,7 +29,7 @@
       <Button
         v-for="(action, index) in actionButtons"
         :key="index"
-        :class="action.color"
+        :class="[action.color, enterController ? 'scale-110' : '']"
         @click="clickAction(action.handler)"
         primary
         size="lg"
@@ -45,7 +48,7 @@ export default {
 </script>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import Button from '../Button/Button.vue';
 
 const props = defineProps({
@@ -84,6 +87,11 @@ const props = defineProps({
     required: false,
     default: false,
   },
+  disableEnter: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
   type: {
     type: String,
     required: false,
@@ -114,6 +122,7 @@ const yartuDialogForm = ref();
 const yartuDialogFormInput = ref();
 const emit = defineEmits(['close']);
 const isLoading = ref(false);
+const enterController = ref(false);
 
 const dialogIcon = computed(() => {
   if (props.icon) {
@@ -170,9 +179,33 @@ const clickAction = (handler) => {
   }
 };
 
+const keypress = (e) => {
+  if (e.key === 'Enter' && !props.disableEnter) {
+    let index = props.actionButtons.findIndex((a) => {
+      a.type === 'confirm';
+    });
+    if (index === -1) {
+      clickAction(props.actionButtons[props.actionButtons.length - 1].handler);
+    } else {
+      clickAction(props.actionButtons[index].handler);
+    }
+  }
+  if (e.key === 'Enter' && props.disableEnter) {
+    enterController.value = true;
+    setTimeout(() => {
+      enterController.value = false;
+    }, 100);
+  }
+};
+
 onMounted(() => {
+  window.addEventListener('keyup', keypress);
   if (yartuDialogFormInput.value && yartuDialogFormInput.value !== null) {
     yartuDialogFormInput.value.focus();
   }
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('keyup', keypress);
 });
 </script>
