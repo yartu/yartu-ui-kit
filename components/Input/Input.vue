@@ -54,7 +54,7 @@
                 :class="listClass"
                 v-for="(item, index) in dropdownItem"
                 :key="index"
-                @click="dropdownSelected = item"
+                @click="setDropdownSelected(item)"
               >
                 {{ item }}
               </li>
@@ -81,7 +81,6 @@ export default {
   extends: FormItem,
   data: () => ({
     open: false,
-    dropdownSelected: undefined,
     focused: false,
   }),
 
@@ -103,8 +102,11 @@ export default {
       }
       this.focused = false;
     },
+    setDropdownSelected(item) {
+      this.dropdownSelected = item;
+    },
   },
-  emits: ['update:modelValue', 'change'],
+  emits: ['update:modelValue', 'update:dropdownModel', 'change'],
   props: {
     modelValue: {
       type: [String, Number, Object],
@@ -192,16 +194,24 @@ export default {
     },
     inputClasses: String,
   },
-
   computed: {
+    dropdownSelected: {
+      get() {
+        if (this.dropdownModel) {
+          return this.dropdownModel;
+        }
+        return '';
+      },
+      set(val) {
+        this.$emit('update:dropdownModel', val);
+      },
+    },
     hasError() {
       return this.error || this.errors.length > 0;
     },
-
     inputContainerClass() {
       return ['text-BLACK-2', 'flex flex-col gap-2', 'relative'];
     },
-
     inputContentClass() {
       return [
         'relative',
@@ -232,7 +242,6 @@ export default {
         },
       ];
     },
-
     helperClass() {
       return [
         'text-xs',
@@ -244,15 +253,12 @@ export default {
         },
       ];
     },
-
     prefixClass() {
       return ['flex justify-center items-center', 'text-GREY-1'];
     },
-
     suffixClass() {
       return ['flex justify-center items-center', 'text-GREY-1'];
     },
-
     dropdownClass() {
       return [
         'absolute',
@@ -273,7 +279,6 @@ export default {
         },
       ];
     },
-
     listClass() {
       return [
         'py-2 px-4',
