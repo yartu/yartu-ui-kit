@@ -1,28 +1,28 @@
 <template>
-  <div :id="selected?.id && selected.id === item.id ? 'selectedTreeNode' : ''" @click.stop="selectNode(item)" :class="containerClass">
+  <div
+    :id="selected?.id && selected.id === item.id ? 'selectedTreeNode' : ''"
+    @click.stop="selectNode(item)"
+    :class="containerClass"
+  >
     <span
       v-if="isFolder && !expanded"
       @click.stop="toggle"
       class="w-5 h-5 rounded-full hover:bg-GREY-8 flex items-center justify-center"
       :class="{ '-rotate-90': !isOpen }"
     >
-      <svg
-        width="16"
-        height="16"
-        viewBox="0 0 16 16"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M4 7L8 11L12 7L4 7Z" fill="#9AA1B4" />
       </svg>
     </span>
     <slot name="prefix"></slot>
-    <h1 v-if="label && item[label]" class="truncate" :title="item[label]">
-      {{ item[label] }}
-    </h1>
-    <h1 v-else class="truncate" :title="item.name">
-      {{ item.name }}
-    </h1>
+    <slot name="value" :item="item">
+      <h1 v-if="label && item[label]" class="truncate" :title="item[label]">
+        {{ item[label] }}
+      </h1>
+      <h1 v-else class="truncate" :title="item.name">
+        {{ item.name }}
+      </h1>
+    </slot>
   </div>
   <div v-show="isOpen || expanded" v-if="isFolder" class="ml-4">
     <TreeNode
@@ -39,6 +39,14 @@
     >
       <template #prefix>
         <slot name="prefix"></slot>
+      </template>
+      <template #value="{ item }">
+        <h1 v-if="label && item[label]" class="truncate" :title="item[label]">
+          {{ item[label] }}
+        </h1>
+        <h1 v-else class="truncate" :title="item.name">
+          {{ item.name }}
+        </h1>
       </template>
     </TreeNode>
   </div>
@@ -71,10 +79,7 @@ const isOpenCheck = (item) => {
       for (const child of item[props.folderKey]) {
         if (child[props.itemKey] === props.selected[props.itemKey]) {
           return true;
-        } else if (
-          child[props.folderKey] &&
-          child[props.folderKey].length > 0
-        ) {
+        } else if (child[props.folderKey] && child[props.folderKey].length > 0) {
           return isOpenCheck(child);
         }
       }

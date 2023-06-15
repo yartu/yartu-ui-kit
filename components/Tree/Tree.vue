@@ -14,6 +14,9 @@
         <template #prefix>
           <slot name="prefix"></slot>
         </template>
+        <template #value>
+          <slot name="value" :item="item"></slot>
+        </template>
       </TreeNode>
     </div>
   </div>
