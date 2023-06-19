@@ -1,14 +1,14 @@
 <template>
   <div class="flex items-center w-full gap-4 flex-wrap animate-pulse">
-    <y-shaped-card class="w-full 3xs:w-1/2-gap-4 sm:w-1/3-gap-4 lg:w-1/4-gap-4 3xl:w-1/5-gap-4" shape v-for="i in skeletonCount">
-      <template #content>
-        <div class="w-full h-full bg-LIGHTBLUE-7 rounded-lg"></div>
-      </template>
-      <div class="flex flex-col gap-2">
-        <div class="w-28 h-3 bg-BORDER rounded-lg"></div>
-        <div class="w-48 h-3 bg-BORDER rounded-lg"></div>
+    <y-card
+      class="w-full 3xs:w-1/2-gap-4 sm:w-1/3-gap-4 lg:w-1/4-gap-4 3xl:w-1/5-gap-4 border border-BORDER pl-4 pr-2 py-2 rounded-lg relative flex-col before:left-0 before:w-2 before:absolute before:h-20 before:rounded-r-lg before:bg-BORDER"
+      v-for="i in skeletonCount"
+    >
+      <div class="h-20 w-full bg-BORDER rounded"></div>
+      <div class="flex gap-2 items-center w-full mt-3">
+        <div class="w-3/5 h-3 bg-BORDER rounded-lg"></div>
       </div>
-    </y-shaped-card>
+    </y-card>
   </div>
 </template>
 <script setup>

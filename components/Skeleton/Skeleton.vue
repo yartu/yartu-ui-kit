@@ -2,6 +2,8 @@
   <div v-if="type === 'list-all'" class="flex flex-col gap-16">
     yartu-card-skeleton
     <yartu-card-skeleton :skeletonCount="5"></yartu-card-skeleton>
+    yartu-shaped-card-skeleton
+    <yartu-shaped-card-skeleton :skeletonCount="5"></yartu-shaped-card-skeleton>
     repo-folder-skeleton
     <repo-folder-skeleton :skeletonCount="5"></repo-folder-skeleton>
     drive-client-skeleton
@@ -61,6 +63,10 @@
     v-else-if="type.includes('yartu-card')"
     :skeletonCount="skeletonCount"
   ></yartu-card-skeleton>
+  <yartu-shaped-card-skeleton
+    v-else-if="type.includes('yartu-shaped-card')"
+    :skeletonCount="skeletonCount"
+  ></yartu-shaped-card-skeleton>
   <repo-folder-skeleton
     v-else-if="type.includes('repo-folder')"
     :skeletonCount="skeletonCount"
