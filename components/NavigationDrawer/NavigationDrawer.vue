@@ -44,6 +44,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  left: {
+    type: Boolean,
+    default: false,
+  },
   fixed: {
     type: Boolean,
     default: false,

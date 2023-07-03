@@ -225,8 +225,8 @@ import LoadingCircular from "./LoadingCircular.vue";
 import ProjectHeaderSkeleton from "./ProjectHeaderSkeleton.vue";
 import UploadingItemSkeleton from "./UploadingItemSkeleton.vue";
 import ThreadSkeleton from "./ThreadSkeleton.vue";
+import YartuShapedCardSkeleton from "./YartuShapedCardSkeleton.vue";
 
-// TODO : Add more template @aziz
 const props = defineProps({
   type: {
     type: String,
