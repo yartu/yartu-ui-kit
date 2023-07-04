@@ -1,12 +1,7 @@
 <template>
-  <div :class="containerClass" :style="setBackgrounColor">
+  <div :class="containerClass" :style="[setBackgroundColor, setBorderColor]">
     <slot>
-      <img
-        v-if="image"
-        :src="image"
-        :class="imageClass"
-        alt="avatar-image"
-      />
+      <img v-if="image" :src="image" :class="imageClass" alt="avatar-image" />
       <span v-else-if="label">{{ label }}</span>
     </slot>
   </div>
@@ -45,6 +40,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  borderClr: {
+    type: String,
+    default: null,
+  },
 });
 const containerClass = computed(() => {
   return [
@@ -77,7 +76,7 @@ const containerClass = computed(() => {
 
 const imageClass = computed(() => ['w-full h-full rounded-full']);
 
-const setBackgrounColor = computed(() => {
+const setBackgroundColor = computed(() => {
   let bgColor = '';
   const hash = props.color.includes('#');
   const r = props.color.includes('r');
@@ -89,5 +88,22 @@ const setBackgrounColor = computed(() => {
     bgColor = 'background-color:' + props.color + ';';
   }
   return bgColor;
+});
+
+const setBorderColor = computed(() => {
+  if (props.borderClr) {
+    let borderColor = '';
+    const hash = props.borderClr.includes('#');
+    const r = props.borderClr.includes('r');
+    const h = props.borderClr.includes('h');
+
+    if (!hash && !r && !h) {
+      borderColor = 'border-color:' + colors[props.borderClr].base + '!important;';
+    } else {
+      borderColor = 'border-color:' + props.borderClr + '!important;';
+    }
+    return borderColor;
+  }
+  return null;
 });
 </script>
