@@ -40,7 +40,7 @@
 </template>
 <script setup>
 import YartuTransitions from './YartuTransitions.vue';
-import { ref, shallowRef, onMounted } from 'vue';
+import { ref, shallowRef, onMounted, onBeforeMount } from 'vue';
 import { useEventBus } from '@vueuse/core';
 import { Snackbar } from '../Snackbar';
 import { Toast } from '../Toast';
@@ -124,7 +124,13 @@ const listener = (notifyType, options = {}) => {
     .toString(16)
     .substring(1);
   options.id = uniqueID;
-
+  if (window.innerWidth < 768) {
+    if (position.includes('top')) {
+      position = 'top-center';
+    } else if (position.includes('bottom')) {
+      position = 'center-bottom';
+    }
+  }
   if (notifyType === 'dialog') {
     options.component = dialogComp;
     options.open = true;
