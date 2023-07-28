@@ -55,7 +55,7 @@ const setPlusAvatarColor = () => {
 
 onMounted(() => {
   if (props.avatarList.length > props.max) {
-    plusAvatarCount.value = Math.abs(props.avatarList.length - props.max);
+    plusAvatarCount.value = Math.abs(props.avatarList.length - props.max + 1);
   }
   if (plusAvatarCount.value > 0) {
     setPlusAvatarColor();
