@@ -10,7 +10,7 @@
         >
         </i>
       </span>
-      <div class="flex items-center text-GREY-1 flex-1">
+      <div class="flex items-center text-GREY-1 flex-1 break-all">
         <i v-if="prefix != ''" :class="[prefix, prefixClass]" aria-hidden="true"></i>
         <slot name="title">
           <p :class="titleClass" style="width: calc(100% - 1rem)">
