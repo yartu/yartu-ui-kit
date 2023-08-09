@@ -108,6 +108,7 @@
               class="!p-0"
             ></y-calendar>
             <y-time-picker
+              ref="timePicker"
               v-if="time"
               @update="emitSelected($event, false)"
               v-model="selectedTime"
@@ -171,9 +172,7 @@
       </teleport>
     </transition>
     <bottom-sheet v-else :show="showPicker">
-      <div
-        class="w-full flex items-center pb-6 justify-center overflow-y-scroll"
-      >
+      <div class="w-full flex items-center pb-6 justify-center overflow-y-scroll">
         <div ref="pickerContainer" :class="bottomSheetPickerClass">
           <div v-if="preset" class="flex flex-col gap-2 mb-4">
             <p class="text-sm text-GREY-1 font-semibold pb-1">PRESET</p>
@@ -233,6 +232,7 @@
               class="!p-0"
             ></y-calendar>
             <y-time-picker
+              ref="bottomSheetTimePicker"
               v-if="time"
               @update="emitSelected($event, false)"
               v-model="selectedTime"
@@ -308,7 +308,7 @@ export default {
 </script>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue';
 import { onClickOutside } from "@vueuse/core";
 
 import * as dayjs from "dayjs";
@@ -320,6 +320,7 @@ const emit = defineEmits([
   "monthChange",
   "close",
 ]);
+
 const props = defineProps({
   modelValue: {
     type: [Object, String, Date],
@@ -400,6 +401,10 @@ const props = defineProps({
 
 const target = ref(null);
 const pickerContainer = ref(null);
+
+const bottomSheetTimePicker = ref(null);
+const timePicker = ref(null);
+
 const showPicker = ref(false);
 const now =
   props.modelValue && !isNaN(props.modelValue.$D)
@@ -426,7 +431,16 @@ const open = () => {
     selectedDate.value = now;
   }
   showPicker.value = true;
+
   calculatePosition();
+  nextTick(() => {
+    if (bottomSheetTimePicker.value) {
+      bottomSheetTimePicker.value.scrollToTime();
+    }
+    if (timePicker.value) {
+      timePicker.value.scrollToTime();
+    }
+  });
 };
 
 const clear = () => {
