@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <div :class="inputContainerClass">
-      <label :id="label" class="text-sm font-semibold" v-if="label">
+      <label :id="label" class="font-extrabold text-BLACK-2 text-xs text-center " v-if="label">
         {{ label }}
       </label>
       <label
