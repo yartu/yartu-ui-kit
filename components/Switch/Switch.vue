@@ -50,7 +50,8 @@ export default {
     },
     modelValue: {},
     inputValue: {
-      required: true,
+      default: true,
+      required: false,
     },
   },
   computed: {
