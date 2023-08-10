@@ -109,6 +109,7 @@
             ></y-calendar>
             <y-time-picker
               ref="timePicker"
+              :label="clockLabelText"
               v-if="time"
               @update="emitSelected($event, false)"
               v-model="selectedTime"
@@ -329,6 +330,11 @@ const props = defineProps({
   label: {
     type: String,
     required: false,
+  },
+  clockLabelText: {
+    type: String,
+    required: false,
+    default: '',
   },
   placeholder: {
     type: String,
