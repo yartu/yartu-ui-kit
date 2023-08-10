@@ -2,7 +2,7 @@
   <div class="relative">
     <div :class="inputContainerClass">
       <label :id="label" class="text-sm font-semibold" v-if="label">
-        {{ label }} 
+        {{ label }}
       </label>
       <label
         ref="target"
@@ -217,8 +217,9 @@ onClickOutside(
 const open = async () => {
   showPicker.value = true;
   calculatePosition();
-  await nextTick();
-  scrollToTime();
+  nextTick(() => {
+    scrollToTime();
+  });
 };
 
 const scrollToTime = () => {
@@ -263,7 +264,7 @@ const initTime = (date) => {
   let hour = date.hour();
   const minute = date.minute();
   const timeType = date.format('a');
-  
+
   if (!props.time24h && hour > 12) {
     hour -= 12;
   } else if (props.time24h && timeType === 'pm' && hour < 12) {
