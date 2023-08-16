@@ -10,7 +10,19 @@
       </h1>
       <p v-html="subtitle"></p>
       <y-form v-if="form" ref="yartuDialogForm" name="dialog-form" class="flex flex-col gap-5 mt-2">
+        <y-text-area
+          v-if="form.type && form.type === 'text-area'"
+          id="dialog-text-area"
+          :title="form.title"
+          :placeholder="form.placeholder"
+          :rules="form.rules"
+          :max-length="1200"
+          v-model="form.model"
+          resize="vertical"
+        >
+        </y-text-area>
         <y-input
+          v-else
           ref="yartuDialogFormInput"
           helper
           v-model="form.model"
