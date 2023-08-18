@@ -1,11 +1,6 @@
 <template>
   <div :class="inputContainerClass">
-    <label
-      :id="id"
-      class="text-sm font-semibold"
-      :class="disabled ? 'text-GREY-1' : ''"
-      v-if="label"
-    >
+    <label :id="id" class="text-sm font-semibold" :class="disabled ? 'text-GREY-1' : ''" v-if="label">
       {{ label }}
     </label>
     <div :class="inputContentClass">
@@ -14,13 +9,7 @@
           {{ prefix }}
         </slot>
       </div>
-      <input
-        v-if="disabled && disabledText"
-        :class="inputClass"
-        :value="disabledText"
-        type="text"
-        disabled
-      />
+      <input v-if="disabled && disabledText" :class="inputClass" :value="disabledText" type="text" disabled />
       <input
         v-else
         :id="id"
@@ -34,6 +23,8 @@
         :type="type"
         :placeholder="placeholder"
         :disabled="disabled"
+        v-maska
+        :data-maska="maskValue"
       />
       <div>
         <div :class="suffixClass" v-if="suffix">
@@ -42,12 +33,7 @@
           </slot>
         </div>
         <div ref="optionsContainer">
-          <slot
-            name="dropdown"
-            :open="openDropdown"
-            :selected="dropdownSelected"
-          >
-          </slot>
+          <slot name="dropdown" :open="openDropdown" :selected="dropdownSelected"> </slot>
           <div v-if="dropdown" :class="dropdownClass">
             <ol>
               <li
@@ -75,13 +61,21 @@
 <script>
 import FormItem from '../FormItem';
 import { onClickOutside } from '@vueuse/core';
+import { vMaska } from 'maska';
 
 export default {
   name: 'y-input',
   extends: FormItem,
+  directives: { maska: vMaska },
   data: () => ({
     open: false,
     focused: false,
+    defaultMasks: {
+      phone: '(###) ### ## ##',
+      'credit-card': '#### #### #### ####',
+      cvv: '###',
+      'expire-date': '##/##',
+    },
   }),
 
   mounted() {
@@ -192,9 +186,19 @@ export default {
       type: Boolean,
       default: false,
     },
+    maskType: {
+      type: String,
+      default: '',
+    },
     inputClasses: String,
   },
   computed: {
+    maskValue() {
+      if (this.maskType in this.defaultMasks) {
+        return this.defaultMasks[this.maskType];
+      }
+      return this.maskType;
+    },
     dropdownSelected: {
       get() {
         if (this.dropdownModel) {
@@ -280,13 +284,7 @@ export default {
       ];
     },
     listClass() {
-      return [
-        'py-2 px-4',
-        'w-full',
-        'cursor-pointer',
-        'text-sm',
-        'hover:bg-GREY-3',
-      ];
+      return ['py-2 px-4', 'w-full', 'cursor-pointer', 'text-sm', 'hover:bg-GREY-3'];
     },
   },
 };
