@@ -210,7 +210,7 @@
         </template>
 
         <!-- Placeholder -->
-        <template v-if="placeholder && !search && (!hasSelected || hideSelected)">
+        <template v-if="placeholder && !search && (!hasSelected || hideSelected) && Object.keys(iv).length == 0">
           <slot name="placeholder">
             <div :class="classList.placeholder" aria-hidden="true">
               {{ placeholder }}
