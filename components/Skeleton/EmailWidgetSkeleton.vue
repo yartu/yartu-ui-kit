@@ -1,5 +1,5 @@
 <template>
-  <div role="status" class="w-full h-full rounded animate-pulse p-5">
+  <div role="status" class="w-full h-full rounded animate-pulse">
     <div class="w-1/3 h-3 bg-BORDER rounded-full"></div>
     <div
       class="flex gap-2 py-2.5 justify-between items-center border-b border-BORDER"
