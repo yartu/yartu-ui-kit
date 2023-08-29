@@ -29,7 +29,7 @@ export default {
     },
     bgColor: {
       type: String,
-      default: '#ffffff',
+      default: '#3663f2',
     },
     borderColor: {
       type: String,
@@ -56,10 +56,7 @@ export default {
       },
     },
     radioButtonContainer() {
-      return [
-        'w-fit',
-        'inline-flex items-center justify-center gap-2',
-      ];
+      return ['w-fit', 'inline-flex items-center justify-center gap-2'];
     },
     radioButtonClass() {
       return [
@@ -75,7 +72,6 @@ export default {
         'appearance-none',
         'w-[18px] h-[18px]',
         'hover:bg-GREY-5',
-        'checked:hover:bg-HOVER-BLUE',
         'checked:!border-transparent',
         'checked:bg-current',
         'checked:bg-center',
@@ -87,7 +83,7 @@ export default {
     },
     setStyle() {
       return [
-        // TODO :: set custom colors
+        'border-color:' + this.borderColor + ';',
       ];
     },
   },
@@ -98,5 +94,10 @@ export default {
 .y-radio-button:checked {
   background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 18 18' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='9' cy='9' r='4.5'/%3e%3c/svg%3e");
   background-size: 100% 100%;
+  background-color: v-bind(bgColor);
 }
+.y-radio-button:checked:hover {
+  background-color: v-bind(bgColor + 'd1' );
+}
+
 </style>
