@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center w-full gap-4 flex-wrap animate-pulse">
-    <y-shaped-card class="w-full 3xs:w-1/2-gap-4 sm:w-1/3-gap-4 lg:w-1/4-gap-4 3xl:w-1/5-gap-4" shape v-for="i in skeletonCount" :key="i">
+    <y-shaped-card class="w-full 3xs:w-1/2-gap-4 sm:w-1/3-gap-4 lg:w-1/4-gap-4 2xl:w-1/5-gap-4" shape v-for="i in skeletonCount" :key="i">
       <template #content>
         <div class="w-full h-full bg-LIGHTBLUE-7 rounded-lg"></div>
       </template>
