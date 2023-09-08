@@ -139,10 +139,10 @@
     :skeletonCount="skeletonCount"
   >
   </note-content-skeleton>
-  <project-card-skeleton
-    v-else-if="type.includes('project-card')"
+  <kanban-column-skeleton
+    v-else-if="type.includes('kanban-column')"
     :skeletonCount="skeletonCount"
-  ></project-card-skeleton>
+  ></kanban-column-skeleton>
   <project-task-card-skeleton
     v-else-if="type.includes('project-task-card')"
     :skeletonCount="skeletonCount"
@@ -214,7 +214,7 @@ import NavbarSearchSkeleton from "./NavbarSearchSkeleton.vue";
 import DriveClientSkeleton from "./DriveClientSkeleton.vue";
 import ConferenceCardSkeleton from "./ConferenceCardSkeleton.vue";
 import NoteContentSkeleton from "./NoteContentSkeleton.vue";
-import ProjectTaskCardSkeleton from "./ProjectTaskCardSkeleton.vue";
+import KanbanColumnSkeleton from "./KanbanColumnSkeleton.vue";
 import ProjectBoardCardSkeleton from "./ProjectBoardCardSkeleton.vue";
 import ProjectCardSkeleton from "./ProjectCardSkeleton.vue";
 import ProjectTaskDetailSkeleton from "./ProjectTaskDetailSkeleton.vue";
