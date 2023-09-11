@@ -75,7 +75,7 @@
                   @click="chooseDate(daysList[7 * (week - 1) + (weekDay - 1)])"
                   :class="[
                     {
-                      'bg-BLUE !text-white hover:bg-BLUE':
+                      'bg-BLUE !text-white hover:!bg-BLUE':
                         daysList[7 * (week - 1) + (weekDay - 1)].isSame(
                           selectedDate,
                         ),
