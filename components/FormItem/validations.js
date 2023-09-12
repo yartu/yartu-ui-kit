@@ -42,7 +42,7 @@ const VALIDATIONS = {
   VALID_NAME: [
     (v) => (v && v[0] !== ' ') || 'Not start with space',
     (v) =>
-      !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(v) ||
+      !/[!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?]+/.test(v) ||
       "Name is not valid, don't accept special chracrer (.,!?*, etc)",
     (v) => !/  +/g.test(v) || "This field don't aceept repeated space",
   ],
