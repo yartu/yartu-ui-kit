@@ -4,6 +4,9 @@ const VALIDATIONS = {
     (v) => !!v || 'E-mail is required',
     (v) => /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'E-mail must be valid',
   ],
+  VALID_EMAIL: [
+    (v) => /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'E-mail must be valid',
+  ],
   USERNAME: [
     (v) => !!v || 'Username is required',
     (v) => /[a-z0-9_.]+$/.test(v) || 'Username be valid',
@@ -37,6 +40,10 @@ const VALIDATIONS = {
   ],
   MIN_LENGTH: [
     (v, param) => !!v && (!!v.trim() && v.trim().length >= param) ||
+      `This field should be min ${param}`,
+  ],
+  LENGTH: [
+    (v, param) => !!v && (!!v.trim() && v.trim().length == param) ||
       `This field should be min ${param}`,
   ],
   VALID_NAME: [
