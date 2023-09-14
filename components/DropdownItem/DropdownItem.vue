@@ -20,8 +20,9 @@
     </div>
     <slot name="suffix">
       <i
+        v-if="suffix"
         class="w-6 h-6 !leading-6"
-        :class="suffix != '' ? suffix : ''"
+        :class="suffix"
         aria-hidden="true"
       >
       </i>
