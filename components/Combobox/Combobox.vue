@@ -83,7 +83,7 @@
               multiple && selected && selected.length < 1 ? 'pl-2' : 'pr-2',
               inputContainerClass,
             ]"
-            :placeholder="placeholder"
+            :placeholder="selected ? '' : placeholder"
             @input="filter($event.target.value)"
             @keydown.delete="deleteItem"
             @keyup="enterSuggestRequest"
