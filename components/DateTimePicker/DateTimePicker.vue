@@ -50,13 +50,21 @@
       <teleport v-if="!inline" to="body">
         <div ref="pickerContainer" v-show="showPicker" :class="pickerClass">
           <div v-if="preset" class="flex flex-col gap-2 mb-4">
-            <p class="text-sm text-GREY-1 font-semibold pb-1">PRESET</p>
+            <p class="text-sm text-GREY-1 font-semibold pb-1">
+              <slot name="presetTitle">
+                PRESET
+              </slot>
+            </p>
             <div class="flex items-center gap-2">
               <button
                 @click="emitPreset(presetList.tomorrow)"
                 class="flex flex-col relative px-4 py-2 border border-BORDER rounded-lg flex cursor-pointer w-36"
               >
-                <p class="text-sm text-BLACK-2 font-semibold">Tomorrow</p>
+                <p class="text-sm text-BLACK-2 font-semibold">  
+                  <slot name="tomorrowTitle">
+                    Tomorrow
+                  </slot>
+                </p>
                 <p class="text-sm text-GREY-1">
                   {{ presetList.tomorrow.format("DD MMM HH:mm") }}
                 </p>
@@ -65,7 +73,11 @@
                 @click="emitPreset(presetList.twoDayAfter)"
                 class="flex flex-col relative px-4 py-2 border border-BORDER rounded-lg flex cursor-pointer w-36"
               >
-                <p class="text-sm text-BLACK-2 font-semibold">2 day after</p>
+                <p class="text-sm text-BLACK-2 font-semibold">
+                  <slot name="2dayAfterTitle">
+                    2 days after
+                  </slot>
+                </p>
                 <p class="text-sm text-GREY-1">
                   {{ presetList.twoDayAfter.format("DD MMM HH:mm") }}
                 </p>
@@ -76,7 +88,11 @@
                 @click="emitPreset(presetList.fourDayAfter)"
                 class="flex flex-col relative px-4 py-2 border border-BORDER rounded-lg flex cursor-pointer w-36"
               >
-                <p class="text-sm text-BLACK-2 font-semibold">4 day after</p>
+                <p class="text-sm text-BLACK-2 font-semibold">
+                  <slot name="4dayAfterTitle">
+                    4 days after
+                  </slot>
+                </p>
                 <p class="text-sm text-GREY-1">
                   {{ presetList.fourDayAfter.format("DD MMM HH:mm") }}
                 </p>
@@ -85,7 +101,11 @@
                 @click="emitPreset(presetList.oneWeekAfter)"
                 class="flex flex-col relative px-4 py-2 border border-BORDER rounded-lg flex cursor-pointer w-36"
               >
-                <p class="text-sm text-BLACK-2 font-semibold">1 week after</p>
+                <p class="text-sm text-BLACK-2 font-semibold">
+                  <slot name="1WeekAfterTitle">
+                    1 week after
+                  </slot>
+                </p>
                 <p class="text-sm text-GREY-1">
                   {{ presetList.oneWeekAfter.format("DD MMM HH:mm") }}
                 </p>
@@ -176,13 +196,21 @@
       <div class="w-full flex items-center pb-6 justify-center overflow-y-scroll">
         <div ref="pickerContainer" :class="bottomSheetPickerClass">
           <div v-if="preset" class="flex flex-col gap-2 mb-4">
-            <p class="text-sm text-GREY-1 font-semibold pb-1">PRESET</p>
+            <p class="text-sm text-GREY-1 font-semibold pb-1">
+              <slot name="presetTitle">
+                PRESET
+              </slot>
+            </p>
             <div class="flex items-center gap-2">
               <button
                 @click="emitPreset(presetList.tomorrow)"
                 class="flex flex-col relative px-4 py-2 border border-BORDER rounded-lg flex cursor-pointer w-36"
               >
-                <p class="text-sm text-BLACK-2 font-semibold">Tomorrow</p>
+                <p class="text-sm text-BLACK-2 font-semibold">
+                  <slot name="tomorrowTitle">
+                    TOMORROW
+                  </slot>
+                </p>
                 <p class="text-sm text-GREY-1">
                   {{ presetList.tomorrow.format("DD MMM HH:mm") }}
                 </p>
@@ -191,7 +219,11 @@
                 @click="emitPreset(presetList.twoDayAfter)"
                 class="flex flex-col relative px-4 py-2 border border-BORDER rounded-lg flex cursor-pointer w-36"
               >
-                <p class="text-sm text-BLACK-2 font-semibold">2 day after</p>
+                <p class="text-sm text-BLACK-2 font-semibold">
+                  <slot name="2dayAfterTitle">
+                    2 Day After
+                  </slot>
+                </p>
                 <p class="text-sm text-GREY-1">
                   {{ presetList.twoDayAfter.format("DD MMM HH:mm") }}
                 </p>
@@ -202,7 +234,11 @@
                 @click="emitPreset(presetList.fourDayAfter)"
                 class="flex flex-col relative px-4 py-2 border border-BORDER rounded-lg flex cursor-pointer w-36"
               >
-                <p class="text-sm text-BLACK-2 font-semibold">4 day after</p>
+                <p class="text-sm text-BLACK-2 font-semibold">
+                  <slot name="4dayAfterTitle">
+                    4 Day After
+                  </slot>
+                </p>
                 <p class="text-sm text-GREY-1">
                   {{ presetList.fourDayAfter.format("DD MMM HH:mm") }}
                 </p>
@@ -211,7 +247,11 @@
                 @click="emitPreset(presetList.oneWeekAfter)"
                 class="flex flex-col relative px-4 py-2 border border-BORDER rounded-lg flex cursor-pointer w-36"
               >
-                <p class="text-sm text-BLACK-2 font-semibold">1 week after</p>
+                <p class="text-sm text-BLACK-2 font-semibold">
+                  <slot name="1WeekAfterTitle">
+                    1 Week After
+                  </slot>
+                </p>
                 <p class="text-sm text-GREY-1">
                   {{ presetList.oneWeekAfter.format("DD MMM HH:mm") }}
                 </p>
