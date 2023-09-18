@@ -193,9 +193,7 @@ const clickAction = (handler) => {
 
 const keypress = (e) => {
   if (e.key === 'Enter' && !props.disableEnter) {
-    let index = props.actionButtons.findIndex((a) => {
-      a.type === 'confirm';
-    });
+    let index = props.actionButtons.findIndex((a) => a.type === 'confirm');
     if (index === -1) {
       clickAction(props.actionButtons[props.actionButtons.length - 1].handler);
     } else {
