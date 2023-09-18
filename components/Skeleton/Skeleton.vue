@@ -40,8 +40,6 @@
     <conference-card-skeleton :skeletonCount="5"></conference-card-skeleton>
     note-content-skeleton
     <note-content-skeleton :skeletonCount="5"></note-content-skeleton>
-    project-task-card
-    <project-task-card-skeleton :skeletonCount="5"></project-task-card-skeleton>
     project-card-skeleton
     <project-card-skeleton :skeletonCount="5"></project-card-skeleton>
     project-task-detail
@@ -143,11 +141,6 @@
     v-else-if="type.includes('kanban-column')"
     :skeletonCount="skeletonCount"
   ></kanban-column-skeleton>
-  <project-task-card-skeleton
-    v-else-if="type.includes('project-task-card')"
-    :skeletonCount="skeletonCount"
-  >
-  </project-task-card-skeleton>
   <project-board-card-skeleton
     v-else-if="type.includes('project-board-card')"
     :skeletonCount="skeletonCount"
