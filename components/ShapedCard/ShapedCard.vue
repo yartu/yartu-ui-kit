@@ -12,7 +12,9 @@
       <slot name="content"></slot>
     </div>
     <div v-if="shape" :class="bottomShapeClass">
-      <slot name="shape"></slot>
+      <div class="skew-x-[30deg]">
+        <slot name="shape"></slot>
+      </div>
     </div>
     <div :class="textClass">
       <slot></slot>
@@ -69,6 +71,7 @@ const containerClass = computed(() => [
   "transition duration-300",
   "p-2",
   "bg-LIGHTBLUE-7",
+  "overflow-hidden"
 ]);
 
 const bottomShapeClass = computed(() => [
@@ -80,7 +83,8 @@ const bottomShapeClass = computed(() => [
   "bottom-[69px]",
   "right-0",
   "z-1",
-  "shape-path",
+  "skew-x-[-30deg] rounded-tl-md -mr-2",
+  "border-t border-l border-BORDER",
 ]);
 
 const textClass = computed(() => [
@@ -95,6 +99,7 @@ const textClass = computed(() => [
   "text-left",
   "p-4",
   "rounded-b-md",
+  "border-t border-BORDER"
 ]);
 
 const actionsClass = computed(() => [
