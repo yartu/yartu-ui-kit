@@ -200,7 +200,7 @@ const keypress = (e) => {
       clickAction(props.actionButtons[index].handler);
     }
   }
-  if (e.key === 'Enter' && !props.disableEnter) {
+  if (e.key === 'Enter' && props.disableEnter) {
     enterController.value = true;
     setTimeout(() => {
       enterController.value = false;
