@@ -5,7 +5,7 @@
     height="100%"
     viewBox="0 0 38 38"
     xmlns="http://www.w3.org/2000/svg"
-    stroke="#e5ebf5ff"
+    stroke="#9aa1b4ff"
   >
     <g fill="none" fill-rule="evenodd">
       <g transform="translate(1 1)" stroke-width="2">
