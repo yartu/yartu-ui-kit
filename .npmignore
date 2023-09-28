@@ -1,0 +1,4 @@
+.gitignore
+.gitlab-ci.yml
+sonar-project.properties
+.scannerwork

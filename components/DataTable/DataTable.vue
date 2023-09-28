@@ -43,6 +43,7 @@
           <th
             v-if="selectable"
             class="p-2.5 text-xs whitespace-nowrap font-semibold"
+            scope="col"
           >
             <slot name="all-selection">
               <Checkbox
@@ -57,6 +58,7 @@
             :key="header.value"
             class="p-2.5 text-xs whitespace-nowrap font-semibold"
             :class="sortBy === header.value ? 'text-BLACK-2 !font-extrabold': 'text-GREY-1'"
+            scope="col"
           >
             <slot :name="`y-table-header-${header.value}`" :header="header">
               <div
@@ -145,6 +147,7 @@
             v-for="(header, index) in headers"
             :key="header.value"
             class="p-2.5 text-GREY-1 text-xs whitespace-nowrap font-semibold"
+            scope="col"
           >
             <slot :name="`y-table-header-${header.value}`" :header="header">
               <div
@@ -299,7 +302,7 @@ const selectAll = () => {
 };
 
 const tableItems = computed(() => {
-  if (filteredItems.length > 0) {
+  if (filteredItems.value.length > 0) {
     return filteredItems;
   }
   return props.items;
@@ -339,7 +342,7 @@ const asc = (orderKey) => {
   sort.value = "asc";
 };
 
-const dsc = () => {
+const dsc = (orderKey) => {
   tableItems.value.reverse();
   sort.value = "dsc";
 };

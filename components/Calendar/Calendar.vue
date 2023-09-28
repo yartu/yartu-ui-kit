@@ -60,22 +60,22 @@
             {{ month.substring(0, 3) }}
           </button>
         </div>
-        <table v-else class="yartu-date-picker-table-calc-width">
+        <table summary="datetime picker" v-else class="yartu-date-picker-table-calc-width">
           <thead>
             <tr>
-              <th :class="thClass" v-for="day in weekDaysList">
+              <th :class="thClass" v-for="day in weekDaysList" :key="day[0]">
                 {{ day[0] }}
               </th>
             </tr>
           </thead>
           <tbody v-if="daysList">
-            <tr v-for="week in 6">
-              <td v-for="weekDay in 7" class="p-0">
+            <tr v-for="week in 6" :key="week">
+              <td v-for="weekDay in 7" class="p-0" :key="weekDay">
                 <button
                   @click="chooseDate(daysList[7 * (week - 1) + (weekDay - 1)])"
                   :class="[
                     {
-                      'bg-BLUE !text-white hover:bg-BLUE':
+                      'bg-BLUE !text-white hover:!bg-BLUE':
                         daysList[7 * (week - 1) + (weekDay - 1)].isSame(
                           selectedDate,
                         ),
