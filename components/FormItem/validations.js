@@ -109,7 +109,6 @@ const validate = (rules, value, objectKey=false) => {
     }
   }
 
-
   return valid;
 };
 

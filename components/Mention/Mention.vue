@@ -346,7 +346,6 @@ const closeMenu = () => {
 };
 
 const applyMention = (itemIndex) => {
-  console.log('A P P L Y ::: ', itemIndex, displayedItems.value);
   const item = displayedItems.value[itemIndex];
   const value = (props.omitKey ? '' : currentKey.value) + String(props.mapInsert ? props.mapInsert(item, currentKey.value) : item.value) + (props.insertSpace ? ' ' : '');
 
