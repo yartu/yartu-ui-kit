@@ -1,5 +1,5 @@
 import YartuModal from "./YartuModal.vue";
-import { useYartuModal, yartuModalservice, modals } from './service.js';
+import { useYartuModal, yartuModalservice, activeModals } from './service.js';
 
 const _YartuModal = {
   install(Vue) {
@@ -9,4 +9,4 @@ const _YartuModal = {
 };
 
 export default _YartuModal;
-export { YartuModal, useYartuModal, modals };
+export { YartuModal, useYartuModal, activeModals };
