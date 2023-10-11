@@ -1,15 +1,28 @@
 import { useEventBus } from '@vueuse/core';
-import { inject } from 'vue';
+import { inject, shallowRef, reactive } from 'vue';
 
 const YartuModalSymbol = Symbol();
 const bus = useEventBus('yartuModal');
 
+export const modals = reactive([]);
+
 const busFunctions = {
   open: (instance, options = {}, closeCallBack = null) => {
-    bus.emit('open', { instance, options, closeCallBack });
+    const modal = {
+      options,
+      dynamicComponent: shallowRef(instance),
+      openModal: true,
+      closeCallBack,
+    };
+    modals.push(modal);
   },
   clear: () => {
-    bus.emit('clear', {});
+    modals.forEach((modal) => {
+      modal.openModal = false;
+    });
+  },
+  pop: () => {
+    modals.pop()
   }
 };
 
@@ -20,6 +33,14 @@ export function useYartuModal() {
     }
     return yartuModal;
 }
+
+export const closeModal = (modal, index, x) => {
+  modal.openModal = false;
+  modals.splice(index, 1);
+  if (modal.closeCallBack) {
+    modal.closeCallBack(modal);
+  }
+};
 
 export const yartuModalservice = {
   install: (app) => {
