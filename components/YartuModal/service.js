@@ -23,8 +23,9 @@ const busFunctions = {
     });
   },
   pop: () => {
-    if (modals.length > 0) {
-      modals[modals.length - 1].openModal = false;
+    if (activeModals.value.length > 0) {
+      const actives = modals.filter((m) => m.openModal);
+      actives[actives.length - 1].openModal = false;
     }
   }
 };
