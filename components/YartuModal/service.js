@@ -1,10 +1,11 @@
 import { useEventBus } from '@vueuse/core';
-import { inject, shallowRef, reactive } from 'vue';
+import { inject, shallowRef, reactive, computed } from 'vue';
 
 const YartuModalSymbol = Symbol();
 const bus = useEventBus('yartuModal');
 
 export const modals = reactive([]);
+export const activeModals = computed(() => modals.filter((m) => m.openModal));
 
 const busFunctions = {
   open: (instance, options = {}, closeCallBack = null) => {
@@ -22,7 +23,9 @@ const busFunctions = {
     });
   },
   pop: () => {
-    modals.pop()
+    if (modals.length > 0) {
+      modals[modals.length - 1].openModal = false;
+    }
   }
 };
 
