@@ -40,6 +40,8 @@
     <conference-card-skeleton :skeletonCount="5"></conference-card-skeleton>
     note-content-skeleton
     <note-content-skeleton :skeletonCount="5"></note-content-skeleton>
+    project-board-card-skeleton
+    <project-board-card-skeleton :skeletonCount="5"></project-board-card-skeleton>
     project-card-skeleton
     <project-card-skeleton :skeletonCount="5"></project-card-skeleton>
     project-task-detail
@@ -146,6 +148,11 @@
     :skeletonCount="skeletonCount"
   >
   </project-board-card-skeleton>
+  <project-card-skeleton
+    v-else-if="type.includes('project-card')"
+    :skeletonCount="skeletonCount"
+  >
+  </project-card-skeleton>
   <project-task-detail-skeleton v-else-if="type === 'project-task-detail'">
   </project-task-detail-skeleton>
   <project-header-skeleton
