@@ -25,6 +25,7 @@
         :disabled="disabled"
         v-maska
         :data-maska="maskValue"
+        :data-maska-tokens="maskToken"
       />
       <div>
         <div :class="suffixClass" v-if="suffix">
@@ -187,6 +188,10 @@ export default {
       default: false,
     },
     maskType: {
+      type: String,
+      default: '',
+    },
+    maskToken: {
       type: String,
       default: '',
     },
