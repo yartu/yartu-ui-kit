@@ -1,6 +1,10 @@
 <template>
   <div v-if="pages.length > 0" :class="paginationClass">
-    <div :class="paginationTitleClass">
+    <button v-if="clickableInfo" @click="$emit('click-info')" :class="paginationTitleClass" class="!mr-0">
+      {{ viewRangeStart }}-{{ viewRangeEnd }} of {{ total }}
+      <y-icon name="yi yi-arrow-down text-sm ml-1 text-GREY-1"></y-icon>
+    </button>
+    <div v-else :class="paginationTitleClass">
       {{ viewRangeStart }}-{{ viewRangeEnd }} of {{ total }}
     </div>
     <div v-if="!simple" class="flex gap-1 items-center">
@@ -122,11 +126,16 @@ export default {
 <script setup>
 import { ref, computed, watch } from 'vue';
 
-const emit = defineEmits(['pageChanged']);
+const emit = defineEmits(['pageChanged', 'click-info']);
 const props = defineProps({
   size: {
     type: String,
     default: 'md',
+  },
+  clickableInfo: {
+    type: Boolean,
+    required: false,
+    default: false,
   },
   total: {
     type: Number,
