@@ -123,7 +123,7 @@ const checkboxClass = computed(() => {
 });
 </script>
 
-<style>
+<style scoped>
 .y-checkbox:checked {
   background-image: url("data:image/svg+xml;charset=UTF-8,<svg width='8' height='6' viewBox='0 0 8 6' fill='none' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' clip-rule='evenodd' d='M7.32781 0.544271C7.60827 0.817002 7.61453 1.26545 7.3418 1.54591L3.55329 5.44174C3.41845 5.5804 3.23278 5.65789 3.03938 5.65622C2.84598 5.65456 2.66167 5.57389 2.52924 5.43293L0.651083 3.43385C0.383219 3.14875 0.397199 2.70047 0.682309 2.43261C0.967418 2.16474 1.41569 2.17872 1.68356 2.46383L3.0543 3.92282L6.32617 0.55826C6.5989 0.277803 7.04735 0.271539 7.32781 0.544271Z' fill='white'/></svg>");
   background-size: 12px;
@@ -134,18 +134,18 @@ const checkboxClass = computed(() => {
 }
 
 .y-checkbox-custom-color:checked {
-  background-color: v-bind(color);
+  background-color: v-bind('color');
 }
 
 .y-checkbox-custom-color:hover {
-  background-color: v-bind(colorHover);
+  background-color: v-bind('colorHover');
 }
 
 .y-checkbox-custom-color:checked:hover {
-  background-color: v-bind(color);
+  background-color: v-bind('color');
 }
 
 .y-checkbox-custom-color {
-  border-color: v-bind(outlineColor);
+  border-color: v-bind('outlineColor');
 }
 </style>
