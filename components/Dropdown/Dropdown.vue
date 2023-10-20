@@ -46,21 +46,6 @@ const bottomSheetController = ref(false);
 const target = ref(null);
 const dropdownContent = ref(null);
 
-const setIgnore = () => {
-  if (props.ignoreClickOutside) {
-    return dropdownContent;
-  }
-};
-
-onClickOutside(
-  target,
-  () => {
-    open.value = false;
-    emit('hide');
-  },
-  { ignore: [setIgnore()] },
-);
-
 const emit = defineEmits(['hide']);
 const props = defineProps({
   show: {
@@ -95,6 +80,21 @@ const props = defineProps({
     type: [Array, String],
   },
 });
+
+const setIgnore = () => {
+  if (props.ignoreClickOutside) {
+    return dropdownContent;
+  }
+};
+
+onClickOutside(
+  target,
+  () => {
+    open.value = false;
+    emit('hide');
+  },
+  { ignore: [setIgnore()] },
+);
 
 const openDropdown = () => {
   open.value = !open.value;
