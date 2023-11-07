@@ -25,12 +25,8 @@
         />
       </label>
     </div>
-    <div>
-      <h1
-        class="text-xs"
-        :class="{ 'text-RED': errors.length > 0 }"
-        v-if="errors.length > 0"
-      >
+    <div v-if="errors.length > 0">
+      <h1 class="text-xs" :class="{ 'text-RED': errors.length > 0 }">
         {{ errors.join(",") }}
       </h1>
     </div>
