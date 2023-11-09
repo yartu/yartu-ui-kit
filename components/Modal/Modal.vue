@@ -18,7 +18,7 @@
         >
           <button
             v-if="closable"
-            class="absolute right-4 z-10 top-4 w-8 h-8 rounded-full flex flex-wrap items-center justify-center hover:bg-GREY-8"
+            class="absolute right-4 z-10 top-4 w-8 h-8 rounded-full flex flex-wrap items-center justify-center hover:bg-GREY-8 bg-white"
             aria-label="closeModal"
             @click="
               $emit('update:modelValue', false);
