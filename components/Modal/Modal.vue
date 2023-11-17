@@ -90,7 +90,7 @@ const modalMaxHeight = ref(props.maxHeight && !props.fullScreen ? props.maxHeigh
 
 const containerClass = computed(() => {
   return [
-    'overflow-x-hidden overflow-y-auto',
+    'safe-area-margin overflow-x-hidden overflow-y-auto',
     'fixed',
     'inset-0 z-50',
     'outline-none',
