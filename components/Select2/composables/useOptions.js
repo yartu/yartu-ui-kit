@@ -150,13 +150,14 @@ export default function useOptions (props, context, dep)
 
   const activeListed = computed(() => {
     if (isOpen.value) {
-      return { items: ev.value, more: -1 };
+      return { items: ev?.value || [], more: -1 };
     } else {
       if (ev.value?.filter) {
         const selected = ev.value?.filter((i, index) => index < 4);
         const more = ev.value.length - selected.length;
-        return { items: selected, more,};
+        return { items: selected, more };
       }
+      return { items: [], more: -1 };
     }
   });
 
@@ -326,6 +327,7 @@ export default function useOptions (props, context, dep)
       customOptionClickHandler.value(option);
       if (clearOnSelect.value) {
         clearSearch()
+        clear();
       }
 
       if (closeOnSelect.value) {
@@ -377,6 +379,7 @@ export default function useOptions (props, context, dep)
         /* istanbul ignore else */
         if (clearOnSelect.value) {
           clearSearch()
+          clear()
         }
 
         if (closeOnSelect.value) {
@@ -407,6 +410,7 @@ export default function useOptions (props, context, dep)
 
         if (clearOnSelect.value) {
           clearSearch()
+          clear()
         }
 
         if (hideSelected.value) {
@@ -435,6 +439,7 @@ export default function useOptions (props, context, dep)
 
         if (clearOnSelect.value) {
           clearSearch()
+          clear()
         }
 
         if (option) {
@@ -613,7 +618,6 @@ export default function useOptions (props, context, dep)
         resolving.value = false
       }).catch((e) => {
         console.error(e)
-
         ro.value = []
 
         resolving.value = false
