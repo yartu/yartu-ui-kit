@@ -150,13 +150,14 @@ export default function useOptions (props, context, dep)
 
   const activeListed = computed(() => {
     if (isOpen.value) {
-      return { items: ev.value, more: -1 };
+      return { items: ev?.value || [], more: -1 };
     } else {
       if (ev.value?.filter) {
         const selected = ev.value?.filter((i, index) => index < 4);
         const more = ev.value.length - selected.length;
-        return { items: selected, more,};
+        return { items: selected, more };
       }
+      return { items: [], more: -1 };
     }
   });
 
