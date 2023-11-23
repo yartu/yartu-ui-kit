@@ -184,6 +184,18 @@
   v-else-if="type === 'thread'"
   >
   </thread-skeleton>
+  <admin-widget-skeleton
+  v-else-if="type.includes('admin-widget')"
+  >
+  </admin-widget-skeleton>
+  <admin-cpu-widget-skeleton
+  v-else-if="type.includes('admin-cpu-widget')"
+  >
+  </admin-cpu-widget-skeleton>
+  <admin-users-widget-skeleton
+  v-else-if="type.includes('admin-users-widget')"
+  >
+  </admin-users-widget-skeleton>
   <loading-circular v-else-if="type === 'loading-circular'"> </loading-circular>
 </template>
 
@@ -226,6 +238,9 @@ import ProjectHeaderSkeleton from "./ProjectHeaderSkeleton.vue";
 import UploadingItemSkeleton from "./UploadingItemSkeleton.vue";
 import ThreadSkeleton from "./ThreadSkeleton.vue";
 import YartuShapedCardSkeleton from "./YartuShapedCardSkeleton.vue";
+import AdminWidgetSkeleton from "./AdminWidgetSkeleton.vue";
+import AdminCpuWidgetSkeleton from "./AdminCpuWidgetSkeleton.vue";
+import AdminUsersWidgetSkeleton from "./AdminUsersWidgetSkeleton.vue";
 
 const props = defineProps({
   type: {
