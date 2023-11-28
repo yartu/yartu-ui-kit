@@ -17,9 +17,6 @@
         <div class="w-full relative h-full overflow-y-scroll">
           <slot />
         </div>
-        <div
-          class="stroke w-1/3 h-1 rounded-full absolute bg-GREY-1 bottom-0.5 left-1/2 -translate-x-1/2"
-        ></div>
       </div>
     </div>
   </transition>
