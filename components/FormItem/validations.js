@@ -2,10 +2,10 @@ const VALIDATIONS = {
   REQUIRED: [(v) => !!v || (v && !!v.trim()) || 'Required'],
   EMAIL: [
     (v) => !!v || 'E-mail is required',
-    (v) => /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'E-mail must be valid',
+    (v) => /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(v) || 'E-mail must be valid',
   ],
   VALID_EMAIL: [
-    (v) => /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'E-mail must be valid',
+    (v) => /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(v) || 'E-mail must be valid',
   ],
   USERNAME: [
     (v) => !!v || 'Username is required',
@@ -91,17 +91,17 @@ const validate = (rules, value, objectKey=false) => {
       } else if (typeof rule === 'string') {
         let ruleName = rule;
         let ruleParams = [];
-  
+
         if (rule.includes(':')) {
           const splitName = rule.split(':');
           ruleName = splitName[0];
           ruleParams = splitName.splice(1);
         }
-  
+
         if (!VALIDATIONS[ruleName]) {
           continue;
         }
-  
+
         const functions = VALIDATIONS[ruleName];
         for (let ruleFunction of functions) {
           const isValid = ruleFunction(val, ruleParams);
