@@ -140,18 +140,19 @@ export default {
     },
     modelValue: null,
   },
+  data: () => ({
+    errors: [],
+  }),
   computed: {
-    labelAreaClass () {
+    labelAreaClass() {
       return [
         'focus-within:border-BLUE relative py-3 px-4 border border-BORDER rounded-lg bg-LIGHTBLUE-6 flex-1',
         {
           'border-RED focus:border-RED': this.error || this.errors.length > 0,
-          'border-YELLOW focus:border-YELLOW': this.warning,
-          'border-BLUE focus:border-BLUE': this.info || this.focused,
         },
       ]
     },
-    TextAreaClass () {
+    TextAreaClass() {
       return [
         'yartu-text-area',
         'focus:outline-none',
@@ -175,27 +176,33 @@ export default {
 .yartu-text-area::-webkit-resizer {
   display: none;
 }
+
 .yartu-text-area::-webkit-scrollbar {
   width: 0.5rem;
 }
+
 /* Track */
 .yartu-text-area::-webkit-scrollbar-track {
   border-radius: 100vh;
   background: #edf2f7;
 }
+
 /* Handle */
 .yartu-text-area::-webkit-scrollbar-thumb {
   background: #cbd5e0;
   border-radius: 100vh;
   border: 1px solid #edf2f7;
 }
+
 /* Handle on hover */
 .yartu-text-area::-webkit-scrollbar-thumb:hover {
   background: #a0aec0;
 }
+
 .yartu-text-area::-webkit-scrollbar-button {
   display: none;
 }
+
 .yartu-text-area::-webkit-scrollbar-corner {
   display: none;
 }
