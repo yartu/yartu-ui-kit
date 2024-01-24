@@ -148,7 +148,6 @@ export default {
           'border-RED focus:border-RED': this.error || this.errors.length > 0,
           'border-YELLOW focus:border-YELLOW': this.warning,
           'border-BLUE focus:border-BLUE': this.info || this.focused,
-          'rounded-full text-sm': this.rounded,
         },
       ]
     },
