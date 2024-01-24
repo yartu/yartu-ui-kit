@@ -13,7 +13,7 @@
     </div>
     <label
       :for="id"
-      class="focus-within:border-BLUE relative py-3 px-4 border border-BORDER rounded-lg bg-LIGHTBLUE-6 flex-1"
+      :class="labelAreaClass"
     >
       <div
         class="absolute bg-transparent pointer-events-none text-base w-4 h-4 bottom-4 right-3"
@@ -65,100 +65,111 @@
 </template>
 
 <script>
+import FormItem from '../FormItem';
+
 export default {
   name: 'y-text-area',
-};
-</script>
-
-<script setup>
-import { computed } from '@vue/reactivity';
-
-const props = defineProps({
-  id: null,
-  title: {
-    type: String,
-    required: false,
-  },
-  name: {
-    type: String,
-    required: false,
-  },
-  wrap: {
-    type: String,
-    required: false,
-  },
-  rows: {
-    type: Number,
-    required: false,
-  },
-  cols: {
-    type: Number,
-    required: false,
-  },
-  maxLength: {
-    type: Number,
-    required: false,
-  },
-  minLength: {
-    type: Number,
-    required: false,
-  },
-  readonly: {
-    type: Boolean,
-    required: false,
-  },
-  spellcheck: {
-    type: Boolean,
-    required: false,
-  },
-  disabled: {
-    type: Boolean,
-    required: false,
-  },
-  showLength: {
-    type: Boolean,
-    required: false,
-  },
-  autofocus: {
-    type: Boolean,
-    required: false,
-  },
-  required: {
-    type: Number,
-    required: false,
-  },
-  placeholder: {
-    type: String,
-    required: false,
-  },
-  helperMessage: {
-    type: String,
-    required: false,
-  },
-  resize: {
-    type: String,
-    required: false,
-    default: 'both',
-  },
-  modelValue: null,
-});
-
-const TextAreaClass = computed(() => {
-  return [
-    'yartu-text-area',
-    'focus:outline-none',
-    'disabled:text-GREY-1 disabled:cursor-not-allowed',
-    'cursor-auto',
-    'min-h-[64px] max-w-full h-full min-w-full',
-    'bg-LIGHTBLUE-6',
-    {
-      resize: props.resize === 'both',
-      'resize-y': props.resize === 'vertical',
-      'resize-x': props.resize === 'horizontal',
-      'resize-none': props.resize === 'none',
+  extends: FormItem,
+  props: {
+    id: null,
+    title: {
+      type: String,
+      required: false,
     },
-  ];
-});
+    name: {
+      type: String,
+      required: false,
+    },
+    wrap: {
+      type: String,
+      required: false,
+    },
+    rows: {
+      type: Number,
+      required: false,
+    },
+    cols: {
+      type: Number,
+      required: false,
+    },
+    maxLength: {
+      type: Number,
+      required: false,
+    },
+    minLength: {
+      type: Number,
+      required: false,
+    },
+    readonly: {
+      type: Boolean,
+      required: false,
+    },
+    spellcheck: {
+      type: Boolean,
+      required: false,
+    },
+    disabled: {
+      type: Boolean,
+      required: false,
+    },
+    showLength: {
+      type: Boolean,
+      required: false,
+    },
+    autofocus: {
+      type: Boolean,
+      required: false,
+    },
+    required: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    placeholder: {
+      type: String,
+      required: false,
+    },
+    helperMessage: {
+      type: String,
+      required: false,
+    },
+    resize: {
+      type: String,
+      required: false,
+      default: 'both',
+    },
+    modelValue: null,
+  },
+  computed: {
+    labelAreaClass () {
+      return [
+        'focus-within:border-BLUE relative py-3 px-4 border border-BORDER rounded-lg bg-LIGHTBLUE-6 flex-1',
+        {
+          'border-RED focus:border-RED': this.error || this.errors.length > 0,
+          'border-YELLOW focus:border-YELLOW': this.warning,
+          'border-BLUE focus:border-BLUE': this.info || this.focused,
+          'rounded-full text-sm': this.rounded,
+        },
+      ]
+    },
+    TextAreaClass () {
+      return [
+        'yartu-text-area',
+        'focus:outline-none',
+        'disabled:text-GREY-1 disabled:cursor-not-allowed',
+        'cursor-auto',
+        'min-h-[64px] max-w-full h-full min-w-full',
+        'bg-LIGHTBLUE-6',
+        {
+          resize: this.$props.resize === 'both',
+          'resize-y': this.$props.resize === 'vertical',
+          'resize-x': this.$props.resize === 'horizontal',
+          'resize-none': this.$props.resize === 'none',
+        },
+      ];
+    },
+  }
+};
 </script>
 
 <style>
