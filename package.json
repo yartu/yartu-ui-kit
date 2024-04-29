@@ -1,7 +1,7 @@
 {
   "name": "@yartu/ui-kit",
   "description": "Yartu UI Kit for Developers w/ Vue3+Tailwind",
-  "version": "1.0.0-beta.205",
+  "version": "1.0.0-beta.206",
   "author": "Yartu Information Technologies AS <info@yartu.io> (https://www.yartu.io)",
   "bugs": {
     "url": "https://github.com/yartu/yartu-ui-kit/issues",
@@ -20,25 +20,25 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@tailwindcss/typography": "^0.5.10",
-    "@vueuse/core": "^10.7.2",
-    "core-js": "^3.35.1",
-    "dayjs": "^1.11.10",
+    "@tailwindcss/typography": "^0.5.13",
+    "@vueuse/core": "^10.9.0",
+    "core-js": "^3.37.0",
+    "dayjs": "^1.11.11",
     "maska": "^2.1.11",
-    "postcss": "^8.4.33",
+    "postcss": "^8.4.38",
     "tailwind-scrollbar-hide": "^1.1.7",
-    "tailwindcss": "^3.4.1",
+    "tailwindcss": "^3.4.3",
     "vue": "^3.3.7"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.9",
-    "@babel/eslint-parser": "^7.23.10",
+    "@babel/core": "^7.24.4",
+    "@babel/eslint-parser": "^7.24.1",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-service": "^5.0.8",
-    "autoprefixer": "^10.4.17",
-    "eslint": "^8.56.0",
-    "eslint-plugin-vue": "^9.21.0"
+    "autoprefixer": "^10.4.19",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.25.0"
   },
   "main": "./index.js",
   "eslintConfig": {
