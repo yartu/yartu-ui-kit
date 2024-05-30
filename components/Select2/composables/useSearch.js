@@ -2,10 +2,12 @@ import { ref, getCurrentInstance, watch, toRefs } from "vue";
 import { validate } from '../../FormItem/validations';
 
 export default function useSearch(props, context, dep) {
-  const { regex } = toRefs(props);
+  const { regex, acceptPaste } = toRefs(props);
   
   const $this = getCurrentInstance().proxy;
 
+
+  
   // ============ DEPENDENCIES ============
 
   const isOpen = dep.isOpen;
@@ -44,7 +46,6 @@ export default function useSearch(props, context, dep) {
   };
 
   const handlePaste = (e) => {
-
     const clipboardData = e.clipboardData || window.clipboardData;
     const pastedData = clipboardData.getData("Text");
     const split_data = pastedData.split(/[\s,;\n\t]+/);
@@ -58,7 +59,7 @@ export default function useSearch(props, context, dep) {
       if (rules.length) {
         valid = validate(rules, data);
       }
-  
+      
       res.push({
         isSuggest: true,
         email: data,
@@ -67,8 +68,12 @@ export default function useSearch(props, context, dep) {
       });
     }
 
-    update([...iv.value, ...res]);
+    if (acceptPaste.value) {
+      update([...iv.value, ...res]);
+    }
+
     clearSearch();
+    context.emit("paste", res, $this);
     e.preventDefault()
   };
 

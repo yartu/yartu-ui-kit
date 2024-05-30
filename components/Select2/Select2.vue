@@ -587,6 +587,11 @@ export default {
       required: false,
       default: false,
     },
+    acceptPaste: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
     createTag: {
       type: Boolean,
       required: false,
