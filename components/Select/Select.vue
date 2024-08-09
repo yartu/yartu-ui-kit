@@ -43,7 +43,7 @@
           </template>
           <template v-else>
             <slot name="selection" :item="selected">
-              <div v-if="!selectedIsEmpty" class="text-left truncate">
+              <div v-if="!selectedIsEmpty" class="ltr:text-left rtl:text-right truncate">
                 <y-chip v-if="chip">
                   {{ selected }}
                 </y-chip>
@@ -73,7 +73,7 @@
       </button>
       <p
         v-if="(selected.length === 0 && !hint) || hint"
-        class="text-xs mt-2 pl-0.5 absolute inset-x-0"
+        class="text-xs mt-2 ps-0.5 absolute inset-x-0"
         :class="disabled ? 'text-GREY-1' : 'text-BLACK-2 '"
       >
         {{ hint }}
@@ -486,7 +486,7 @@ const selectClass = computed(() => {
 const labelClass = computed(() => {
   return [
     'font-semibold text-sm',
-    'mb-2 pl-0.5',
+    'mb-2 ps-0.5',
     {
       'text-GREY-1': props.disabled,
       'text-BLACK-2': !props.disabled,
@@ -513,7 +513,7 @@ const optionClass = computed(() => {
     'flex flex-wrap items-center gap-2',
     'font-semibold text-BLACK-2 text-xs',
     'text-left rtl:text-right',
-    'py-3 pl-2 pr-6',
+    'py-3 ps-2 pe-6',
     'w-full',
     'hover:bg-LIGHTBLUE-6',
   ];

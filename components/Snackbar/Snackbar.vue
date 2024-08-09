@@ -4,7 +4,7 @@
       <img v-if="type !== ''" :src="getIconUrl" :alt="type" />
     </div>
     <slot></slot>
-    <div class="flex flex-wrap gap-2 ml-auto min-w-fit">
+    <div class="flex flex-wrap gap-2 ms-auto min-w-fit">
       <button
         class="subtitle-4 !text-white hover:underline"
         v-if="action"

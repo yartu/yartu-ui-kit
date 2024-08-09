@@ -33,13 +33,13 @@ export default {
         "w-full",
         "flex items-center ",
         "text-xs",
-        "text-left",
+        "ltr:text-left rtl:text-right",
         "text-BLACK-2",
         "font-semibold",
         "hover:bg-GREY-3",
         "p-2",
         {
-          "before:absolute content-none before:left-0 before:w-[3px] before:h-[32px] before:bg-BLUE before:rounded-r-md !text-BLUE bg-BLUE/[.12]":
+          "before:absolute content-none before:start-0 before:w-[3px] before:h-[32px] before:bg-BLUE before:rounded-r-md !text-BLUE bg-BLUE/[.12]":
             this.active,
         },
       ];

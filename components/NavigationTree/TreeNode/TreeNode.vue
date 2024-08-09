@@ -24,7 +24,7 @@
       </svg>
     </span>
     <span
-      :class="!isFolder ? 'pl-6' : ''"
+      :class="!isFolder ? 'ps-6' : ''"
       class="relative z-2 flex flex-wrap items-center justify-center"
     >
       <slot name="prefix" :item="item"></slot>
@@ -32,11 +32,11 @@
     <h1 class="truncate relative z-2" :title="item.name">
       {{ item.name }}
     </h1>
-    <div class="ml-auto relative z-2 pr-4">
+    <div class="ms-auto relative z-2 pe-4">
       <slot name="suffix" :item="item"></slot>
     </div>
   </div>
-  <div v-show="isOpen || expanded" v-if="isFolder" class="ml-6">
+  <div v-show="isOpen || expanded" v-if="isFolder" class="ms-6">
     <TreeNode
       v-for="node in childFolders"
       @selected="selectNode($event)"
@@ -140,12 +140,12 @@ const isFolder = computed(() => {
 const containerClass = computed(() => {
   return [
     'w-full',
-    'py-2 pl-2 mb-2',
+    'py-2 ps-2 mb-2',
     'subtitle-5',
     'flex gap-1 items-center',
     'cursor-pointer',
     {
-      'before:absolute before:z-2 before:left-0 before:w-[3px] before:h-[36px] before:bg-BLUE before:rounded-r-md after:absolute after:z-1 after:left-0 after:w-full after:h-[36px] after:bg-GREY-3 !text-BLUE':
+      'before:absolute before:z-2 before:start-0 before:w-[3px] before:h-[36px] before:bg-BLUE before:rounded-r-md after:absolute after:z-1 after:start-0 after:w-full after:h-[36px] after:bg-GREY-3 !text-BLUE':
         isSelected.value,
     },
   ];

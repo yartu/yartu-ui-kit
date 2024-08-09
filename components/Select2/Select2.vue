@@ -244,7 +244,7 @@
             </svg>
           </span>
         </slot>
-        <div class="ml-auto flex items-center justify-center">
+        <div class="ms-auto flex items-center justify-center">
           <!-- Clear -->
           <slot
             v-if="hasSelected && !disabled && canClear && !busy"

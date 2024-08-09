@@ -69,7 +69,7 @@ export default {
         'z-[2]',
         'text-white',
         'flex items-center justify-center',
-        '-top-1 -right-1',
+        '-top-1 -end-1',
         'transition-all duration-500',
         'note-card-pin-button',
       ];
@@ -83,7 +83,7 @@ export default {
         'z-[2]',
         'transition-all duration-500',
         'opacity-0',
-        '-left-2 -top-2',
+        '-start-2 -top-2',
         'yartu-note-card-checkbox',
       ];
     },

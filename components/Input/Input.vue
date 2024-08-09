@@ -241,7 +241,7 @@ export default {
         'flex-1',
         'focus:outline-none',
         'w-full',
-        'mr-[0.063rem]',
+        'me-[0.063rem]',
         'bg-transparent',
         {
           'p-2 text-xs': this.dense,
@@ -274,7 +274,7 @@ export default {
         'z-10',
         'overflow-hidden',
         'mt-2 py-2',
-        'right-0 top-full',
+        'end-0 top-full',
         'flex flex-col',
         'rounded-lg',
         'bg-WHITE',

@@ -24,7 +24,7 @@
       </h1>
     </slot>
   </div>
-  <div v-show="isOpen || expanded" v-if="isFolder" class="ml-4">
+  <div v-show="isOpen || expanded" v-if="isFolder" class="ms-4">
     <TreeNode
       v-for="node in childFolders"
       @selected="selectNode($event)"

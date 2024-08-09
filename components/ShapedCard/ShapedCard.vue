@@ -81,10 +81,10 @@ const bottomShapeClass = computed(() => [
   "bg-white",
   "px-2",
   "bottom-[69px]",
-  "right-0",
+  "end-0",
   "z-1",
-  "skew-x-[-30deg] rounded-tl-md -mr-2",
-  "border-t border-l border-BORDER",
+  "ltr:skew-x-[-30deg] rtl:skew-x-[30deg] ltr:rounded-tl-md rtl:rounded-tr-md -me-2",
+  "border-t ltr:border-l rtl:border-r border-BORDER",
 ]);
 
 const textClass = computed(() => [
@@ -94,9 +94,9 @@ const textClass = computed(() => [
   },
   "flex flex-row gap-3",
   "absolute",
-  "bottom-0 left-0 right-0",
+  "bottom-0 start-0 end-0",
   "h-17 w-full",
-  "text-left",
+  "ltr:text-left rtl:text-right",
   "p-4",
   "rounded-b-md",
   "border-t border-BORDER"

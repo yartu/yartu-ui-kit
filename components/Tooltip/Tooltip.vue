@@ -133,9 +133,9 @@ const tooltipContent = computed(() => {
       'tooltip-shape-bottom-left': props.top && props.left,
       'tooltip-shape-left-center': props.right && !props.top && !props.bottom,
       'tooltip-shape-right-center': props.left && !props.top && !props.bottom,
-      'after:-top-1 after:left-2': props.bottom && props.left,
-      'after:-bottom-1 after:right-2': props.top && props.right,
-      'after:-top-1 after:right-2': props.bottom && props.right,
+      'after:-top-1 after:start-2': props.bottom && props.left,
+      'after:-bottom-1 after:end-2': props.top && props.right,
+      'after:-top-1 after:end-2': props.bottom && props.right,
     },
   ];
 });

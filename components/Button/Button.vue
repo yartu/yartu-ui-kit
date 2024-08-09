@@ -1,6 +1,6 @@
 <template>
   <button :class="buttonClass" :disabled="disabled" type="button">
-    <span v-if="loading" class="mr-2">
+    <span v-if="loading" class="me-2">
       <svg
         class="animate-spin h-5 w-5"
         width="24"

@@ -80,7 +80,7 @@
             ref="comboboxInput"
             type="text"
             :class="[
-              multiple && selected && selected.length < 1 ? 'pl-2' : 'pr-2',
+              multiple && selected && selected.length < 1 ? 'ps-2' : 'pe-2',
               inputContainerClass,
             ]"
             :placeholder="selected ? '' : placeholder"
@@ -114,7 +114,7 @@
       </button>
       <p
         v-if="(selected && selected.length < 1 && !hint) || hint"
-        class="text-xs mt-2 pl-0.5 absolute inset-x-0"
+        class="text-xs mt-2 ps-0.5 absolute inset-x-0"
         :class="disabled ? 'text-GREY-1' : 'text-BLACK-2 '"
       >
         {{ hint }}
@@ -125,7 +125,7 @@
         <template v-if="searching">
           <div class="p-2">
             <svg
-              class="animate-spin -ml-1 mr-3 h-5 w-5 text-BLUE"
+              class="animate-spin -ms-1 me-3 h-5 w-5 text-BLUE"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -700,7 +700,7 @@ const optionContainerClass = computed(() => {
 const labelClass = computed(() => {
   return [
     'font-semibold text-sm',
-    'mb-2 pl-0.5',
+    'mb-2 ps-0.5',
     {
       'text-GREY-1': props.disabled,
       'text-BLACK-2': !props.disabled,
@@ -720,7 +720,7 @@ const comboboxClass = computed(() => {
     {
       'border-BLUE': open.value,
       'border-BORDER': !open.value,
-      'py-1 pl-2 pr-4': props.dense,
+      'py-1 ps-2 pe-4': props.dense,
       'py-2 px-4': !props.dense,
       'opacity-50': props.disabled,
     },

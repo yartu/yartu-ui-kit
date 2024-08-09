@@ -35,7 +35,7 @@ export default {
         'min-w-full',
         'items-center',
         'text-sm',
-        'text-left',
+        'ltr:text-left rtl:text-right',
       ];
     },
   },
