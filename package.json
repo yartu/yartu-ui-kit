@@ -20,25 +20,25 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@tailwindcss/typography": "^0.5.13",
-    "@vueuse/core": "^10.10.0",
-    "core-js": "^3.37.1",
-    "dayjs": "^1.11.11",
+    "@tailwindcss/typography": "^0.5.14",
+    "@vueuse/core": "^10.11.1",
+    "core-js": "^3.38.0",
+    "dayjs": "^1.11.12",
     "maska": "^2.1.11",
-    "postcss": "^8.4.38",
+    "postcss": "^8.4.41",
     "tailwind-scrollbar-hide": "^1.1.7",
-    "tailwindcss": "^3.4.3",
+    "tailwindcss": "^3.4.9",
     "vue": "^3.3.7"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.6",
-    "@babel/eslint-parser": "^7.24.6",
+    "@babel/core": "^7.25.2",
+    "@babel/eslint-parser": "^7.25.1",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-service": "^5.0.8",
-    "autoprefixer": "^10.4.19",
+    "autoprefixer": "^10.4.20",
     "eslint": "^8.57.0",
-    "eslint-plugin-vue": "^9.26.0"
+    "eslint-plugin-vue": "^9.27.0"
   },
   "main": "./index.js",
   "eslintConfig": {
