@@ -12,7 +12,7 @@
       <slot name="content"></slot>
     </div>
     <div v-if="shape" :class="bottomShapeClass">
-      <div class="skew-x-[30deg]">
+      <div class="skew-x-[30deg] rtl:-skew-x-[30deg]">
         <slot name="shape"></slot>
       </div>
     </div>

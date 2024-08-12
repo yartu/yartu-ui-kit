@@ -16,7 +16,7 @@
       :class="labelAreaClass"
     >
       <div
-        class="absolute bg-transparent pointer-events-none text-base w-4 h-4 bottom-4 end-3"
+        class="absolute bg-transparent pointer-events-none text-base w-4 h-4 bottom-4 end-3 rtl:rotate-90"
       >
         <svg
           width="16"

@@ -71,6 +71,7 @@ export default {
         'w-[34px] h-[14px]',
         'inline-block',
         'y-switch-container',
+        'rtl:rotate-180',
       ];
     },
     switchClass() {
