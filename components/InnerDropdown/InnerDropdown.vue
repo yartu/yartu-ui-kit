@@ -39,8 +39,8 @@ const containerClass = computed(() => {
     "hidden",
     "-mt-5",
     {
-      "pr-3 right-full": props.left,
-      "pl-3 left-full": !props.left,
+      "pe-3 end-full": props.left,
+      "ps-3 start-full": !props.left,
     },
   ];
 });

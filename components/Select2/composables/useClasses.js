@@ -32,16 +32,16 @@ export default function useClasses(props, context, dependencies) {
       'multiselect-wrapper relative mx-auto w-full flex items-center justify-end box-border cursor-pointer outline-none',
     labelClass: 'subtitle-4 text-BLACK-2 mb-2',
     singleLabel:
-      'multiselect-single-label flex w-full items-center h-full max-w-full absolute left-0 top-0 pointer-events-none bg-transparent body-1 pl-3.5 pr-16 box-border rtl:left-auto rtl:right-0 rtl:pl-0 rtl:pr-3.5',
+      'multiselect-single-label flex w-full items-center h-full max-w-full absolute left-0 top-0 pointer-events-none bg-transparent body-1 ps-3.5 pe-16 box-border rtl:left-auto rtl:right-0 rtl:ps-0 rtl:pe-3.5',
     singleLabelText: 'multiselect-single-label-text block truncate w-full',
     multipleLabel:
-      'multiselect-multiple-label flex items-center h-full absolute left-0 top-0 pointer-events-none bg-transparent body-1 pl-3.5 rtl:left-auto rtl:right-0 rtl:pl-0 rtl:pr-3.5',
+      'multiselect-multiple-label flex items-center h-full absolute left-0 top-0 pointer-events-none bg-transparent body-1 ps-3.5 rtl:left-auto rtl:right-0 rtl:ps-0 rtl:pe-3.5',
     search:
-      'multiselect-search w-full absolute inset-0 outline-none focus:ring-0 appearance-none box-border border-0 text-base bg-white rounded-lg pl-3.5 rtl:pl-0 rtl:pr-3.5',
+      'multiselect-search w-full absolute inset-0 outline-none focus:ring-0 appearance-none box-border border-0 text-base bg-white rounded-lg ps-3.5 rtl:ps-0 rtl:pe-3.5',
     tags: 'multiselect-tags flex-grow flex-shrink flex flex-wrap items-center gap-2',
-    tag: 'multiselect-tag bg-LIGHTBLUE-6 text-GREY-1 subtitle-5 border border-BORDER py-0.5 px-2 rounded-xl mr-1 mb-1 flex items-center truncate max-w-full  ',
+    tag: 'multiselect-tag bg-LIGHTBLUE-6 text-GREY-1 subtitle-5 border border-BORDER py-0.5 px-2 rounded-xl me-1 mb-1 flex items-center truncate max-w-full  ',
     tagDisabled: 'is-disabled',
-    tagRemove: 'multiselect-tag-remove ml-1',
+    tagRemove: 'multiselect-tag-remove ms-1',
     tagRemoveIcon: 'multiselect-tag-remove-icon',
     tagsSearchWrapper:
       'multiselect-tags-search-wrapper inline-block relative flex-grow flex-shrink h-full',
@@ -50,11 +50,11 @@ export default function useClasses(props, context, dependencies) {
     tagsSearchCopy:
       'multiselect-tags-search-copy invisible whitespace-pre-wrap inline-block h-px',
     placeholder:
-      'multiselect-placeholder flex items-center h-full absolute left-0 top-0 pointer-events-none bg-transparent body-1 text-GREY-1 pl-3.5 rtl:left-auto rtl:right-0 rtl:pl-0 rtl:pr-3.5',
+      'multiselect-placeholder flex items-center h-full absolute left-0 top-0 pointer-events-none bg-transparent body-1 text-GREY-1 ps-3.5 rtl:left-auto rtl:right-0 rtl:ps-0 rtl:pe-3.5',
     simpleMultiple:
-      'text-BLACK-2 subtitle-5 py-0.5 px-2 rounded-xl mr-1 mb-1 flex items-center truncate max-w-full',
+      'text-BLACK-2 subtitle-5 py-0.5 px-2 rounded-xl me-1 mb-1 flex items-center truncate max-w-full',
     caret:
-      'multiselect-caret bg-multiselect-caret w-6 h-6 ml-auto box-content relative z-10 flex-shrink-0 flex-grow-0 transition-transform transform pointer-events-none',
+      'multiselect-caret bg-multiselect-caret w-6 h-6 ms-auto box-content relative z-10 flex-shrink-0 flex-grow-0 transition-transform transform pointer-events-none',
     caretOpen: 'is-open rotate-180 pointer-events-auto',
     clear:
       'multiselect-clear relative z-10 rounded-full transition duration-300 flex-shrink-0 flex-grow-0 flex hover:bg-BORDER p-1',
@@ -73,7 +73,7 @@ export default function useClasses(props, context, dependencies) {
     optionsTop: 'is-top',
     group: 'multiselect-group',
     groupLabel:
-      'multiselect-group-label flex text-sm box-border items-center justify-start text-left py-1 px-3 font-semibold bg-GREY-1 cursor-default leading-normal',
+      'multiselect-group-label flex text-sm box-border items-center justify-start ltr:text-left rtl:text-right py-1 px-3 font-semibold bg-GREY-1 cursor-default leading-normal',
     groupLabelPointable: 'is-pointable cursor-pointer',
     groupLabelPointed: 'is-pointed bg-GREY-1 ',
     groupLabelSelected: 'is-selected bg-LIGHTBLUE-6',
@@ -82,7 +82,7 @@ export default function useClasses(props, context, dependencies) {
     groupLabelSelectedDisabled: 'is-selected is-disabled',
     groupOptions: 'multiselect-group-options',
     option:
-      'multiselect-option flex items-center truncate justify-start box-border text-left cursor-pointer text-BLACK-2 subtitle-4 py-2 px-3 hover:bg-LIGHTBLUE-6 w-full',
+      'multiselect-option flex items-center truncate justify-start box-border ltr:text-left rtl:text-right cursor-pointer text-BLACK-2 subtitle-4 py-2 px-3 hover:bg-LIGHTBLUE-6 w-full',
     optionPointed: 'is-pointed bg-LIGHTBLUE-6',
     optionSelected: 'is-selected bg-LIGHTBLUE-6',
     optionDisabled: 'is-disabled cursor-not-allowed',

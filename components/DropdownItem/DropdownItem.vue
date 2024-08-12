@@ -57,7 +57,7 @@ export default {
       return [
         'dropdown-item',
         'flex flex-row items-center justify-between gap-2',
-        'pl-5 py-3 pr-2',
+        'ps-5 py-3 pe-2',
         'relative',
         'cursor-pointer',
         'hover:bg-GREY-3',

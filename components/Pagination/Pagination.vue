@@ -1,8 +1,8 @@
 <template>
   <div v-if="pages.length > 0" :class="paginationClass">
-    <button v-if="clickableInfo" @click="$emit('click-info')" :class="paginationTitleClass" class="!mr-0">
+    <button v-if="clickableInfo" @click="$emit('click-info')" :class="paginationTitleClass" class="!me-0">
       {{ viewRangeStart }}-{{ viewRangeEnd }} of {{ total }}
-      <y-icon name="yi yi-arrow-down text-sm ml-1 text-GREY-1"></y-icon>
+      <y-icon name="yi yi-arrow-down text-sm ms-1 text-GREY-1"></y-icon>
     </button>
     <div v-else :class="paginationTitleClass">
       {{ viewRangeStart }}-{{ viewRangeEnd }} of {{ total }}
@@ -206,9 +206,9 @@ const paginationTitleClass = computed(() => [
   'text-BLACK-2',
   'flex items-center my-auto',
   {
-    'mr-2': props.simple,
-    'mr-6': !props.simple,
-    '!mr-0': props.orientation === 'col',
+    'me-2': props.simple,
+    'me-6': !props.simple,
+    '!me-0': props.orientation === 'col',
   },
 ]);
 
@@ -223,16 +223,16 @@ const paginationClass = computed(() => [
 
 const leftArrowClass = computed(() => [
   {
-    'mr-4': props.size == 'md',
-    'mr-2': props.size == 'sm',
-    'mr-1': props.size == 'xs',
+    'me-4': props.size == 'md',
+    'me-2': props.size == 'sm',
+    'me-1': props.size == 'xs',
   },
 ]);
 const rightArrowClass = computed(() => [
   {
-    'ml-4': props.size == 'md',
-    'ml-2': props.size == 'sm',
-    'ml-1': props.size == 'xs',
+    'ms-4': props.size == 'md',
+    'ms-2': props.size == 'sm',
+    'ms-1': props.size == 'xs',
   },
 ]);
 

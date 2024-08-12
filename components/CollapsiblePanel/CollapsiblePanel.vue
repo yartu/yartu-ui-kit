@@ -105,7 +105,7 @@ export default {
     containerClass() {
       return [
         'fixed',
-        'bottom-0 left-0 right-0',
+        'bottom-0 start-0 end-0',
         'mx-auto',
         'w-[732px]',
         'rounded-t-lg',
@@ -121,7 +121,7 @@ export default {
         'bg-LIGHTBLUE-3',
         'h-12',
         'flex justify-between items-center',
-        'pl-7 pr-4 py-3',
+        'ps-7 pe-4 py-3',
       ];
     },
   },

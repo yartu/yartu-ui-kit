@@ -37,7 +37,7 @@ export default {
         'py-2 px-6',
         'text-BLACK-2 font-semibold text-sm',
         {
-          'before:absolute before:left-0 before:w-[3px] before:h-[36px] before:bg-BLUE before:rounded-r-md !text-BLUE bg-GREY-3':
+          'before:absolute before:start-0 before:w-[3px] before:h-[36px] before:bg-BLUE before:rounded-r-md !text-BLUE bg-GREY-3':
             this.active,
           'cursor-not-allowed': this.disabled,
         },

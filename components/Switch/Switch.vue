@@ -80,7 +80,7 @@ export default {
       return [
         'absolute',
         'cursor-pointer',
-        'top-0 left-0 right-0 bottom-0',
+        'top-0 start-0 end-0 bottom-0',
         'bg-GREY-2',
         'rounded-xl',
         'hover:bg-GREY-7',
@@ -97,7 +97,7 @@ export default {
         'select-none',
         'text-white',
         'transition-all duration-300',
-        '-left-0.5',
+        '-start-0.5',
         '-bottom-[3px]',
         'shadow',
         'cursor-pointer',

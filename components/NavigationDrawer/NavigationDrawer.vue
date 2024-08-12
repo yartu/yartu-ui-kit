@@ -103,7 +103,7 @@ const overlayClass = computed(() => [
 ]);
 
 const containerClass = computed(() => [
-  'text-left',
+  'ltr:text-left rtl:text-right',
   'flex flex-col',
   'text-BLACK-2',
   'transition-all duration-300',
@@ -111,20 +111,20 @@ const containerClass = computed(() => [
   'overscroll-contain',
   'z-30',
   {
-    'absolute left-0 bottom-0 top-0 border-r border-BORDER':
+    'absolute ltr:left-0 rtl:right:0 bottom-0 top-0  ltr:border-r rtl:border-l border-BORDER':
       props.absolute && !props.right,
-    'absolute right-0 bottom-0 top-0 border-l border-BORDER':
+    'absolute end-0 bottom-0 top-0 ltr:border-l rtl:border-r border-BORDER':
       props.absolute && props.right,
     'relative h-full': !props.absolute && !props.fixed,
-    'fixed left-0 bottom-0 top-0 border-r border-BORDER':
+    'fixed start-0 bottom-0 top-0 ltr:border-r rtl:border-l border-BORDER':
       props.fixed && !props.right && !props.bottom,
-    'fixed right-0 bottom-0 top-0 border-l border-BORDER':
+    'fixed end-0 bottom-0 top-0 border-l border-BORDER':
       props.fixed && props.right,
-    'fixed left-0 right-0 bottom-0 border-t border-BORDER':
+    'fixed start-0 end-0 bottom-0 border-t border-BORDER':
       props.fixed && props.bottom,
     // '!w-0 border-r-0 overflow-auto overscroll-contain': !props.open,
-    '-translate-x-full': !props.open && !props.right && !props.rail,
-    'translate-x-full': !props.open && props.right && !props.rail,
+    'ltr:-translate-x-full rtl:translate-x-full': !props.open && !props.right && !props.rail,
+    'ltr:translate-x-full rtl:-translate-x-full': !props.open && props.right && !props.rail,
     'navigation-drawer-rail-negative':
       !props.open && !props.right && props.rail,
     'navigation-drawer-rail': !props.open && props.right && props.rail,

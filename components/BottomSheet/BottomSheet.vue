@@ -3,7 +3,7 @@
     <div
       ref="bottomSheetContent"
       v-show="bottomSheetStatus"
-      class="w-full h-full fixed bottom-0 left-0 z-1001 flex flex-col bg-BLACKOVERLAY"
+      class="w-full h-full fixed bottom-0 start-0 z-1001 flex flex-col bg-BLACKOVERLAY"
     >
       <div
         @click="closeBottomSheet"

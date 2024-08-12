@@ -8,7 +8,7 @@
         <slot name="title"></slot>
       </h1>
       <label for="yartu-table-search" class="relative flex gap-2 h-fit">
-        <div class="absolute left-4 bottom-0 top-0 my-auto h-fit">
+        <div class="absolute start-4 bottom-0 top-0 my-auto h-fit">
           <svg
             width="20"
             height="20"
@@ -27,7 +27,7 @@
         <input
           @input="search($event.target.value)"
           placeholder="Search.."
-          class="rounded-full outline-1 outline-BLUE focus:outline border border-BORDER pl-14 pr-4 py-2 text-sm"
+          class="rounded-full outline-1 outline-BLUE focus:outline border border-BORDER ps-14 pe-4 py-2 text-sm"
           type="text"
         />
       </label>
@@ -123,7 +123,7 @@
           <td
             v-for="header in headers"
             :key="header.value"
-            class="p-2.5 text-xs whitespace-nowrap font-semibold truncate last:text-right"
+            class="p-2.5 text-xs whitespace-nowrap font-semibold truncate ltr:last:text-right rtl:last:text-left"
           >
             <slot
               :name="`y-table-${header.value}`"

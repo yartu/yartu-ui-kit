@@ -43,7 +43,7 @@
           </svg>
         </button>
       </div>
-      <div class="w-full -ml-2 mt-4">
+      <div class="w-full -ms-2 mt-4">
         <div
           v-if="monthSelect"
           class="yartu-date-picker-table-calc-width flex flex-wrap gap-2 max-w-54 justify-between"
@@ -81,7 +81,7 @@
                         ),
                       'text-GREY-1':
                         !daysList[7 * (week - 1) + (weekDay - 1)].active,
-                      'after:absolute after:w-1 after:h-1 after:rounded-full after:bottom-0.5 after:left-1/2 after:-translate-x-1/2 after:bg-BLUE':
+                      'after:absolute after:w-1 after:h-1 after:rounded-full after:bottom-0.5 after:start-1/2 after:-translate-x-1/2 after:bg-BLUE':
                         daysList[7 * (week - 1) + (weekDay - 1)].isToday,
                       '!text-GREY-1 cursor-not-allowed':
                         daysList[7 * (week - 1) + (weekDay - 1)].disabled,

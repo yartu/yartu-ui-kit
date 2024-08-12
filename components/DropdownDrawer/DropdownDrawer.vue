@@ -18,7 +18,7 @@
           </p>
         </slot>
       </div>
-      <div class="ml-auto pr-6 flex items-center">
+      <div class="ms-auto pe-6 flex items-center">
         <slot name="suffix"></slot>
       </div>
     </div>
@@ -72,12 +72,12 @@ const headerClass = computed(() => {
     'relative',
     'w-full',
     'cursor-pointer',
-    'pl-1 py-2',
+    'ps-1 py-2',
     'text-BLACK-2',
     'hover:bg-GREY-3',
     'focus:outline-none',
     {
-      'before:absolute content-none before:left-0 before:w-[3px]  before:h-[32px] before:bg-BLUE before:rounded-r-md !text-BLUE bg-BLUE/[.12]':
+      'before:absolute content-none before:start-0 before:w-[3px]  before:h-[32px] before:bg-BLUE before:rounded-r-md !text-BLUE bg-BLUE/[.12]':
         props.active,
     },
   ];
@@ -107,7 +107,7 @@ const prefixClass = computed(() => {
 
 const titleClass = computed(() => {
   return [
-    'ml-2',
+    'ms-2',
     'truncate',
     'text-sm font-semibold text-BLACK-2 capitalize',
     {

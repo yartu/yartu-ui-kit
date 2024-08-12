@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-2 w-full">
     <div class="flex flex-row w-full items-center">
-      <div v-if="$slots['prev-btn']" class="shrink-0 mr-3">
+      <div v-if="$slots['prev-btn']" class="shrink-0 me-3">
         <slot name="prev-btn">
           <y-button
             size="xs"
@@ -25,7 +25,7 @@
           <slot name="carousel-item" :item="item"> {{ item }}</slot>
         </div>
       </div>
-      <div v-if="$slots['next-btn']" class="shrink-0 ml-3">
+      <div v-if="$slots['next-btn']" class="shrink-0 ms-3">
         <slot name="next-btn">
           <y-button
             size="xs"
