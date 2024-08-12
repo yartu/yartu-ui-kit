@@ -27,6 +27,9 @@ export default {
 
 <script setup>
 import { ref, computed, onUnmounted, onMounted } from 'vue';
+import { useTextDirection } from '@vueuse/core';
+
+const dir = useTextDirection();
 
 const props = defineProps({
   mode: {
@@ -81,13 +84,16 @@ const calculatePosition = () => {
   } else if (props.top) {
     tooltipStyle.top = container.top - 16 + 'px';
   }
-  if (props.right) {
+  if (props.right && dir.value === 'rtl') {
+    tooltipStyle.left = container.left + 'px';
+  } else if (props.right) {
+    tooltipStyle.left = container.right + 'px';
+  } else if (props.left && dir.value === 'rtl') {
     tooltipStyle.left = container.right + 'px';
   } else if (props.left) {
     tooltipStyle.left = container.left + 'px';
   } else if (props.center) {
-    tooltipStyle.left =
-      (container.right - container.left) / 2 + container.left + 'px';
+    tooltipStyle.left = (container.right - container.left) / 2 + container.left + 'px';
   }
 };
 
@@ -104,10 +110,9 @@ const tooltipContainer = computed(() => {
     'fixed z-1001',
     {
       '-translate-y-full': props.top,
-      '-translate-x-1/2':
-        (props.top && props.center) || (props.bottom && props.center),
-      '-translate-x-full':
-        (props.top && props.right) || (props.bottom && props.right),
+      '-translate-x-1/2': (props.top && props.center) || (props.bottom && props.center),
+      'ltr:-translate-x-full': (props.top && props.right) || (props.bottom && props.right),
+      'rtl:-translate-x-full': (props.top && props.left) || (props.bottom && props.left),
     },
   ];
 });
@@ -128,47 +133,15 @@ const tooltipContent = computed(() => {
     'after:rotate-45',
     'after:origin-center',
     {
-      'tooltip-shape-bottom-center': props.top && props.center,
-      'tooltip-shape-top-center': props.bottom && props.center,
-      'tooltip-shape-bottom-left': props.top && props.left,
-      'tooltip-shape-left-center': props.right && !props.top && !props.bottom,
-      'tooltip-shape-right-center': props.left && !props.top && !props.bottom,
-      'after:-top-1 after:start-2': props.bottom && props.left,
+      'after:-bottom-1 after:start-[calc(50%-4px)]': props.top && props.center,
+      'after:-top-1 after:start-[calc(50%-4px)]': props.bottom && props.center,
+      'after:-start-1 after:top-[calc(50%-4px)]': props.right && !props.top && !props.bottom,
+      'after:-end-1 after:top-[calc(50%-4px)]': props.left && !props.top && !props.bottom,
+      'after:-bottom-1 after:start-2': props.top && props.left,
       'after:-bottom-1 after:end-2': props.top && props.right,
+      'after:-top-1 after:start-2': props.bottom && props.left,
       'after:-top-1 after:end-2': props.bottom && props.right,
     },
   ];
 });
 </script>
-
-<style>
-.tooltip-shape-top-mid {
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.tooltip-shape-top-center::after {
-  top: -4px;
-  left: calc(50% - 4px);
-}
-
-.tooltip-shape-bottom-center::after {
-  bottom: -4px;
-  left: calc(50% - 4px);
-}
-
-.tooltip-shape-bottom-left::after {
-  left: 8px;
-  bottom: -4px;
-}
-
-.tooltip-shape-left-center::after {
-  top: calc(50% - 4px);
-  left: -4px;
-}
-
-.tooltip-shape-right-center::after {
-  top: calc(50% - 4px);
-  right: -4px;
-}
-</style>
