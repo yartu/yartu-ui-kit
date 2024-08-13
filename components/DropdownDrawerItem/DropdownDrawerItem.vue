@@ -23,7 +23,7 @@ export default {
       default: "",
     },
     iconColor: {
-      type: String,
+      type: [String, Object],
       default: "#394c66",
     },
   },
