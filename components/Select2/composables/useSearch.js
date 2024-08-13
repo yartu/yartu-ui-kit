@@ -1,10 +1,12 @@
 import { ref, getCurrentInstance, watch, toRefs } from "vue";
 import { validate } from '../../FormItem/validations';
+import useOptions from './useOptions';
 
 export default function useSearch(props, context, dep) {
-  const { regex, acceptPaste } = toRefs(props);
-  
+  const { regex, acceptPaste, hideSelected } = toRefs(props);
+
   const $this = getCurrentInstance().proxy;
+  const options = useOptions(props, context, dep);
 
 
   
@@ -14,9 +16,10 @@ export default function useSearch(props, context, dep) {
   const open = dep.open;
   const update = dep.update;
   const rules = props.rules;
-
+  const close = dep.close;
+  const select = options.select;
   // ================ DATA ================
-  
+
   const search = ref(null);
 
   const input = ref(null);
@@ -24,7 +27,7 @@ export default function useSearch(props, context, dep) {
   // =============== METHODS ==============
 
   const clearSearch = () => {
-    search.value = "";  
+    search.value = "";
   };
 
   const handleSearchInput = (e) => {
@@ -59,21 +62,32 @@ export default function useSearch(props, context, dep) {
       if (rules.length) {
         valid = validate(rules, data);
       }
-      
-      res.push({
-        isSuggest: true,
-        email: data,
-        name: data,
-        valid,
-      });
+      // dont add if already added into modelValue
+      if (!iv.value.find((e) => e.email === data)) {
+        res.push({
+          isSuggest: true,
+          email: data,
+          name: data,
+          valid,
+        });
+      }
     }
 
     if (acceptPaste.value) {
       update([...iv.value, ...res]);
+
+      if (hideSelected.value && res.length > 0) {
+        res.forEach((e) => { if (e.valid === true) select(e) });
+        close();
+      }
     }
 
     clearSearch();
-    context.emit("paste", res, $this);
+    if (res.length > 0) {
+      context.emit("paste", res, $this);
+    } else {
+      close();
+    }
     e.preventDefault()
   };
 
