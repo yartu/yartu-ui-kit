@@ -118,27 +118,18 @@ const containerClass = computed(() => [
     'relative h-full': !props.absolute && !props.fixed,
     'fixed start-0 bottom-0 top-0 ltr:border-r rtl:border-l border-BORDER':
       props.fixed && !props.right && !props.bottom,
-    'fixed end-0 bottom-0 top-0 border-l border-BORDER':
+    'fixed end-0 bottom-0 top-0 ltr:border-l rtl:border-r border-BORDER':
       props.fixed && props.right,
     'fixed start-0 end-0 bottom-0 border-t border-BORDER':
       props.fixed && props.bottom,
     // '!w-0 border-r-0 overflow-auto overscroll-contain': !props.open,
     'ltr:-translate-x-full rtl:translate-x-full': !props.open && !props.right && !props.rail,
     'ltr:translate-x-full rtl:-translate-x-full': !props.open && props.right && !props.rail,
-    'navigation-drawer-rail-negative':
+    'translate-x-[calc(calc(100%*-1)+3.5rem)]':
       !props.open && !props.right && props.rail,
-    'navigation-drawer-rail': !props.open && props.right && props.rail,
+    'ltr:translate-x-[calc(100%-3.5rem)] rtl:-translate-x-[calc(100%-3.5rem)]': !props.open && props.right && props.rail,
     'rounded-lg': props.rounded,
   },
   ...props.customClass,
 ]);
 </script>
-<style>
-.navigation-drawer-rail {
-  transform: translateX(calc(100% - 3.5rem));
-}
-
-.navigation-drawer-rail-negative {
-  transform: translateX(calc(calc(100% * -1) + 3.5rem));
-}
-</style>
