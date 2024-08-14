@@ -78,18 +78,18 @@ const avatarGroup = computed(() => {
 <style>
 /* TODO :: with bagde will add */
 .y-avatar-group .y-avatar-group-item + .y-avatar-group-item {
-  margin-left: -1rem;
+  margin-inline-start: -1rem;
 }
 
 .y-avatar-group-sm .y-avatar-group-item + .y-avatar-group-item {
-  margin-left: -0.5rem;
+  margin-inline-start: -0.5rem;
 }
 
 .y-avatar-group-xs .y-avatar-group-item + .y-avatar-group-item {
-  margin-left: -0.25rem;
+  margin-inline-start: -0.25rem;
 }
 
 .y-avatar-group .y-avatar-group-item .y-avatar {
-  border: 2px solid #ffffff;
+  border: 2px solid #e5ebf5ff;
 }
 </style>
