@@ -112,6 +112,10 @@ export default {
       type: Boolean,
       required: false,
     },
+    error: {
+      type: Boolean,
+      default: false,
+    },
     showLength: {
       type: Boolean,
       required: false,
