@@ -104,11 +104,11 @@ const modalClass = computed(() => {
 });
 
 const keypress = (e) => {
-  if (e.key === 'Escape' && !props.disableEsc) {
+  if (e.key === 'Escape' && !props.disableEsc && props.closable) {
     emit('update:modelValue', false);
     emit('closed');
   }
-  if (e.key === 'Escape' && props.disableEsc) {
+  if (e.key === 'Escape' && (props.disableEsc || !props.closable)) {
     escapeController.value = true;
     setTimeout(() => {
       escapeController.value = false;
