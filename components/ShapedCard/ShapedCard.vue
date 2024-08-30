@@ -107,7 +107,7 @@ const actionsClass = computed(() => [
   "w-full h-8",
   "absolute",
   "transition duration-500 ease-in-out",
-  "z-1",
+  "z-4",
   "flex justify-between",
   {
     "opacity-0": !props.showActions,
