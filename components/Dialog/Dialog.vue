@@ -39,7 +39,7 @@
       class="absolute bottom-0 z-1 inset-x-0 bg-LIGHTBLUE-9 flex flex-wrap items-center justify-end gap-4 px-7 py-4 rounded-b-lg"
     >
       <Button :disabled="isLoading" v-if="showCancelButton" secondary size="lg" @click="$emit('close')">
-        {{ cancelButton }}
+        {{ cancelButton || t('Buttons.cancel') }}
       </Button>
       <Button
         v-for="(action, index) in actionButtons"
@@ -65,6 +65,7 @@ export default {
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import Button from '../Button/Button.vue';
+import { t } from '../../locales';
 
 const props = defineProps({
   title: {
@@ -95,7 +96,7 @@ const props = defineProps({
   cancelButton: {
     type: String,
     required: false,
-    default: 'Cancel',
+    default: null,
   },
   closableButton: {
     type: Boolean,
