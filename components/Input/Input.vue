@@ -62,7 +62,7 @@
 <script>
 import FormItem from '../FormItem';
 import { onClickOutside } from '@vueuse/core';
-import { vMaska } from 'maska';
+import { vMaska } from 'maska/vue';
 
 export default {
   name: 'y-input',
