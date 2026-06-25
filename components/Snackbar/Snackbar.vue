@@ -50,6 +50,9 @@ export default {
 
 <script setup>
 import { computed } from 'vue';
+import iconCloseDark from '../../assets/images/svgs/icon-close-dark.svg';
+import iconSuccessDark from '../../assets/images/svgs/icon-success-dark.svg';
+import iconWarningDark from '../../assets/images/svgs/icon-warning-dark.svg';
 
 const emit = defineEmits(['close']);
 
@@ -110,13 +113,13 @@ const close = () => {
 
 const getIconUrl = computed(() => {
   if (props.type === 'danger') {
-    return require('../../assets/images/svgs/icon-close-dark.svg');
+    return iconCloseDark;
   } else if (props.type === 'success') {
-    return require('../../assets/images/svgs/icon-success-dark.svg');
+    return iconSuccessDark;
   } else if (props.type === 'warning') {
-    return require('../../assets/images/svgs/icon-warning-dark.svg');
+    return iconWarningDark;
   }
-  return require('../../assets/images/svgs/icon-close-dark.svg');
+  return iconCloseDark;
 });
 
 const snackbarContainer = computed(() => [

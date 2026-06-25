@@ -275,7 +275,7 @@ export default {
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { BottomSheet } from '../BottomSheet';
 
 const emit = defineEmits(['update', 'update:modelValue', 'monthChange', 'close']);
