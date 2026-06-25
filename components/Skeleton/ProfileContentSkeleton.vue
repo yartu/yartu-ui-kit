@@ -11,11 +11,12 @@
         </div>
       </div>
       <hr class="w-full" />
-      <div class="flex flex-col items-center w-full gap-7" v-for="i in 3">
+      <div v-for="i in 3" :key="i" class="flex flex-col items-center w-full gap-7">
         <div class="flex gap-4 flex-wrap w-full">
           <div
-            class="w-1/2-gap-4 h-5 rounded-full bg-BORDER"
             v-for="i in 6"
+            :key="i"
+            class="w-1/2-gap-4 h-5 rounded-full bg-BORDER"
           ></div>
         </div>
         <hr class="w-full" v-if="i !== 3" />

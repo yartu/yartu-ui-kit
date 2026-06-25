@@ -36,7 +36,7 @@ export default {
 </script>
 
 <script setup>
-import { computed, watch, ref, onUnmounted, onMounted, shallowRef, nextTick } from 'vue';
+import { computed, watch, ref, onUnmounted, onMounted, nextTick } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { BottomSheet } from '../BottomSheet';
 // import { YartuTeleport } from "../YartuTeleport";

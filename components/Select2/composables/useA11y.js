@@ -22,7 +22,7 @@ export default function useScroll (props, context, dep)
   const ariaAssist = computed(() => {
     let texts = []
 
-    if (id && id.value) {
+    if (id?.value) {
       texts.push(id.value)
     }
 
@@ -34,7 +34,7 @@ export default function useScroll (props, context, dep)
   const ariaControls = computed(() => {
     let texts = []
 
-    if (id && id.value) {
+    if (id?.value) {
       texts.push(id.value)
     }
 
@@ -46,7 +46,7 @@ export default function useScroll (props, context, dep)
   const ariaActiveDescendant = computed(() => {
     let texts = []
 
-    if (id && id.value) {
+    if (id?.value) {
       texts.push(id.value)
     }
 
@@ -57,9 +57,8 @@ export default function useScroll (props, context, dep)
 
       return texts.join('-')
     }
+    return ''
   })
-
-
 
   const ariaPlaceholder = computed(() => {
     return placeholder.value
@@ -110,7 +109,7 @@ export default function useScroll (props, context, dep)
   const ariaOptionId = (option) => {
     let texts = []
 
-    if (id && id.value) {
+    if (id?.value) {
       texts.push(id.value)
     }
 
@@ -124,7 +123,7 @@ export default function useScroll (props, context, dep)
   const ariaGroupId = (option) => {
     let texts = []
 
-    if (id && id.value) {
+    if (id?.value) {
       texts.push(id.value)
     }
 
@@ -159,7 +158,7 @@ export default function useScroll (props, context, dep)
 
   onMounted(() => {
     /* istanbul ignore next */
-    if (id && id.value && document && document.querySelector) {
+    if (id?.value && document?.querySelector) {
       let forTag = document.querySelector(`[for="${id.value}"]`)
       label.value = forTag ? forTag.innerText : null
     }

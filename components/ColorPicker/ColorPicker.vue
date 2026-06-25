@@ -45,7 +45,7 @@ export default {
 
 <script setup>
 import { computed, onMounted, ref } from "vue";
-import colors from "../../utils/colors";
+import systemColors from "../../utils/colors";
 
 const colorPalette = ref([]);
 
@@ -77,8 +77,8 @@ const props = defineProps({
 onMounted(() => {
   if (!props.colors) {
     colorPalette.value = [];
-    for (let index = 0; index < Object.keys(colors).length; index++)
-      colorPalette.value[index] = Object.values(colors)[index].base;
+    for (let index = 0; index < Object.keys(systemColors).length; index++)
+      colorPalette.value[index] = Object.values(systemColors)[index].base;
   } else {
     colorPalette.value = props.colors;
   }

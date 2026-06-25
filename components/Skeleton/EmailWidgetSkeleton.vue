@@ -18,7 +18,7 @@
   </div>
 </template>
 <script setup>
-const props = defineProps({
+defineProps({
   skeletonCount: {
     type: Number,
     required: true,

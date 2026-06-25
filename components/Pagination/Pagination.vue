@@ -12,6 +12,7 @@
         <button
           :class="paginationItemClass"
           @click.prevent="changePage(current - 1)"
+          :disabled="hasPrev"
         >
           <svg
             width="16"
@@ -73,6 +74,7 @@
         <button
           :class="paginationItemClass"
           @click.prevent="changePage(current + 1)"
+          :disabled="hasNext"
         >
           <svg
             width="16"

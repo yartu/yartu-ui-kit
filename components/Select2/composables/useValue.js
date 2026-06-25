@@ -8,7 +8,7 @@ export default function useValue (props, context)
   const iv = ref(mode.value !== 'single' ? [] : {})
 
   // externalValue
-  const ev = modelValue && modelValue.value !== undefined ? modelValue : value
+  const ev = modelValue?.value !== undefined ? modelValue : value
 
   const plainValue = computed(() => {
     return mode.value === 'single' ? iv.value[valueProp.value] : iv.value.map(v=>v[valueProp.value])

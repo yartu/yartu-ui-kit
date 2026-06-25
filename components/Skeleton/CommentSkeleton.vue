@@ -14,13 +14,13 @@
       </div>
       <div class="w-full h-11 bg-BORDER rounded-lg"></div>
       <div class="flex items-center gap-2">
-        <div v-for="i in 4" class="w-8 h-6 bg-BORDER rounded-full"></div>
+        <div v-for="i in 4" :key="i" class="w-8 h-6 bg-BORDER rounded-full"></div>
       </div>
     </div>
   </div>
 </template>
 <script setup>
-const props = defineProps({
+defineProps({
   skeletonCount: {
     type: Number,
     required: true,

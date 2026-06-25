@@ -35,7 +35,7 @@ export default function useSearch(props, context, dep) {
   };
 
   const handleKeypress = (e) => {
-    if (regex && regex.value) {
+    if (regex?.value) {
       let regexp = regex.value;
 
       if (typeof regexp === "string") {

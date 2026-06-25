@@ -27,6 +27,7 @@
   <div v-show="isOpen || expanded" v-if="isFolder" class="ms-4">
     <TreeNode
       v-for="node in childFolders"
+      :key="node[itemKey] ?? node.path"
       @selected="selectNode($event)"
       :item="node"
       :itemKey="itemKey"

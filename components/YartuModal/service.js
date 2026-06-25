@@ -2,7 +2,8 @@ import { useEventBus } from '@vueuse/core';
 import { inject, shallowRef, reactive, computed } from 'vue';
 
 const YartuModalSymbol = Symbol();
-const bus = useEventBus('yartuModal');
+// const bus = useEventBus('yartuModal');
+useEventBus('yartuModal');
 
 export const modals = reactive([]);
 export const activeModals = computed(() => modals.filter((m) => m.openModal));
@@ -44,6 +45,7 @@ export const closeModal = (modal, index, x) => {
   if (modal.closeCallBack) {
     modal.closeCallBack(modal);
   }
+  console.log(`closeModal: called with ${x}`)
 };
 
 export const yartuModalservice = {

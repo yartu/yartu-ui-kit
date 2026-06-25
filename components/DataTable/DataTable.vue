@@ -114,7 +114,7 @@
           >
             <slot name="item-selection" :item="item">
               <y-checkbox
-                @click.native.stop=""
+                @click.stop=""
                 v-model="selectedList"
                 :input-value="object ? item : item[inputValue]"
               ></y-checkbox>
@@ -252,7 +252,9 @@ const props = defineProps({
   },
   filterFields: {
     type: Array,
-    default: [],
+    default() {
+      return []
+    }
   },
   emptyStateText: {
     type: String,
@@ -343,7 +345,11 @@ const asc = (orderKey) => {
 };
 
 const dsc = (orderKey) => {
-  tableItems.value.reverse();
+  tableItems.value.sort(
+    (a, b) =>
+      b[orderKey].toString().localeCompare(a[orderKey], { numeric: true }) ||
+      a[orderKey] - b[orderKey]
+  );
   sort.value = "dsc";
 };
 </script>

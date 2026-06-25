@@ -68,7 +68,7 @@ export default {
     },
   },
   watch: {
-    modelValue(val) {
+    modelValue() {
       if (!this.lazyOff && this.rules && this.rules.length > 0) {
         this.validate();
       }

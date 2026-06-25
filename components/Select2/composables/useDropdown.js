@@ -1,4 +1,4 @@
-import { ref, onMounted, toRefs, getCurrentInstance } from "vue";
+import { ref, toRefs, getCurrentInstance } from "vue";
 
 export default function useDropdown(props, context, dep) {
   const { disabled } = toRefs(props);

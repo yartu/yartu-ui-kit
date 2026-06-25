@@ -39,6 +39,7 @@
   <div v-show="isOpen || expanded" v-if="isFolder" class="ms-6">
     <TreeNode
       v-for="node in childFolders"
+      :key="node._id"
       @selected="selectNode($event)"
       @onDrop="emit('onDrop', $event)"
       @onTreeContext="emit('onTreeContext', $event)"

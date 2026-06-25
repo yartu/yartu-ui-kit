@@ -454,7 +454,7 @@ const isSelected = (item) => {
 };
 
 const selectedIsEmpty = computed(() => {
-  if (!selected.value === undefined || !selected.value === null) {
+  if (selected.value === undefined || selected.value === null) {
     return true;
   }
 

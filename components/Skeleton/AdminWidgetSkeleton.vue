@@ -1,5 +1,5 @@
 <template>
-    <div v-for="i in skeletonCount" class="flex flex-col overflow-auto  w-full">
+    <div v-for="i in skeletonCount" :key="i" class="flex flex-col overflow-auto  w-full">
       <div
         class="flex w-full p-1 max-h-40 rounded-xl animate-pulse  flex-col mb-3 gap-3 bg-BORDER"
       >
@@ -14,7 +14,7 @@
     </div>
   </template>
 <script setup>
-const props = defineProps({
+defineProps({
   skeletonCount: {
     type: Number,
     required: true,

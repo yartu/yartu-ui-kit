@@ -358,7 +358,7 @@ watch(
 
 watch(
   () => props.time,
-  (val) => {
+  () => {
     selectedTime.value = selectedTime.value.startOf('day');
   },
   { deep: true },

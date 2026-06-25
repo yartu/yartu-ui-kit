@@ -17,5 +17,9 @@ export default [
         ...globals.node,
       },
     },
+    rules: {
+      'no-useless-assignment': 'off',
+      'no-useless-escape': 'off',
+    }
   },
 ];

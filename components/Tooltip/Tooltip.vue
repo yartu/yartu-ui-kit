@@ -2,13 +2,13 @@
   <div
     ref="target"
     class="tooltip-container relative inline-flex"
-    @mouseover.native="tooltipOpen"
-    @mouseleave.native="tooltipClose"
+    @mouseover="tooltipOpen"
+    @mouseleave="tooltipClose"
   >
     <slot name="activator" :open="toggleTooltip"></slot>
     <slot></slot>
     <teleport to="body">
-      <transition name="fade">
+      <transition appear name="fade">
         <div ref="tooltip" :class="tooltipContainer">
           <div v-show="tooltipStatus" :class="tooltipContent">
             <slot name="tooltip"></slot>

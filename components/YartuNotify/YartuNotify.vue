@@ -40,7 +40,7 @@
 </template>
 <script setup>
 import YartuTransitions from './YartuTransitions.vue';
-import { ref, shallowRef, onMounted, onBeforeMount } from 'vue';
+import { ref, shallowRef, onBeforeUnmount } from 'vue';
 import { useEventBus } from '@vueuse/core';
 import { Snackbar } from '../Snackbar';
 import { Toast } from '../Toast';
@@ -144,7 +144,10 @@ const listener = (notifyType, options = {}) => {
   queue.value[position].push(options);
 };
 
-onMounted(() => {
-  const unsubscribe = bus.on(listener);
-});
+const unsubscribe = bus.on(listener);
+
+onBeforeUnmount(() => {
+  unsubscribe()
+})
+
 </script>

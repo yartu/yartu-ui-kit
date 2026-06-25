@@ -103,7 +103,7 @@ export default function useMultiselect(props, context, dep) {
     activate(mouseClicked.value);
   };
 
-  const handleFocusOut = (e, x) => {
+  const handleFocusOut = (e) => {
     if (e.target.nodeName === 'SPAN' || e.target.nodeName === 'INPUT') {
       return;
     }

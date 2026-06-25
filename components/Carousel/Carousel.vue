@@ -52,7 +52,7 @@ export default {
 <script setup>
 import { ref, onMounted } from 'vue';
 
-const props = defineProps({
+defineProps({
   items: Object,
   default: () => {},
 });

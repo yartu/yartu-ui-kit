@@ -2,6 +2,7 @@
   <div class="flex items-center w-full gap-4 flex-wrap animate-pulse">
     <div
       v-for="i in skeletonCount"
+      :key="i"
       class="border border-BORDER animate-pulse p-5 flex items-center justify-center rounded-lg"
     >
       <div class="flex flex-col gap-5 justify-center items-center w-56">
@@ -22,7 +23,7 @@
   </div>
 </template>
 <script setup>
-const props = defineProps({
+defineProps({
   skeletonCount: {
     type: Number,
     required: true,

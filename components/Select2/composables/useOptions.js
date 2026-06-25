@@ -163,7 +163,7 @@ export default function useOptions (props, context, dep)
 
   const multipleLabelText = computed(() => {
 
-    if (multipleLabel !== undefined && multipleLabel.value !== undefined) {
+    if (multipleLabel?.value !== undefined) {
       return multipleLabel.value(iv.value, $this);
     }
 
@@ -310,7 +310,7 @@ export default function useOptions (props, context, dep)
   }
 
   const isMax = () => {
-    if (max === undefined || max.value === -1 || (!hasSelected.value && max.value > 0)) {
+    if (max?.value === undefined || max.value === -1 || (!hasSelected.value && max.value > 0)) {
       return false
     }
 
@@ -336,7 +336,7 @@ export default function useOptions (props, context, dep)
       return
     }
 
-    if (onCreate && onCreate.value && !isSelected(option) && option.isSuggest) {
+    if (onCreate?.value && !isSelected(option) && option.isSuggest) {
       option = { ...option }
       delete option.isSuggest
 
@@ -719,7 +719,7 @@ export default function useOptions (props, context, dep)
     throw new Error(`v-model must be an array when using "${mode.value}" mode`)
   }
 
-  if (options && typeof options.value == 'function') {
+  if (typeof options?.value == 'function') {
     if (resolveOnLoad.value) {
       resolveOptions(initInternalValue)
     } else if (object.value == true) {

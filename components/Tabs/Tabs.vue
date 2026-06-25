@@ -38,7 +38,6 @@ const tabs = ref(
     return { value: t.props?.value, title: t.props?.title };
   }),
 );
-const tabTitles = ref(slots.default().map((tab) => tab.props?.title));
 
 const selectedTab = computed({
   get: () => {

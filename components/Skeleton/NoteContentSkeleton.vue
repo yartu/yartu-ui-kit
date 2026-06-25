@@ -8,13 +8,14 @@
       <div class="h-4 bg-BORDER rounded-full w-2/3 mb-4"></div>
       <div
         v-for="i in skeletonCount"
+        :key="i"
         class="h-3 bg-BORDER rounded-full w-full"
       ></div>
     </div>
   </div>
 </template>
 <script setup>
-const props = defineProps({
+defineProps({
   skeletonCount: {
     type: Number,
     required: true,
