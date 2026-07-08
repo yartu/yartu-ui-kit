@@ -12,7 +12,7 @@
         <button
           :class="paginationItemClass"
           @click.prevent="changePage(current - 1)"
-          :disabled="hasPrev"
+          :disabled="!hasPrev"
         >
           <svg
             width="16"
@@ -74,7 +74,7 @@
         <button
           :class="paginationItemClass"
           @click.prevent="changePage(current + 1)"
-          :disabled="hasNext"
+          :disabled="!hasNext"
         >
           <svg
             width="16"
@@ -174,13 +174,13 @@ const hasLast = () => {
   return rangeEnd.value < totalPages.value;
 };
 
-const hasPrev = () => {
+const hasPrev = computed(() => {
   return current.value > 1;
-};
+});
 
-const hasNext = () => {
+const hasNext = computed(() => {
   return current.value < totalPages.value;
-};
+});
 
 const changePage = (page) => {
   if (page > 0 && page <= totalPages.value) {
