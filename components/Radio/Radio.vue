@@ -33,7 +33,7 @@ export default {
     },
     borderColor: {
       type: String,
-      default: '#e5ebf5ff',
+      default: 'rgb(var(--yk-border))',
     },
     disabled: {
       type: Boolean,

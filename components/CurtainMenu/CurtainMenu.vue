@@ -13,7 +13,7 @@
         <p>{{ title }}</p>
         <button
           @click="open"
-          class="ms-auto hover:bg-LIGHTBLUE-6 border text-xs border-gray-200 rounded-full h-[28px] w-[28px] inline-flex items-center justify-center m-0.5"
+          class="ms-auto hover:bg-LIGHTBLUE-6 border text-xs border-BORDER rounded-full h-[28px] w-[28px] inline-flex items-center justify-center m-0.5"
         >
           <span
             class="transition-all duration-300"

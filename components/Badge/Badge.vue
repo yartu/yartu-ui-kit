@@ -32,11 +32,11 @@ export default {
     },
     bgColor: {
       type: String,
-      default: '#49ab5e',
+      default: 'rgb(var(--yk-green))',
     },
     borderColor: {
       type: String,
-      default: '#e5ebf5ff',
+      default: 'rgb(var(--yk-border))',
     },
     ping: {
       type: Boolean,

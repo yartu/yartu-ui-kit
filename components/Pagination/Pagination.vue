@@ -37,7 +37,7 @@
         v-if="!pages.includes(1)"
         @click.prevent="changePage(1)"
         :class="[
-          current === 1 ? 'bg-BLUE text-WHITE border-none hover:bg-BLUE' : '',
+          current === 1 ? 'bg-BLUE text-white border-none hover:bg-BLUE' : '',
           paginationItemClass,
         ]"
       >
@@ -50,7 +50,7 @@
         :key="index"
         :class="[
           current === item
-            ? 'bg-BLUE text-WHITE border-none hover:bg-BLUE'
+            ? 'bg-BLUE text-white border-none hover:bg-BLUE'
             : '',
           paginationItemClass,
         ]"
@@ -63,7 +63,7 @@
         @click.prevent="changePage(totalPages)"
         :class="[
           current === totalPages
-            ? 'bg-BLUE text-WHITE border-none hover:bg-BLUE'
+            ? 'bg-BLUE text-white border-none hover:bg-BLUE'
             : '',
           paginationItemClass,
         ]"

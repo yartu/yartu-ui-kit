@@ -55,7 +55,7 @@ const containerClass = computed(() => {
     'overflow-hidden',
     'text-center',
     'font-semibold',
-    'text-WHITE',
+    '!text-white',
     'uppercase',
     {
       'bg-transparent': props.image != null,

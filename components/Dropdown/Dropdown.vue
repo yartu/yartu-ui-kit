@@ -62,7 +62,7 @@ const props = defineProps({
   },
   bg: {
     type: String,
-    default: '#ffffff',
+    default: 'rgb(var(--yk-white))',
   },
   left: {
     type: Boolean,
