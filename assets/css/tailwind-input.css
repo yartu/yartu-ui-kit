@@ -5,6 +5,7 @@
 @layer base {
   :root {
     --yk-white: 255 255 255;
+    --yk-on-color: 255 255 255;
     --yk-black-1: 31 41 56;
     --yk-black-2: 57 76 102;
     --yk-black-3: 22 29 39;
@@ -61,31 +62,32 @@
   .dark {
     color-scheme: dark;
 
-    --yk-white: 27 35 48;
-    --yk-grey-3: 36 46 62;
-    --yk-grey-4: 32 41 57;
-    --yk-grey-9: 42 53 70;
-    --yk-lightblue-6: 30 39 53;
-    --yk-lightblue-9: 35 45 61;
-    --yk-lightblue-5: 37 48 68;
-    --yk-lightblue-7: 41 52 69;
-    --yk-lightblue-4: 36 53 75;
-    --yk-lightblue-3: 49 62 82;
-    --yk-lightblue-2: 58 74 100;
-    --yk-lightblue-1: 70 96 143;
-    --yk-lightblue-8: 110 134 212;
+    --yk-white: 24 24 27;
+    --yk-grey-3: 39 39 42;
+    --yk-grey-4: 32 32 36;
+    --yk-grey-9: 46 46 51;
+    --yk-lightblue-6: 20 20 22;
+    --yk-lightblue-9: 32 32 36;
+    --yk-lightblue-5: 42 42 47;
+    --yk-lightblue-7: 46 46 51;
+    --yk-lightblue-4: 44 44 49;
+    --yk-lightblue-3: 58 58 64;
+    --yk-lightblue-2: 72 72 79;
+    --yk-lightblue-1: 96 96 105;
+    --yk-lightblue-8: 138 138 148;
 
-    --yk-border: 47 58 75;
-    --yk-grey-5: 57 68 83;
-    --yk-grey-2: 58 68 83;
+    --yk-border: 48 48 53;
+    --yk-grey-5: 61 61 67;
+    --yk-grey-2: 61 61 67;
 
-    --yk-black-3: 243 246 251;
-    --yk-black-1: 228 233 241;
-    --yk-black-2: 192 201 216;
-    --yk-grey-6: 151 161 181;
-    --yk-grey-7: 153 163 183;
-    --yk-grey-1: 127 136 153;
-    --yk-blue-2: 144 163 178;
+    --yk-black-3: 240 240 240;
+    --yk-black-1: 240 240 240;
+    --yk-black-2: 240 240 240;
+    --yk-on-color: 240 240 240;
+    --yk-grey-6: 155 155 162;
+    --yk-grey-7: 157 157 164;
+    --yk-grey-1: 130 130 138;
+    --yk-blue-2: 150 150 158;
 
     --yk-blue: 92 131 255;
     --yk-hover-blue: 126 157 255;
@@ -108,12 +110,12 @@
     --yk-darkbrown: 201 169 158;
     --yk-bud: 191 216 121;
 
-    --yk-overlay: 8 11 16;
+    --yk-overlay: 6 6 7;
     --yk-grey-8: 255 255 255;
 
-    --yk-ink-1: 45 56 74;
-    --yk-ink-2: 55 70 92;
-    --yk-ink-3: 36 45 60;
+    --yk-ink-1: 46 46 51;
+    --yk-ink-2: 61 61 67;
+    --yk-ink-3: 36 36 40;
   }
 
   html {
