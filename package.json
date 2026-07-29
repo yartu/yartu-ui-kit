@@ -1,7 +1,7 @@
 {
   "name": "@yartu/ui-kit",
   "description": "Yartu UI Kit for Developers w/ Vue3+Tailwind",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Ecolarium Dijital Teknolojiler AS <info@ecolarium.io> (https://www.ecolarium.io)",
   "bugs": {
     "url": "https://github.com/yartu/yartu-ui-kit/issues",
