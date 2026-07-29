@@ -101,6 +101,9 @@ const globalConfig = {
       borderColor: {
         white: 'rgb(var(--y-white) / <alpha-value>)',
       },
+      textColor: {
+        white: 'rgb(var(--y-on-color) / <alpha-value>)',
+      },
       divideColor: {
         white: 'rgb(var(--y-white) / <alpha-value>)',
       },
