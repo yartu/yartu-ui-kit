@@ -15,7 +15,7 @@ export default {
     },
     bg: {
       type: String,
-      default: '#49ab5eff',
+      default: 'rgb(var(--y-green))',
     },
     bottom: {
       type: Boolean,

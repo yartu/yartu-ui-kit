@@ -31,14 +31,14 @@ export default {
     },
     bgColor: {
       type: String,
-      default: '#ffffff',
+      default: 'rgb(var(--y-white))',
     },
     label: {
       type: String,
     },
     borderColor: {
       type: String,
-      default: '#e5ebf5ff',
+      default: 'rgb(var(--y-border))',
     },
     checked: {
       type: Boolean,

@@ -20,7 +20,8 @@ import { computed } from "vue";
 const props = defineProps({
   bg: {
     type: String,
-    default: "#ffffff",
+    // inline style olarak uygulanir, temaya CSS degiskeniyle baglanir
+    default: "rgb(var(--y-white))",
   },
   left: {
     type: Boolean,

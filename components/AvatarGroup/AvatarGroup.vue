@@ -90,6 +90,6 @@ const avatarGroup = computed(() => {
 }
 
 .y-avatar-group .y-avatar-group-item .y-avatar {
-  border: 2px solid #e5ebf5ff;
+  border: 2px solid rgb(var(--y-border));
 }
 </style>

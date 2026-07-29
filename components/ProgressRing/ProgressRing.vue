@@ -108,7 +108,7 @@ const animate = () => {
   }
 };
 
-const ringContentClass = computed(() => ['text-gray-600', 'text-center']);
+const ringContentClass = computed(() => ['text-GREY-6', 'text-center']);
 const ringTitleClass = computed(() => ['text-xl font-extrabold text-BLACK-2']);
 const ringTextClass = computed(() => ['text-2xs text-GREY-1', 'font-medium']);
 const calcDiameter = computed(() => props.radius * 2);

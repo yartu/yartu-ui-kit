@@ -16,7 +16,7 @@
           :value="option[dataKey]"
           v-model="model"
           @input="emitModelValue($event.target.value)"
-          class="appearance-none checked:bg-white checked:shadow-5 rounded-full absolute inset-0 transition-all duration-300"
+          class="appearance-none checked:bg-white dark:checked:bg-GREY-9 checked:shadow-5 rounded-full absolute inset-0 transition-all duration-300"
         />
         <slot name="option" :option="option" :index="index">
           <span

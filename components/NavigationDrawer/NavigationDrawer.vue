@@ -70,7 +70,7 @@ const props = defineProps({
   },
   bg: {
     type: String,
-    default: '#f8fafd',
+    default: 'rgb(var(--y-lightblue-6))',
   },
   topGap: {
     type: String,
