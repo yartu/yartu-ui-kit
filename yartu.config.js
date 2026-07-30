@@ -99,6 +99,7 @@ const globalConfig = {
         'BLACK-3': 'rgb(var(--y-ink-3) / <alpha-value>)',
       },
       borderColor: {
+        DEFAULT: 'rgb(var(--y-border) / <alpha-value>)',
         white: 'rgb(var(--y-white) / <alpha-value>)',
       },
       textColor: {
