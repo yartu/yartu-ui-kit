@@ -12,7 +12,7 @@
         >
           <input
             type="text"
-            class="outline-none subtitle-5 text-BLACK-2 flex-1"
+            class="outline-none subtitle-5 text-BLACK-2 flex-1 bg-transparent"
             aria-autocomplete="none"
             aria-haspopup="dialog"
             aria-expanded="true"
