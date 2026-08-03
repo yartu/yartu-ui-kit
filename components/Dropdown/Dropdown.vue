@@ -3,7 +3,7 @@
     <teleport to="body">
       <transition name="fade">
         <div
-          v-if="!bottomSheetController"
+          v-if="!bottomSheetController && hasBeenOpened"
           ref="dropdownContent"
           v-show="dropdownStatus"
           :style="bgStyle"
@@ -15,7 +15,7 @@
         </div>
       </transition>
       <bottom-sheet
-        v-if="bottomSheetController"
+        v-if="bottomSheetController && hasBeenOpened"
         :show="dropdownStatus"
         :bg="bg"
         :ignoreClickOutside="ignoreClickOutside"
@@ -42,6 +42,7 @@ import { BottomSheet } from '../BottomSheet';
 // import { YartuTeleport } from "../YartuTeleport";
 
 const open = ref(false);
+const hasBeenOpened = ref(false);
 const bottomSheetController = ref(false);
 const target = ref(null);
 const dropdownContent = ref(null);
@@ -90,18 +91,27 @@ const setIgnore = () => {
 onClickOutside(
   target,
   () => {
+    if (!open.value && !props.show) return;
     open.value = false;
     emit('hide');
   },
   { ignore: [setIgnore()] },
 );
 
+const revealContent = () => {
+  if (hasBeenOpened.value) return;
+  hasBeenOpened.value = true;
+  window.addEventListener('resize', calculatePosition);
+};
+
 const openDropdown = () => {
+  revealContent();
   open.value = !open.value;
   calculatePosition();
 };
 
 const openContextMenu = (pos = undefined) => {
+  revealContent();
   open.value = false;
   if (pos !== undefined) {
     calculatePosition(pos);
@@ -119,6 +129,7 @@ watch(
   () => props.show,
   (val) => {
     if (val) {
+      revealContent();
       calculatePosition();
     }
   },
@@ -141,6 +152,7 @@ const calculatePosition = (dropdownContainer = undefined) => {
     let heightContoller = 0;
     let widthController = 0;
     nextTick(() => {
+      if (!dropdownContent.value) return;
       heightContoller = dropdownContent.value.getBoundingClientRect().height;
       widthController = dropdownContent.value.getBoundingClientRect().width;
       if(heightContoller > window.innerHeight) dropdownOverflowController.value = true;
@@ -183,7 +195,9 @@ const dropdownStatus = computed(() => {
 
 onMounted(() => {
   if (screen.width < 1024) bottomSheetController.value = true;
-  window.addEventListener('resize', calculatePosition);
+  if (props.show) {
+    revealContent();
+  }
 });
 
 onUnmounted(() => {
