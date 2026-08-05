@@ -38,6 +38,7 @@ export default {
 <script setup>
 import { computed, watch, ref, onUnmounted, onMounted, nextTick } from 'vue';
 import { onClickOutside } from '@vueuse/core';
+import { followAnchor } from '../../utils/anchorPosition';
 import { BottomSheet } from '../BottomSheet';
 // import { YartuTeleport } from "../YartuTeleport";
 
@@ -101,11 +102,54 @@ onClickOutside(
 const revealContent = () => {
   if (hasBeenOpened.value) return;
   hasBeenOpened.value = true;
-  window.addEventListener('resize', calculatePosition);
+};
+
+let pointerAnchor = null;
+let stopFollowing = null;
+
+const stopFollowingNow = () => {
+  if (!stopFollowing) return;
+  stopFollowing();
+  stopFollowing = null;
+};
+
+const isOutOfSight = (rect) => rect.bottom <= 0
+  || rect.right <= 0
+  || rect.top >= window.innerHeight
+  || rect.left >= window.innerWidth;
+
+const rememberPointerAnchor = (pos) => {
+  const el = pos && pos.target;
+  if (!el || typeof el.getBoundingClientRect !== 'function') {
+    pointerAnchor = null;
+    return;
+  }
+  const rect = el.getBoundingClientRect();
+  pointerAnchor = { el, dx: pos.x - rect.left, dy: pos.y - rect.top };
+};
+
+const reposition = () => {
+  if (!pointerAnchor) {
+    calculatePosition();
+    return;
+  }
+  if (!pointerAnchor.el.isConnected) return;
+
+  const rect = pointerAnchor.el.getBoundingClientRect();
+
+  if (isOutOfSight(rect)) {
+    stopFollowingNow();
+    open.value = false;
+    emit('hide');
+    return;
+  }
+
+  calculatePosition({ x: rect.left + pointerAnchor.dx, y: rect.top + pointerAnchor.dy });
 };
 
 const openDropdown = () => {
   revealContent();
+  pointerAnchor = null;
   open.value = !open.value;
   calculatePosition();
 };
@@ -114,8 +158,10 @@ const openContextMenu = (pos = undefined) => {
   revealContent();
   open.value = false;
   if (pos !== undefined) {
+    rememberPointerAnchor(pos);
     calculatePosition(pos);
   } else {
+    pointerAnchor = null;
     calculatePosition();
   }
   open.value = true;
@@ -137,71 +183,77 @@ watch(
 
 const dropdownOverflowController = ref(false);
 
-const calculatePosition = (dropdownContainer = undefined) => {
-  // improve this @kenarumut
-  if (!bottomSheetController.value) {
-    if (dropdownContainer === undefined || dropdownContainer.type === 'resize') {
-      dropdownContainer = target.value.getBoundingClientRect();
+const calculatePosition = (position = undefined) => {
+  if (bottomSheetController.value) return;
+
+  let anchor;
+  if (position === undefined || position.type === 'resize') {
+    if (!target.value) return;
+    anchor = target.value.getBoundingClientRect();
+  } else {
+    anchor = { top: position.y, bottom: position.y, left: position.x, right: position.x };
+  }
+
+  nextTick(() => {
+    const content = dropdownContent.value;
+    if (!content) return;
+
+    const { height, width } = content.getBoundingClientRect();
+    const style = content.style;
+
+    dropdownOverflowController.value = height > window.innerHeight;
+    let top = 'auto';
+    let bottom = 'auto';
+    let left = 'auto';
+    let right = 'auto';
+
+    if (props.top) {
+      top = (height + 16 > anchor.top && height > 0 ? height + 16 : anchor.top - 12) + 'px';
+    } else if (anchor.top + height > window.innerHeight && height > 0) {
+      bottom = '16px';
     } else {
-      dropdownContainer.top = dropdownContainer.y;
-      dropdownContainer.bottom = dropdownContainer.y;
-      dropdownContainer.left = dropdownContainer.x;
-      dropdownContainer.right = dropdownContainer.x;
+      top = anchor.bottom + 12 + 'px';
     }
 
-    let heightContoller = 0;
-    let widthController = 0;
-    nextTick(() => {
-      if (!dropdownContent.value) return;
-      heightContoller = dropdownContent.value.getBoundingClientRect().height;
-      widthController = dropdownContent.value.getBoundingClientRect().width;
-      if(heightContoller > window.innerHeight) dropdownOverflowController.value = true;
-      else dropdownOverflowController.value = false;
-      if (props.top) {
-        if ((heightContoller + 16) > dropdownContainer.top && heightContoller > 0) {
-          dropdownContent.value.style.top = heightContoller + 16 + 'px';
-        } else {
-          dropdownContent.value.style.top = dropdownContainer.top - 12 + 'px';
-        }
-      } else {
-        if (dropdownContainer.top + heightContoller > window.innerHeight && heightContoller > 0) {
-          dropdownContent.value.style.top = 'auto';
-          dropdownContent.value.style.bottom = '16px';
-        } else {
-          dropdownContent.value.style.top = dropdownContainer.bottom + 12 + 'px';
-        }
-      }
-      if (props.left) {
-        if (widthController > dropdownContainer.left && widthController > 0) {
-          dropdownContent.value.style.left = widthController + 16 + 'px';
-        } else {
-          dropdownContent.value.style.left = dropdownContainer.right + 'px';
-        }
-      } else {
-        if (widthController + dropdownContainer.right > window.innerWidth && widthController > 0) {
-          dropdownContent.value.style.left = 'auto';
-          dropdownContent.value.style.right = '16px';
-        } else {
-          dropdownContent.value.style.left = dropdownContainer.left + 'px';
-        }
-      }
-    });
-  }
+    if (props.left) {
+      left = (width > anchor.left && width > 0 ? width + 16 : anchor.right) + 'px';
+    } else if (width + anchor.right > window.innerWidth && width > 0) {
+      right = '16px';
+    } else {
+      left = anchor.left + 'px';
+    }
+
+    style.top = top;
+    style.bottom = bottom;
+    style.left = left;
+    style.right = right;
+  });
 };
 
 const dropdownStatus = computed(() => {
   return props.show || open.value;
 });
 
+const followWhileOpen = (isOpen) => {
+  if (isOpen && !stopFollowing) {
+    stopFollowing = followAnchor(reposition);
+  } else if (!isOpen) {
+    stopFollowingNow();
+  }
+};
+
+watch(dropdownStatus, followWhileOpen);
+
 onMounted(() => {
   if (screen.width < 1024) bottomSheetController.value = true;
   if (props.show) {
     revealContent();
+    followWhileOpen(true);
   }
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', calculatePosition);
+  followWhileOpen(false);
 });
 
 const bgStyle = computed(() => {

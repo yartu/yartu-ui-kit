@@ -222,14 +222,15 @@ export default {
 import {
   ref,
   computed,
+  watch,
   watchEffect,
-  onMounted,
   onUnmounted,
   onUpdated,
   nextTick,
 } from 'vue';
 
 import { onClickOutside } from '@vueuse/core';
+import { followAnchor } from '../../utils/anchorPosition';
 import { validate } from '../FormItem/validations';
 import YChip from '../Chip/Chip.vue';
 
@@ -346,12 +347,21 @@ const searching = ref(false);
 const comboboxInput = ref(null);
 const searchText = ref('');
 
-onMounted(() => {
-  window.addEventListener('resize', calculatePosition);
-});
+let stopFollowing = null;
+
+const followWhileOpen = (isOpen) => {
+  if (isOpen && !stopFollowing) {
+    stopFollowing = followAnchor(calculatePosition);
+  } else if (!isOpen && stopFollowing) {
+    stopFollowing();
+    stopFollowing = null;
+  }
+};
+
+watch(open, followWhileOpen);
 
 onUnmounted(() => {
-  window.removeEventListener('resize', calculatePosition);
+  followWhileOpen(false);
 });
 
 const scrollToEnd = () => {
@@ -629,19 +639,22 @@ const isSelected = (item) => {
 };
 
 const calculatePosition = () => {
-  let dropdownContainer = target.value.getBoundingClientRect();
+  if (!target.value || !optionContainer.value) return;
+
+  const anchor = target.value.getBoundingClientRect();
+  const style = optionContainer.value.style;
+
   if (props.top) {
-    optionContainer.value.style.top = dropdownContainer.top - 12 + 'px';
+    style.top = anchor.top - 12 + 'px';
   } else {
-    optionContainer.value.style.top = dropdownContainer.bottom + 12 + 'px';
+    style.top = anchor.bottom + 12 + 'px';
   }
-  if (props.left)
-    optionContainer.value.style.left = dropdownContainer.right + 'px';
-  else {
-    optionContainer.value.style.left = dropdownContainer.left + 'px';
+  if (props.left) {
+    style.left = anchor.right + 'px';
+  } else {
+    style.left = anchor.left + 'px';
   }
-  optionContainer.value.style.minWidth =
-    dropdownContainer.right - dropdownContainer.left + 'px';
+  style.minWidth = anchor.width + 'px';
 };
 
 const activeItems = computed(() => {

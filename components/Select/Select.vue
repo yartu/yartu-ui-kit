@@ -145,9 +145,10 @@ export default {
 };
 </script>
 <script setup>
-import { ref, computed, onMounted, onUnmounted, watch, watchEffect } from 'vue';
+import { ref, computed, onUnmounted, watch, watchEffect } from 'vue';
 
 import { onClickOutside } from '@vueuse/core';
+import { followAnchor } from '../../utils/anchorPosition';
 import YChip from '../Chip/Chip.vue';
 
 const emit = defineEmits(['update:modelValue', 'selected']);
@@ -254,12 +255,21 @@ const target = ref(null);
 const optionContainer = ref(null);
 const itemsList = ref([]);
 
-onMounted(() => {
-  window.addEventListener('resize', calculatePosition);
-});
+let stopFollowing = null;
+
+const followWhileOpen = (isOpen) => {
+  if (isOpen && !stopFollowing) {
+    stopFollowing = followAnchor(calculatePosition);
+  } else if (!isOpen && stopFollowing) {
+    stopFollowing();
+    stopFollowing = null;
+  }
+};
+
+watch(open, followWhileOpen);
 
 onUnmounted(() => {
-  window.removeEventListener('resize', calculatePosition);
+  followWhileOpen(false);
 });
 
 watchEffect(async () => {
@@ -386,27 +396,27 @@ function openOptions() {
 }
 
 const calculatePosition = () => {
-  // improve this @aziz
-  let dropdownContainer = target.value.getBoundingClientRect();
+  if (!target.value || !optionContainer.value) return;
+
+  const anchor = target.value.getBoundingClientRect();
+  const style = optionContainer.value.style;
 
   if (props.top) {
-    optionContainer.value.style.top = dropdownContainer.top - 12 + 'px';
+    style.top = anchor.top - 12 + 'px';
   } else {
-    optionContainer.value.style.top = dropdownContainer.bottom + 12 + 'px';
+    style.top = anchor.bottom + 12 + 'px';
   }
-  if (props.left)
-    optionContainer.value.style.left = dropdownContainer.right + 'px';
-  else {
-    optionContainer.value.style.left = dropdownContainer.left + 'px';
+  if (props.left) {
+    style.left = anchor.right + 'px';
+  } else {
+    style.left = anchor.left + 'px';
   }
-  optionContainer.value.style.minWidth =
-    dropdownContainer.right - dropdownContainer.left + 'px';
+  style.minWidth = anchor.width + 'px';
 
-  if (window.innerHeight - dropdownContainer.bottom < 224) {
-    setTimeout(() => {
-      optionContainer.value.classList.add('force-to-top');
-    }, 50);
-  }
+  optionContainer.value.classList.toggle(
+    'force-to-top',
+    window.innerHeight - anchor.bottom < 224,
+  );
 };
 
 const choose = (item) => {

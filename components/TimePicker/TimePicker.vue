@@ -145,6 +145,7 @@ export default {
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue';
+import { followAnchor } from '../../utils/anchorPosition';
 import dayjs from 'dayjs';
 import { onClickOutside } from '@vueuse/core';
 
@@ -242,22 +243,34 @@ const clear = () => {
 };
 
 const calculatePosition = () => {
-  if(target.value){
-    let container = target.value.getBoundingClientRect();
-    let pickerContainerStyle = pickerContainer.value.style;
-    pickerContainerStyle.top = container.bottom + 16 + 'px';
-    pickerContainerStyle.left = container.left + 'px';
+  if (!target.value || !pickerContainer.value) return;
+
+  const container = target.value.getBoundingClientRect();
+  const pickerContainerStyle = pickerContainer.value.style;
+  pickerContainerStyle.top = container.bottom + 16 + 'px';
+  pickerContainerStyle.left = container.left + 'px';
+};
+
+let stopFollowing = null;
+
+const followWhileOpen = (isOpen) => {
+  if (isOpen && !stopFollowing) {
+    stopFollowing = followAnchor(calculatePosition);
+  } else if (!isOpen && stopFollowing) {
+    stopFollowing();
+    stopFollowing = null;
   }
 };
+
+watch(showPicker, followWhileOpen);
 
 onMounted(() => {
   minuteButtons.value = document.querySelectorAll('[data-minute-value]');
   hourButtons.value = document.querySelectorAll('[data-hour-value]');
-  window.addEventListener('resize', calculatePosition);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', calculatePosition);
+  followWhileOpen(false);
 });
 
 const initTime = (date) => {

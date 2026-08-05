@@ -1,5 +1,6 @@
-import { watch, toRefs } from 'vue';
+import { watch, toRefs, onScopeDispose } from 'vue';
 import { onClickOutside } from '@vueuse/core';
+import { followAnchor } from '../../../utils/anchorPosition';
 
 export default function useDropdown(props, context, dep) {
   const { disabled, openDirection, left } = toRefs(props);
@@ -24,26 +25,24 @@ export default function useDropdown(props, context, dep) {
   );
 
   const calculatePosition = () => {
-    // improve this @aziz
-    if(multiselect.value){
-      let dropdownContainer = multiselect.value.getBoundingClientRect();
+    if (!multiselect.value || !optionContainer.value) return;
 
-      if (openDirection.value === 'top') {
-        optionContainer.value.style.top = dropdownContainer.top - 12 + 'px';
-      } else {  
-        optionContainer.value.style.top =
-          dropdownContainer.top + dropdownContainer.height + 12 + 'px';
-      }
-      optionContainer.value.style.left = dropdownContainer.left + 'px';
-      optionContainer.value.style.minWidth =
-        dropdownContainer.right - dropdownContainer.left + 'px';
-      optionContainer.value.style.maxWidth =
-        dropdownContainer.right - dropdownContainer.left + 'px';
+    const anchor = multiselect.value.getBoundingClientRect();
+    const style = optionContainer.value.style;
 
-      if (window.innerHeight - dropdownContainer.bottom < 224 && optionContainer.value.classList) {
-        optionContainer.value.classList?.add('force-to-top');
-      }
+    if (openDirection.value === 'top') {
+      style.top = anchor.top - 12 + 'px';
+    } else {
+      style.top = anchor.bottom + 12 + 'px';
     }
+    style.left = anchor.left + 'px';
+    style.minWidth = anchor.width + 'px';
+    style.maxWidth = anchor.width + 'px';
+
+    optionContainer.value.classList?.toggle(
+      'force-to-top',
+      window.innerHeight - anchor.bottom < 224,
+    );
   };
 
   watch(
@@ -55,14 +54,30 @@ export default function useDropdown(props, context, dep) {
     },
   );
 
+  let stopFollowing = null;
+
+  const followWhileOpen = (open) => {
+    if (open && !stopFollowing) {
+      stopFollowing = followAnchor(calculatePosition);
+    } else if (!open && stopFollowing) {
+      stopFollowing();
+      stopFollowing = null;
+    }
+  };
+
   watch(
     () => isOpen.value,
-    () => {
+    (open) => {
+      followWhileOpen(open);
       setTimeout(() => {
         calculatePosition();
       }, 0);
     },
   );
+
+  onScopeDispose(() => {
+    followWhileOpen(false);
+  });
 
   watch(
     () => iv.value,

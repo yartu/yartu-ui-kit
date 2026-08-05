@@ -2,7 +2,7 @@
   <div :class="pickerClass">
     <div>
       <div class="flex justify-between items-center">
-        <button @click="changeMonth(-1)" :class="changeButtonClass">
+        <button @click="stepBack" :class="changeButtonClass">
           <svg
             width="16"
             height="16"
@@ -20,12 +20,12 @@
           </svg>
         </button>
         <button
-          @click="toggleMonthSelector"
+          @click="zoomOut"
           class="font-extrabold text-BLACK-2 text-xs"
         >
-          {{ active.dayjs.format('MMMM') }} {{ active.year }}
+          {{ headerTitle }}
         </button>
-        <button @click="changeMonth(1)" :class="changeButtonClass">
+        <button @click="stepForward" :class="changeButtonClass">
           <svg
             width="16"
             height="16"
@@ -45,7 +45,7 @@
       </div>
       <div class="w-full -ms-2 mt-4">
         <div
-          v-if="monthSelect"
+          v-if="view === 'month'"
           class="yartu-date-picker-table-calc-width flex flex-wrap gap-2 max-w-54 justify-between"
         >
           <button
@@ -58,6 +58,22 @@
             }"
           >
             {{ month.substring(0, 3) }}
+          </button>
+        </div>
+        <div
+          v-else-if="view === 'year'"
+          class="yartu-date-picker-table-calc-width flex flex-wrap gap-2 max-w-54 justify-between"
+        >
+          <button
+            v-for="year in yearList"
+            :key="year"
+            @click="changeYear(null, year)"
+            class="truncate caption w-11 h-11 rounded-md hover:bg-LIGHTBLUE-6 text-BLACK-2 font-semibold"
+            :class="{
+              'text-white bg-BLUE hover:!bg-BLUE': active.year === year,
+            }"
+          >
+            {{ year }}
           </button>
         </div>
         <table summary="datetime picker" v-else class="yartu-date-picker-table-calc-width">
@@ -185,10 +201,32 @@ const active = ref({
   date: 0,
 });
 
-const monthSelect = ref(false);
+const view = ref('day');
+const yearPageStart = ref(0);
 
-const toggleMonthSelector = () => {
-  monthSelect.value = !monthSelect.value;
+const yearList = computed(() =>
+  Array.from(Array(12), (v, i) => yearPageStart.value + i),
+);
+
+const headerTitle = computed(() => {
+  if (view.value === 'month') {
+    return `${active.value.year}`;
+  }
+  if (view.value === 'year') {
+    return `${yearPageStart.value} - ${yearPageStart.value + 11}`;
+  }
+  return `${active.value.dayjs.format('MMMM')} ${active.value.year}`;
+});
+
+const zoomOut = () => {
+  if (view.value === 'day') {
+    view.value = 'month';
+  } else if (view.value === 'month') {
+    yearPageStart.value = active.value.year - 5;
+    view.value = 'year';
+  } else {
+    view.value = 'day';
+  }
 };
 
 const initDateTime = (date) => {
@@ -254,23 +292,46 @@ const daysList = computed(() => {
   return display;
 });
 
-const changeMonth = (inc, month = null) => {
-  let newDayjs = {};
-  if (month !== null) {
-    newDayjs = active.value.dayjs.month(month);
-  } else {
-    newDayjs = active.value.dayjs.add(inc, 'month');
-  }
-
+const applyActive = (newDayjs) => {
   active.value = {
     dayjs: newDayjs,
     year: newDayjs.year(),
     month: newDayjs.month(),
     date: newDayjs.date(),
   };
-  monthSelect.value = false;
   emit('monthChange', newDayjs);
 };
+
+const changeMonth = (inc, month = null) => {
+  const newDayjs = month !== null
+    ? active.value.dayjs.month(month)
+    : active.value.dayjs.add(inc, 'month');
+
+  applyActive(newDayjs);
+  view.value = 'day';
+};
+
+const changeYear = (inc, year = null) => {
+  const newDayjs = year !== null
+    ? active.value.dayjs.year(year)
+    : active.value.dayjs.add(inc, 'year');
+
+  applyActive(newDayjs);
+  view.value = year !== null ? 'month' : view.value;
+};
+
+const stepBy = (inc) => {
+  if (view.value === 'month') {
+    changeYear(inc);
+  } else if (view.value === 'year') {
+    yearPageStart.value += inc * 12;
+  } else {
+    changeMonth(inc);
+  }
+};
+
+const stepBack = () => stepBy(-1);
+const stepForward = () => stepBy(1);
 
 const emitSelected = () => {
   selectedDate.value = selectedDate.value.startOf('day');

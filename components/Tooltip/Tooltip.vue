@@ -26,8 +26,9 @@ export default {
 </script>
 
 <script setup>
-import { ref, computed, onUnmounted, onMounted } from 'vue';
+import { ref, computed, watch, onUnmounted } from 'vue';
 import { useTextDirection } from '@vueuse/core';
+import { followAnchor } from '../../utils/anchorPosition';
 
 const dir = useTextDirection();
 
@@ -76,8 +77,10 @@ const toggleTooltip = () => {
 };
 
 const calculatePosition = () => {
-  let container = target.value.getBoundingClientRect();
-  let tooltipStyle = tooltip.value.style;
+  if (!target.value || !tooltip.value) return;
+
+  const container = target.value.getBoundingClientRect();
+  const tooltipStyle = tooltip.value.style;
 
   if (props.bottom) {
     tooltipStyle.top = container.bottom + 16 + 'px';
@@ -97,12 +100,21 @@ const calculatePosition = () => {
   }
 };
 
-onMounted(() => {
-  window.addEventListener('resize', calculatePosition);
-});
+let stopFollowing = null;
+
+const followWhileOpen = (isOpen) => {
+  if (isOpen && !stopFollowing) {
+    stopFollowing = followAnchor(calculatePosition);
+  } else if (!isOpen && stopFollowing) {
+    stopFollowing();
+    stopFollowing = null;
+  }
+};
+
+watch(tooltipStatus, followWhileOpen);
 
 onUnmounted(() => {
-  window.removeEventListener('resize', calculatePosition);
+  followWhileOpen(false);
 });
 
 const tooltipContainer = computed(() => {
