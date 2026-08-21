@@ -9,6 +9,7 @@
       <div v-if="modelValue" :class="containerClass">
         <div
           id="modal-container"
+          :style="modalVars"
           class="bg-white relative overflow-auto transition-all duration-200 modal-container"
           :class="[modalClass, escapeController ? 'scale-105' : '']"
           role="dialog"
@@ -123,15 +124,21 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   window.removeEventListener('keyup', keypress);
 });
+
+const modalVars = computed(() => ({
+  '--y-modal-min-w': props.minWidth,
+  '--y-modal-max-w': props.maxWidth,
+  '--y-modal-max-h': props.maxHeight && !props.fullScreen ? props.maxHeight : 'none',
+}));
 </script>
 <style scoped>
-@media screen and (min-width: 1024px) {
-  .modal-container {
-    min-width: v-bind(minModalWith) !important;
-    max-width: v-bind(maxModalWith) !important;
-    max-height: v-bind(modalMaxHeight) !important;
-    width: auto !important;
-    height: auto !important;
+
+@media screen and (min-width:1024px){
+  .modal-container{ 
+    min-width:var(--y-modal-min-w)!important; 
+    max-width:var(--y-modal-max-w)!important;
+    max-height:var(--y-modal-max-h)!important; 
+    width:auto!important; height:auto!important; 
   }
 }
 .modal-container {
@@ -141,4 +148,6 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100%;
 }
+
+
 </style>
