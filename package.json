@@ -1,7 +1,7 @@
 {
   "name": "@yartu/ui-kit",
   "description": "Yartu UI Kit for Developers w/ Vue3+Tailwind",
-  "version": "1.0.7",
+  "version": "1.0.10",
   "author": "Ecolarium Dijital Teknolojiler AS <info@ecolarium.io> (https://www.ecolarium.io)",
   "bugs": {
     "url": "https://github.com/yartu/yartu-ui-kit/issues",
@@ -20,7 +20,7 @@
   "dependencies": {
     "@tailwindcss/typography": "^0.5.20",
     "@vueuse/core": "^14.4.0",
-    "dayjs": "^1.11.21",
+    "dayjs": "^1.11.23",
     "maska": "^3.2.0",
     "postcss": "^8.5.26",
     "tailwind-scrollbar-hide": "^1.3.1",
@@ -33,8 +33,8 @@
     "autoprefixer": "^10.5.4",
     "eslint": "^10.8.1",
     "eslint-plugin-vue": "^10.10.0",
-    "globals": "^17.9.0",
-    "vite": "^8.2.1",
+    "globals": "^17.11.0",
+    "vite": "^8.2.2",
     "vue-eslint-parser": "^10.4.1"
   },
   "main": "./index.js",
