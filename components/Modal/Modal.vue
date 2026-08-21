@@ -14,7 +14,6 @@
           role="dialog"
           aria-labelledby="modalTitle"
           aria-describedby="modalDescription"
-          @keydown="lorem"
         >
           <button
             v-if="closable"
@@ -59,7 +58,6 @@ const props = defineProps({
   minWidth: {
     type: String,
     default: '404px',
-    required: true,
   },
   maxHeight: {
     type: String,
@@ -84,9 +82,11 @@ const props = defineProps({
 const emit = defineEmits(['closed', 'update:modelValue']);
 
 const escapeController = ref(false);
-const minModalWith = ref(props.minWidth);
-const maxModalWith = ref(props.maxWidth);
-const modalMaxHeight = ref(props.maxHeight && !props.fullScreen ? props.maxHeight : '');
+const minModalWith = computed(() => props.minWidth);
+const maxModalWith = computed(() => props.maxWidth);
+const modalMaxHeight = computed(() =>
+  props.maxHeight && !props.fullScreen ? props.maxHeight : 'none',
+);
 
 const containerClass = computed(() => {
   return [
