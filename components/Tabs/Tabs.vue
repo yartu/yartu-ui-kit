@@ -19,9 +19,14 @@
         <span
           v-if="tab.badge"
           class="ms-2 rounded caption px-2 leading-normal bg-GREY-9 border border-BORDER text-BLACK-1"
-          :aria-label="tab.badgeLabel || undefined"
-          >{{ tab.badge }}</span
         >
+          <span :aria-hidden="tab.badgeLabel ? 'true' : undefined">{{
+            tab.badge
+          }}</span>
+          <span v-if="tab.badgeLabel" class="sr-only">{{
+            tab.badgeLabel
+          }}</span>
+        </span>
       </button>
       <slot name="postfix"></slot>
     </nav>
