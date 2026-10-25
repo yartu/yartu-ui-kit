@@ -16,6 +16,12 @@
         @click="changeTab(tab, index)"
       >
         {{ tab.title }}
+        <span
+          v-if="tab.badge"
+          class="ms-2 rounded caption px-2 leading-normal bg-GREY-9 border border-BORDER text-BLACK-1"
+          :aria-label="tab.badgeLabel || undefined"
+          >{{ tab.badge }}</span
+        >
       </button>
       <slot name="postfix"></slot>
     </nav>
@@ -35,7 +41,12 @@ import { provide, useSlots, ref, computed } from 'vue';
 const slots = useSlots();
 const tabs = ref(
   slots.default().map((t) => {
-    return { value: t.props?.value, title: t.props?.title };
+    return {
+      value: t.props?.value,
+      title: t.props?.title,
+      badge: t.props?.badge,
+      badgeLabel: t.props?.['badge-label'] ?? t.props?.badgeLabel,
+    };
   }),
 );
 

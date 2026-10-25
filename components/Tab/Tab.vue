@@ -29,5 +29,13 @@ defineProps({
     type: String,
     default: '',
   },
+  badge: {
+    type: [String, Number],
+    default: '',
+  },
+  badgeLabel: {
+    type: String,
+    default: '',
+  },
 });
 </script>
